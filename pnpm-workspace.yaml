@@ -37,8 +37,8 @@ overrides:
 
 # Only these packages may run install scripts
 allowBuilds:
-  esbuild: true
-  # optional native builds / postinstall banners; all have JS fallbacks
+  # optional native builds / postinstall banners; all have JS fallbacks or prebuilt binaries
+  '@parcel/watcher': false
   core-js: false
   keccak: false
   protobufjs: false
