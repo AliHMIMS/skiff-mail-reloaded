@@ -11,7 +11,7 @@ import {
   Typography,
   TypographySize
 } from 'nightwatch-ui';
-import React, { useState } from 'react';
+import React, { useState, type JSX } from 'react';
 import { bytesToHumanReadable } from 'skiff-utils';
 import styled, { css } from 'styled-components';
 

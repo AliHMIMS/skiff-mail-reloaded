@@ -33,7 +33,7 @@ const ScrollContainer = styled.div<{ $themeMode: ThemeMode }>`
 
 interface FilterSelectProps {
   open: boolean;
-  buttonRef: RefObject<HTMLDivElement> | undefined;
+  buttonRef: RefObject<HTMLDivElement | null> | undefined;
   filterLabels: string[];
   onClose(): void;
   isFilterActive: (filter: string) => boolean;

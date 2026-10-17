@@ -29,7 +29,7 @@ import { useNavigate } from '../../utils/navigation';
 
 interface LabelOptionsDropdownProps {
   label: UserLabelPlain | UserLabelFolder;
-  buttonRef: RefObject<HTMLDivElement>;
+  buttonRef: RefObject<HTMLDivElement | null>;
   showDropdown: boolean;
   setShowDropdown: (value: boolean) => void;
   isSubmenu?: boolean;

@@ -1,5 +1,5 @@
 import { useLottie } from 'lottie-react';
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { RefObject, useEffect, useRef, useState, type JSX } from 'react';
 import PullToRefresh from 'react-simple-pull-to-refresh';
 import styled from 'styled-components';
 
@@ -82,7 +82,7 @@ export default function MobilePullToRefresh({ onRefresh, children, setLocked }: 
 }
 
 const RELOAD_FRAMES = 43; // Amount of frames in reload animation (the animation when pulling)
-function PullingContent({ touchRef }: { touchRef: RefObject<HTMLDivElement> }) {
+function PullingContent({ touchRef }: { touchRef: RefObject<HTMLDivElement | null> }) {
   const distance = Math.min(useTouchYDistance(touchRef) / PULL_DOWN_THRESH, 1);
 
   const style = {

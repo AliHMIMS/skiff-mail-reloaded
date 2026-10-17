@@ -233,8 +233,8 @@ const isValidRgba = (value: string, type: 'r' | 'g' | 'b' | 'a') => {
 
 interface ColorPickerProps {
   handleColorChange: (color: string) => void;
-  colorContainerRef: React.RefObject<HTMLDivElement>;
-  buttonRef: React.RefObject<HTMLDivElement>;
+  colorContainerRef: React.RefObject<HTMLDivElement | null>;
+  buttonRef: React.RefObject<HTMLDivElement | null>;
   open: boolean;
   value: string;
   leftOffset?: number;
@@ -346,8 +346,8 @@ const ColorPicker: FC<ColorPickerProps> = ({
   }, [open]);
 
   const ref = buttonRef;
-  const left = (ref as React.MutableRefObject<HTMLDivElement>).current?.getBoundingClientRect().left || 0;
-  const top = (ref as React.MutableRefObject<HTMLDivElement>).current?.getBoundingClientRect().top || 0;
+  const left = (ref as React.MutableRefObject<HTMLDivElement | null>).current?.getBoundingClientRect().left || 0;
+  const top = (ref as React.MutableRefObject<HTMLDivElement | null>).current?.getBoundingClientRect().top || 0;
 
   let adjustedLeft = left + leftOffset;
   let adjustedTop = top + topOffset;

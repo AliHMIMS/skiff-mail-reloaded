@@ -35,7 +35,7 @@ interface ContactUserProfileViewFooterProps {
   isEditing: boolean;
   handleSave: () => void;
   isSaving: boolean;
-  scrollContainerRef: React.RefObject<HTMLDivElement>;
+  scrollContainerRef: React.RefObject<HTMLDivElement | null>;
   optionalFields: FieldGroup[];
   setActiveConfirmModalType: (activeModal: {
     type: ContactProfileConfirmModalType;

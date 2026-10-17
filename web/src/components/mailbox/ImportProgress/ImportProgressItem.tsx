@@ -35,7 +35,7 @@ export const ImportProgressItem: React.FC<ImportProgressItemProps> = ({
   const progress: Progress = { numProcessed };
 
   return (
-    <AnimatePresence exitBeforeEnter>
+    <AnimatePresence mode='wait'>
       <motion.div
         animate={{ opacity: 1, transition: { duration: 1 } }}
         exit={{ opacity: 0.5 }}

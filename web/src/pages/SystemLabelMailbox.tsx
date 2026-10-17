@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { SystemLabels } from 'skiff-graphql';
 
 import { Mailbox } from '../components/mailbox/Mailbox';
-import MobileHead from '../components/shared/MobileHead';
 import { FALLBACK_ROUTER_LABEL, RouterLabelContext } from '../context/RouterLabelContext';
 import { useCurrentLabel } from '../hooks/useCurrentLabel';
 import { LABEL_TO_SYSTEM_LABEL } from '../utils/label';
@@ -28,7 +27,6 @@ const SystemLabelMailbox = () => {
 
   return (
     <RouterLabelContext.Provider value={systemLabel}>
-      <MobileHead />
       <Mailbox />
     </RouterLabelContext.Provider>
   );

@@ -1,6 +1,7 @@
 import uniqueId from 'lodash/uniqueId';
 import { Icon, IconComponent, IconText, IconTextProps } from 'nightwatch-ui';
 import React from 'react';
+import type { JSX } from 'react';
 import styled from 'styled-components';
 
 // Setting min-width to 0 keeps the flex-box from overflowing
@@ -35,7 +36,7 @@ export interface IconTextEndAction {
   onClick: (e?: React.MouseEvent) => void;
   tooltip?: string;
   dataTest?: string;
-  buttonRef?: React.RefObject<HTMLDivElement>;
+  buttonRef?: React.RefObject<HTMLDivElement | null>;
 }
 
 export interface IconTextWithEndActionsProps extends IconTextProps {

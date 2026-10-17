@@ -1,9 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, type JSX } from 'react';
 
 const GAP = 45; // the gap between the keyboard and the next btn including the autocomplete section
 
 export const useAvoidIosKeyboard = (
-  avoidingElementRef: React.RefObject<HTMLDivElement> | undefined,
+  avoidingElementRef: React.RefObject<HTMLDivElement | null> | undefined,
   defaultMargin: number,
   keyboardHeight: number,
   spacerRenderer?: (margin: number) => JSX.Element

@@ -12,7 +12,7 @@ interface EncryptionKeysProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   publicKey: PgpPublicKey;
-  buttonRef: React.RefObject<HTMLDivElement>;
+  buttonRef: React.RefObject<HTMLDivElement | null>;
   address: string;
   ownKey?: boolean;
 }

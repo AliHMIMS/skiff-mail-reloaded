@@ -13,7 +13,7 @@ import { MouseClickEvents, MouseEvents, TouchEvents } from '../types';
  * calls the handler when there is click outside the ref
  */
 export function useOnClickOutside(
-  ref: RefObject<HTMLElement>,
+  ref: RefObject<HTMLElement | null>,
   handler: (event: MouseEvent | TouchEvent) => void,
   excludedClasses?: string[],
   events?: { web?: MouseClickEvents; mobile?: TouchEvents },

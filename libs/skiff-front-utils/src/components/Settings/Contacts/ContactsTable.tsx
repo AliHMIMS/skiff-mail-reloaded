@@ -616,7 +616,9 @@ const ContactsTable = (props: ContactsTableProps) => {
               setHoverRowIndex(null);
             }
           }}
-          ref={(ref) => (rowRefs.current[index] = ref)}
+          ref={(ref) => {
+            rowRefs.current[index] = ref;
+          }}
         >
           <ContactRow
             active={isEqual(getContactWithoutTypename(contact), selectedContact) && !isMobile}

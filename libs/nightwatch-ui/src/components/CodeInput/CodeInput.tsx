@@ -79,7 +79,7 @@ const CodeInput = (
     !!value.length ? (value.length > endIndex ? endIndex : value.length) : 0
   );
   // Contains references to all TextField inputs
-  const inputRef = useRef<HTMLInputElement[]>([]);
+  const inputRef = useRef<(HTMLInputElement | null)[]>([]);
   // Padded code values
   const codeValues: string[] = padEnd(value, codeLength);
 
@@ -162,7 +162,9 @@ const CodeInput = (
               e.stopPropagation();
               handlePaste(e, index);
             }}
-            ref={(innerRef: HTMLInputElement) => (inputRef.current[index] = innerRef)}
+            ref={(innerRef: HTMLInputElement | null) => {
+              inputRef.current[index] = innerRef;
+            }}
             data-test={dataTest}
             key={index}
             disabled={isSubmitting}

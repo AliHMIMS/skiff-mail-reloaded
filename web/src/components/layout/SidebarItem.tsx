@@ -249,7 +249,11 @@ const LabelSidebarItem: React.FC<LabelSidebarItemProps> = ({
   };
 
   return (
-    <div ref={drop}>
+    <div
+      ref={(node) => {
+        drop(node);
+      }}
+    >
       <Link to={href}>
         <SidebarLabel
           $active={active}

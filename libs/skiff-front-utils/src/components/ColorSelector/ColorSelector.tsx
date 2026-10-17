@@ -122,7 +122,7 @@ interface ColorSelectorProps {
   value: string;
   handleChange: (newValue: AccentColor | string, evt?: React.MouseEvent) => void;
   handlePickerChange?: (newValue: string) => void;
-  pickerColorContainerRef?: React.RefObject<HTMLDivElement>;
+  pickerColorContainerRef?: React.RefObject<HTMLDivElement | null>;
   disabled?: boolean;
   hideSelected?: boolean;
   showHover?: boolean;

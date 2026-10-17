@@ -1,5 +1,6 @@
 import { Icon, Icons, Size, Typography } from 'nightwatch-ui';
 import React from 'react';
+import type { JSX } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 

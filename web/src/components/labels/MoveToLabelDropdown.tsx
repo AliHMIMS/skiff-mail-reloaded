@@ -10,7 +10,7 @@ import MoveToLabelDropdownContent from './MoveToLabelDropdownContent';
 
 interface MoveToLabelDropdownProps {
   open: boolean;
-  buttonRef: RefObject<HTMLDivElement> | undefined;
+  buttonRef: RefObject<HTMLDivElement | null> | undefined;
   onClose(): void;
   threadID?: string;
   variant?: UserLabelVariant;

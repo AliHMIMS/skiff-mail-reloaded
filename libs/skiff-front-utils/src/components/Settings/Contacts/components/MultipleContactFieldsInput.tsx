@@ -97,7 +97,9 @@ const MultipleContactFieldsInput = ({
           />
           <InputField
             autoFocus={false}
-            innerRef={(el) => (labelRefs.current[index] = el)}
+            innerRef={(el) => {
+              labelRefs.current[index] = el;
+            }}
             onChange={(e) => {
               handleMultipleFieldsOnChange(index, { value, label: e.target.value });
             }}

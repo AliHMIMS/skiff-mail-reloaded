@@ -14,8 +14,8 @@ const OPEN_UPWARDS_OFFSET = 30;
 
 export function useGetPopupPosition(
   editor: Editor,
-  popupRef: RefObject<HTMLDivElement>,
-  editorContainerRef: React.RefObject<HTMLDivElement>,
+  popupRef: RefObject<HTMLDivElement | null>,
+  editorContainerRef: React.RefObject<HTMLDivElement | null>,
   id: string,
   showFormatBar?: boolean
 ) {

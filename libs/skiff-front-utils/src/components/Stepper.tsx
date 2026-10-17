@@ -40,7 +40,7 @@ interface CarouselProps {
   descriptionList: DescriptionItem[];
 }
 
-const useElementWidth = (elementRef: React.MutableRefObject<HTMLElement> | React.MutableRefObject<null>) => {
+const useElementWidth = (elementRef: React.MutableRefObject<HTMLElement | null> | React.MutableRefObject<null>) => {
   const [width, setWidth] = useState(0);
 
   useEffect(() => {

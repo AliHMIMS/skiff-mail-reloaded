@@ -40,7 +40,7 @@ const PaddedTypography = styled.div`
 
 interface LinkCreatePopupProps {
   editor: Editor;
-  editorContainerRef: React.RefObject<HTMLDivElement>;
+  editorContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 
 /**

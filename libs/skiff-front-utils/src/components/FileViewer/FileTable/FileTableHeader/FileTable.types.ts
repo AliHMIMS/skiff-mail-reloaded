@@ -1,5 +1,5 @@
 import { Icon } from 'nightwatch-ui';
-import { MouseEvent, RefObject } from 'react';
+import { MouseEvent, RefObject, type JSX } from 'react';
 
 export interface ActionIcon {
   icon: Icon;
@@ -8,5 +8,5 @@ export interface ActionIcon {
   key: string;
   tooltip: string | JSX.Element;
   dataTest?: string;
-  ref?: RefObject<HTMLDivElement>;
+  ref?: RefObject<HTMLDivElement | null>;
 }

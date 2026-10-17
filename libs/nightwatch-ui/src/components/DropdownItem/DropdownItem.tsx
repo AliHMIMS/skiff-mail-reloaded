@@ -137,7 +137,7 @@ function DropdownItem(
       (scrollIntoView && highlight === false)
     )
       return;
-    const mutableRef = ref ? (ref as MutableRefObject<HTMLDivElement>) : dropdownItemRef;
+    const mutableRef = ref ? (ref as MutableRefObject<HTMLDivElement | null>) : dropdownItemRef;
     const target = mutableRef.current;
     // Do nothing if the item was highlighted on hover
     if (!target || (highlight && target.matches(':hover'))) return;

@@ -57,5 +57,5 @@ export interface MouseSafeAreaProps {
   /** Whether the submenu is opening to the right or to the left of the parent dropdown */
   openRight: boolean;
   /** Reference to the parent submenu */
-  parentRef: RefObject<HTMLDivElement>;
+  parentRef: RefObject<HTMLDivElement | null>;
 }

@@ -31,7 +31,7 @@ import { ConfirmUpdateNotificationsForSenderModal, NotificationsForSenderState }
 interface ContactActionDropdownProps {
   show: boolean;
   setShowActionDropdown: (boolean) => void;
-  buttonRef: React.RefObject<HTMLDivElement>;
+  buttonRef: React.RefObject<HTMLDivElement | null>;
   address: AddressObject;
   notificationsMuted?: boolean;
   displayPictureData?: DisplayPictureData;

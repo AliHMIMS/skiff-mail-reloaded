@@ -13,7 +13,6 @@ import { StyleSheetManager } from 'styled-components';
 import client from './apollo/client';
 import { MailDragLayer } from './components/Compose/AddressAndSubjectFields/MailDragLayer';
 import { MessageDragLayer } from './components/mailbox/MessageCell/MessageDragLayer';
-import MobileHead from './components/shared/MobileHead';
 import store from './redux/store/reduxStore';
 import Routes from './Routes';
 import { CustomHTML5Backend } from './utils/dragAndDrop';
@@ -37,7 +36,6 @@ function App() {
                   maxSnack={7}
                   preventDuplicate
                 >
-                  <MobileHead />
                   <main className='app'>
                     <FloatingDelayGroup delay={{ open: 1000, close: 200 }}>
                       <Routes />

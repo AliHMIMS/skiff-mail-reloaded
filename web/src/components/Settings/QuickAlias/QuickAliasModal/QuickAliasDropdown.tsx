@@ -18,7 +18,7 @@ interface QuickAliasDropdownProps {
   showOptionDropdown: boolean;
   setShowOptionDropdown: (show: boolean) => void;
   quickAlias: FullAliasInfo;
-  buttonRef: React.RefObject<HTMLDivElement>;
+  buttonRef: React.RefObject<HTMLDivElement | null>;
   setSelectedQuickAlias?: (alias: FullAliasInfo) => void;
 }
 

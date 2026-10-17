@@ -10,12 +10,12 @@ interface FieldItemInputProps {
   item: FieldItem;
   fieldConfig: FieldGroup;
   value: string | ValueLabel[];
-  nextRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement> | null;
+  nextRef: React.RefObject<HTMLInputElement | HTMLTextAreaElement | null> | null;
   onCopy: ((description: string, value: Maybe<string> | undefined) => void) | undefined;
   handleFieldChange: (key: string, value: string | ValueLabel[]) => void;
   errors: ErrorState;
   autoFocus: boolean;
-  refs: { [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement> };
+  refs: { [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement | null> };
 }
 
 const FieldItemInput = ({
@@ -52,7 +52,7 @@ const FieldItemInput = ({
     return (
       <TextArea
         {...commonProps}
-        innerRef={refs[item.key] as React.RefObject<HTMLTextAreaElement>}
+        innerRef={refs[item.key] as React.RefObject<HTMLTextAreaElement | null>}
         onChange={(e) => handleOnChange(item.key, e.target.value)}
         onKeyPress={handleKeyPress}
         value={typeof commonProps.value === 'string' ? commonProps.value : ''}
@@ -66,7 +66,7 @@ const FieldItemInput = ({
         handleFieldChange={(newValue: string | ValueLabel[]) => {
           handleFieldChange(item.key, newValue);
         }}
-        innerRef={refs[item.key] as React.RefObject<HTMLInputElement>}
+        innerRef={refs[item.key] as React.RefObject<HTMLInputElement | null>}
         isHovered={isHovered}
         labelPlaceholder={item.labelPlaceholder}
         moveToNextInput={handleKeyPress}
@@ -92,7 +92,7 @@ const FieldItemInput = ({
           ) : undefined
         }
         error={item.key === 'emailAddress' ? errors?.email : undefined}
-        innerRef={refs[item.key] as React.RefObject<HTMLInputElement>}
+        innerRef={refs[item.key] as React.RefObject<HTMLInputElement | null>}
         onChange={(e) => handleOnChange(item.key, e.target.value)}
         onKeyPress={handleKeyPress}
         onMouseEnter={() => {

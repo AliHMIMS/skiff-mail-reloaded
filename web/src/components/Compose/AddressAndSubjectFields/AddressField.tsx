@@ -119,6 +119,7 @@ const AdditionalContainer = styled.div<{ $moveButtons?: boolean }>`
 `;
 
 interface AddressFieldProps {
+  children?: React.ReactNode;
   field: EmailFieldTypes;
   isFocused: boolean;
   dataTest?: string;
@@ -126,7 +127,7 @@ interface AddressFieldProps {
   showField?: boolean;
   moveButtons?: boolean;
   onClick?: () => void;
-  inputRef?: React.RefObject<HTMLInputElement>;
+  inputRef?: React.RefObject<HTMLInputElement | null>;
 }
 
 /*

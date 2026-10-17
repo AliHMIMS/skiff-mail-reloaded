@@ -1,6 +1,6 @@
 import { Editor } from '@tiptap/react';
 import { FilledVariant, Icon, IconButton, Size, Typography } from 'nightwatch-ui';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { MouseEventHandler, useEffect, useState, type JSX } from 'react';
 import { isIOS } from 'react-device-detect';
 import styled from 'styled-components';
 

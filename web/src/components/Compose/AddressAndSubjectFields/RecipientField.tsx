@@ -253,7 +253,11 @@ const RecipientField: FC<RecipientFieldProps> = ({
 
   return (
     <>
-      <OverflowContainer ref={dropRef}>
+      <OverflowContainer
+        ref={(node: HTMLDivElement | null) => {
+          dropRef(node);
+        }}
+      >
         <AddressField
           additionalButtons={additionalButtons}
           dataTest={dataTest}

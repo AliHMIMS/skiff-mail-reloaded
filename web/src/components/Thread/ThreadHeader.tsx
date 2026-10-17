@@ -143,7 +143,7 @@ type ThreadHeaderProps = {
   userLabels?: Array<UserLabelPlain | UserLabelAlias | UserLabelQuickAlias>;
   onClick?: () => void;
   isSkiffSender?: boolean;
-  threadBodyRef?: React.RefObject<HTMLDivElement>;
+  threadBodyRef?: React.RefObject<HTMLDivElement | null>;
   scheduledSendAt?: Date;
   // defined if component is keeping track of the active thread and email itself instead of using route params
   setActiveThreadAndEmail?: (activeThreadAndEmail: ThreadNavigationIDs | undefined) => void;

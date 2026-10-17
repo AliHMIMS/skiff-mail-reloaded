@@ -93,7 +93,7 @@ interface SenderDetailsProps {
   email: MailboxEmailInfo;
   showContacts: boolean;
   expanded: boolean;
-  moreButtonRef: RefObject<HTMLDivElement>;
+  moreButtonRef: RefObject<HTMLDivElement | null>;
   setShowMoreOptions: (showMoreOptions: boolean) => void;
   reply: (evt?: React.MouseEvent) => void;
   renderActions?: boolean;

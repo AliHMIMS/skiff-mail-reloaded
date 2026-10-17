@@ -45,7 +45,7 @@ interface PlainLabelDropdownItemProps {
 }
 
 const renderOptionsButton = (
-  ref: React.RefObject<HTMLDivElement>,
+  ref: React.RefObject<HTMLDivElement | null>,
   setShowSubDropdown: Dispatch<SetStateAction<boolean>>
 ) => (
   <IconText

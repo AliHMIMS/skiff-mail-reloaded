@@ -162,7 +162,7 @@ interface MobileThreadHeaderTitleProps {
   onClose: () => void;
   hasUserLabels?: boolean;
   text: string | null | undefined;
-  threadBodyRef?: React.RefObject<HTMLDivElement>;
+  threadBodyRef?: React.RefObject<HTMLDivElement | null>;
   // previous threadID
   prevThreadID?: string;
   // next threadID

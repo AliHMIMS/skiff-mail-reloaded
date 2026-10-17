@@ -129,7 +129,7 @@ export const TooltipTrigger = React.forwardRef<
 >(function TooltipTrigger({ children, asChild = false, fullWidth = false, ...props }, propRef) {
   const state = useTooltipState();
 
-  const childrenRef = (children as React.HTMLProps<HTMLElement>).ref as React.RefObject<HTMLElement>;
+  const childrenRef = (children as React.HTMLProps<HTMLElement>).ref as React.RefObject<HTMLElement | null>;
 
   if (!state) return null;
 
@@ -140,7 +140,7 @@ export const TooltipTrigger = React.forwardRef<
       state.getReferenceProps({
         ref: childrenRef,
         ...props,
-        ...children.props,
+        ...(children.props as object),
         'data-state': state.open ? 'open' : 'closed'
       } as React.HTMLProps<Element> | undefined)
     );

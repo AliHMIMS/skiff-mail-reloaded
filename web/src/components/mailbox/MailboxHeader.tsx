@@ -18,7 +18,6 @@ import {
 } from 'nightwatch-ui';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { isMobile, MobileView } from 'react-device-detect';
-import { Helmet } from 'react-helmet';
 import { useDispatch } from 'react-redux';
 import { useGetMailFiltersQuery, useGetNumUnreadQuery, useUserLabelsQuery } from 'skiff-front-graphql';
 import {
@@ -412,13 +411,12 @@ export const MailboxHeader = ({
   })?.walletAlias;
   const walletAlias = fullWalletAddress ? splitEmailToAliasAndDomain(fullWalletAddress).alias : undefined;
 
+  // React 19 hoists <title> into the document head
   const headTitle = (
-    <Helmet>
-      <title>
-        {`${displayLabelName} ${numUnread > 0 ? `(${numUnread.toLocaleString()})` : ''} -
+    <title>
+      {`${displayLabelName} ${numUnread > 0 ? `(${numUnread.toLocaleString()})` : ''} -
         ${defaultEmailAlias ?? user.username}`}
-      </title>
-    </Helmet>
+    </title>
   );
 
   const updateFavicon = (countUnread: string) => {

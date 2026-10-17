@@ -23,7 +23,7 @@ export const isTouchEvent = (e: MouseEvent | TouchEvent): e is TouchEvent => !!(
  * @param passive should event handler be passive
  */
 export const useLongTouch = (
-  targetRef: RefObject<HTMLElement>,
+  targetRef: RefObject<HTMLElement | null>,
   onLongTouch: (e: MouseEvent | TouchEvent) => void,
   duration = 500,
   ignoreMove = false,

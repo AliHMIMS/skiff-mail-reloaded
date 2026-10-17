@@ -1,6 +1,6 @@
 import { RefObject, useEffect, useState } from 'react';
 
-export default function useTouchYDistance(ref: RefObject<HTMLElement>) {
+export default function useTouchYDistance(ref: RefObject<HTMLElement | null>) {
   const [distance, setDistance] = useState(0);
   let startY = 0;
   let currentY = 0;

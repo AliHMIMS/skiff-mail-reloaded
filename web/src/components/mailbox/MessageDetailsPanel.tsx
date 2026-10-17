@@ -227,7 +227,7 @@ const renderResizablePanel = (
   panelWidth: number,
   maxWidth: number,
   setPanelWidth: (newWidth: number) => void,
-  panelRef: React.RefObject<HTMLDivElement>,
+  panelRef: React.RefObject<HTMLDivElement | null>,
   children
 ) => {
   return (

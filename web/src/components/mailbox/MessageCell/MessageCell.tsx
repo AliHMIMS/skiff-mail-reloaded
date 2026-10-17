@@ -354,7 +354,9 @@ export const MessageCell = ({
       onFocus={() => {}}
       onMouseLeave={offHover}
       onMouseOver={onHover}
-      ref={dragRef}
+      ref={(node: HTMLDivElement | null) => {
+        dragRef?.(node);
+      }}
       style={{ overflow: 'hidden' }}
     >
       <MessageCellContainer

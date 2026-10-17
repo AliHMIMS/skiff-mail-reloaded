@@ -41,7 +41,7 @@ export default function MobileBottomNavigation({ threads }: MobileBottomNavigati
   });
 
   // Send progress logic
-  const interval = useRef<NodeJS.Timeout>();
+  const interval = useRef<NodeJS.Timeout | undefined>(undefined);
   const clearTimer = () => {
     if (interval.current) {
       clearInterval(interval.current);

@@ -1,5 +1,5 @@
 import { CircularProgressSize, Color, Icon } from 'nightwatch-ui';
-import { FC } from 'react';
+import { FC, type JSX } from 'react';
 import { NwContentType } from 'skiff-graphql';
 
 export const DEFAULT_FILE_TYPE_LABEL = 'FILE';

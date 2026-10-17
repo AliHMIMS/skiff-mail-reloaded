@@ -122,7 +122,7 @@ const FORMAT_LEFT_OFFSET = 48;
 
 interface ColorPopupProps {
   editor: Editor;
-  editorContainerRef: React.RefObject<HTMLDivElement>;
+  editorContainerRef: React.RefObject<HTMLDivElement | null>;
 }
 /**
  * This is the popup that opens when hovering/clicking a link

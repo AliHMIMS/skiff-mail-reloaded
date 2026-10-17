@@ -1,7 +1,7 @@
 import Slide from '@mui/material/Slide';
 import { Toast, ToastProps, TOAST_DEFAULT_DURATION } from 'nightwatch-ui';
 import { SnackbarKey, useSnackbar } from 'notistack';
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, type JSX } from 'react';
 
 /**
  * Wrapper hook for notistack's useSnackbar.
@@ -14,7 +14,7 @@ const useToast = () => {
    * One key is cached per component that uses this hook.
    * Allows for easy closing of most recent toast.
    */
-  const toastKey = useRef<SnackbarKey>();
+  const toastKey = useRef<SnackbarKey | undefined>(undefined);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   /**
    * Wrapper function to call notistack's enqueueSnackbar.

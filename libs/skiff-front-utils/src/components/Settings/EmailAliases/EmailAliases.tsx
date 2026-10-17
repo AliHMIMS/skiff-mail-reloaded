@@ -1,7 +1,7 @@
 import type { ErrorLike } from '@apollo/client';
 import { getGraphQLErrors } from '../../../apollo/errorUtils';
 import { ApolloClient } from '@apollo/client';
-import { useState } from 'react';
+import { useState, type JSX } from 'react';
 import { isPaywallErrorCode, PaywallErrorCode } from 'skiff-utils';
 import styled from 'styled-components';
 

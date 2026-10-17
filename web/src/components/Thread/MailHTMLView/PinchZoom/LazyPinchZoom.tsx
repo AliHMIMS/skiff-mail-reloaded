@@ -12,7 +12,7 @@ export default function LazyPinchZoom({ enabled, contentDocument }: PinchZoomPro
   return (
     // While the pinch to zoom component is loading we show the mail content just without pinch to zoom functionality
     // So as the suspense fallback we show nothing
-    <Suspense fallback={React.Fragment}>
+    <Suspense fallback={null}>
       <PinchZoom contentDocument={contentDocument} />
     </Suspense>
   );

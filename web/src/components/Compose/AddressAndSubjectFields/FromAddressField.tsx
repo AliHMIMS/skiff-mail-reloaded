@@ -9,7 +9,7 @@ import {
   Typography,
   getThemedColor
 } from 'nightwatch-ui';
-import { FC, memo, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, memo, useCallback, useEffect, useRef, useState, type JSX } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
 import { useGetCurrentUserCustomDomainsQuery } from 'skiff-front-graphql';

@@ -252,7 +252,7 @@ function Surface(
 
   // handle outside clicks
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const surfaceRef = ref ? (ref as MutableRefObject<HTMLDivElement>) : wrapperRef;
+  const surfaceRef = ref ? (ref as MutableRefObject<HTMLDivElement | null>) : wrapperRef;
 
   const onCloseSurface = () => {
     if (!!onClose) void onClose();

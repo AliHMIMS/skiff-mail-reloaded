@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { ApolloClient } from '@apollo/client';
 import { PaywallErrorCode } from 'skiff-utils';
 import { useRequiredCurrentUserData } from '../../../../apollo';

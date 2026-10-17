@@ -1,5 +1,6 @@
 import { motion, SVGMotionProps } from 'framer-motion';
 import React from 'react';
+import type { JSX } from 'react';
 import styled from 'styled-components';
 
 interface AnimatedCopyIconProps {

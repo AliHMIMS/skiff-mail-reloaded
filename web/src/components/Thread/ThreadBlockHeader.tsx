@@ -75,7 +75,7 @@ interface ThreadBlockHeaderProps {
   onClick: (id: string, evt?: React.MouseEvent) => void;
   // Handler when user clicks on Reply button
   reply: (evt?: React.MouseEvent) => void;
-  moreButtonRef: RefObject<HTMLDivElement>;
+  moreButtonRef: RefObject<HTMLDivElement | null>;
   // Whether the thread content is expanded
   expanded: boolean;
   setShowMoreOptions: (showMoreOptions: boolean) => void;

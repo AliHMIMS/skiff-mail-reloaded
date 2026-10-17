@@ -184,7 +184,7 @@ export const getScheduledSendAtDateForThread = (emails: MailboxEmailInfo[]) => {
 };
 
 /** Scrolls the given thread into view */
-export const scrollThreadIntoView = (containerRef: RefObject<HTMLDivElement>, threadID?: string) => {
+export const scrollThreadIntoView = (containerRef: RefObject<HTMLDivElement | null>, threadID?: string) => {
   if (!threadID) return;
 
   const threadElement = document.getElementById(threadID);

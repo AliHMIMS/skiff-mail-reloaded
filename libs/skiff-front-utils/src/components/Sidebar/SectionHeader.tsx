@@ -71,7 +71,15 @@ const SectionHeaderContainer = ({
     }
   }, [isOver, onOver]);
 
-  return <NewLabelContainerStyle ref={drop}>{children}</NewLabelContainerStyle>;
+  return (
+    <NewLabelContainerStyle
+      ref={(node: HTMLDivElement | null) => {
+        drop(node);
+      }}
+    >
+      {children}
+    </NewLabelContainerStyle>
+  );
 };
 
 const SectionHeader = ({

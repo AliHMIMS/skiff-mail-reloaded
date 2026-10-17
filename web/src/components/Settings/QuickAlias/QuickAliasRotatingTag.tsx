@@ -8,7 +8,7 @@ const smoothTransition = {
   type: 'tween',
   ease: 'anticipate',
   duration: 1
-};
+} as const;
 
 const slideUpFadeVariants = {
   hidden: { opacity: 0, y: 6 },

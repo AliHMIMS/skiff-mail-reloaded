@@ -243,10 +243,10 @@ const ContactProfileView: React.FC<ContactProfileViewProps> = ({
   // Only show delete for an existing non-org contact while editing
   const showDelete = !isNewContact && !isOrgMember && isEditing;
 
-  const refStore = React.useRef<{ [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement> }>({});
+  const refStore = React.useRef<{ [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement | null> }>({});
   fields.forEach((fieldConfig) =>
     fieldConfig.items.forEach((item) => {
-      refStore.current[item.key] ??= React.createRef<HTMLInputElement | HTMLTextAreaElement>();
+      refStore.current[item.key] ??= React.createRef<HTMLInputElement | HTMLTextAreaElement | null>();
     })
   );
   const refs = refStore.current;
@@ -280,7 +280,7 @@ const ContactProfileView: React.FC<ContactProfileViewProps> = ({
     <>
       <InputField
         error={errors?.birthday}
-        innerRef={refs.decryptedBirthday as React.RefObject<HTMLInputElement>}
+        innerRef={refs.decryptedBirthday as React.RefObject<HTMLInputElement | null>}
         key='birthday-value'
         onBlur={() => {
           const dateInUserFormat = dayjs(getFormattedBirthdate(birthdayValue || null, dateFormat)).format(dateFormat);
@@ -323,7 +323,7 @@ const ContactProfileView: React.FC<ContactProfileViewProps> = ({
         value={birthdayValue}
       />
       <Dropdown
-        buttonRef={refs.decryptedBirthday as React.RefObject<HTMLInputElement>}
+        buttonRef={refs.decryptedBirthday as React.RefObject<HTMLInputElement | null>}
         className={DATE_PICKER_DROPDOWN_CLASSNAME}
         gapFromAnchor={24}
         portal

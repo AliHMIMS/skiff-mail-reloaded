@@ -180,7 +180,11 @@ export const CompactMessageCell = ({
   const isVerifiedAddress = addresses.length === 1 && !!addresses[0] && VERIFIED_SKIFF_EMAILS.includes(addresses[0]);
 
   return (
-    <div ref={dragRef}>
+    <div
+      ref={(node) => {
+        dragRef?.(node);
+      }}
+    >
       <CompactMessageCellContainer
         active={active}
         isDarkMode={theme === ThemeMode.DARK}

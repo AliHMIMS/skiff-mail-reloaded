@@ -25,7 +25,7 @@ const Duration = styled.span`
 
 interface TimeFieldDropdownProps {
   isOpen: boolean;
-  inputRef: React.RefObject<HTMLInputElement | HTMLDivElement>;
+  inputRef: React.RefObject<HTMLInputElement | HTMLDivElement | null>;
   selectedHourFormat: HourFormats;
   onSubmitTime: (time: Dayjs | string | undefined) => void;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

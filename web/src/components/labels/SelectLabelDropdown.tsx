@@ -11,7 +11,7 @@ import LabelDropdownContent, { LABEL_DROPDOWN_WIDTH } from './LabelDropdownConte
 
 interface SelectLabelDropdownProps {
   open: boolean;
-  buttonRef: RefObject<HTMLDivElement> | undefined;
+  buttonRef: RefObject<HTMLDivElement | null> | undefined;
   onClose(): void;
   isLabelActive: (label: Label) => boolean;
   variant?: UserLabelVariant;

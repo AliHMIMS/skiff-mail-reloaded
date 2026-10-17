@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from 'react';
  * @param {number} ms - rerender interval value
  */
 export default function useTimedRerender(ms: number, disable = false) {
-  const interval = useRef<NodeJS.Timeout>();
+  const interval = useRef<NodeJS.Timeout | undefined>(undefined);
   const [, setState] = useState(1);
 
   const clearTimer = () => {

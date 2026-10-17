@@ -29,7 +29,7 @@ interface DateInputFieldProps {
   preSubmitCustomDateAction?: () => void;
   postSubmitCustomDateAction?: () => void;
   autoFocus?: boolean;
-  ref?: React.RefObject<HTMLInputElement>;
+  ref?: React.RefObject<HTMLInputElement | null>;
 }
 
 // Renders the Date InputField for Desktop as well as controls the DatePicker Dropdown

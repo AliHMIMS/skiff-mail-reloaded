@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { Size } from '../../types';
 import { Icon } from '../Icons';
 import { IconComponent } from '../IconText';

@@ -8,7 +8,8 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
-  useRef
+  useRef,
+  type JSX
 } from 'react';
 import { isAndroid, isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';

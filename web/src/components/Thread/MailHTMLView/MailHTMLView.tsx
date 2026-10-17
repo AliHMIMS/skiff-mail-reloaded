@@ -61,7 +61,7 @@ const MailHTMLView: FC<MailViewProps> = ({ email, attachments, shouldBlockRemote
   // Iframe ref
   const iframeRef = useRef<HTMLIFrameElement>(null);
   // Email content container
-  const iframeRootDivRef = useRef<HTMLDivElement>();
+  const iframeRootDivRef = useRef<HTMLDivElement | undefined>(undefined);
   // Last iframe height - helps with avoiding infinty height for mail with 100% height elements
   const prevHeightRef = useRef<number>(0);
   // Show previous content state, default to hiding previous content

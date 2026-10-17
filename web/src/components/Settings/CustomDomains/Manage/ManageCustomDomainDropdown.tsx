@@ -5,7 +5,7 @@ import { useGetBillingPortalSessionUrlLazyQuery } from 'skiff-front-graphql';
 import { Drawer, useCurrentUserIsOrgAdmin, useToast } from 'skiff-front-utils';
 
 interface ManageCustomDomainDropdownProps {
-  buttonRef: RefObject<HTMLDivElement>;
+  buttonRef: RefObject<HTMLDivElement | null>;
   showDropdown: boolean;
   setShowDropdown: (value: boolean) => void;
   openDeleteDomainModal: () => void;

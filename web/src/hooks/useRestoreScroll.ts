@@ -21,7 +21,7 @@ function easeInOutQuint(t: number) {
 const SCROLL_DURATION_MS = 2000;
 
 export const useRestoreScroll = (
-  listRef: RefObject<VariableSizeList | FixedSizeList>,
+  listRef: RefObject<VariableSizeList | FixedSizeList | null>,
   scrollOffset: MutableRefObject<number>,
   threads: MailboxThreadInfo[],
   displayMobileSearchResults: boolean,

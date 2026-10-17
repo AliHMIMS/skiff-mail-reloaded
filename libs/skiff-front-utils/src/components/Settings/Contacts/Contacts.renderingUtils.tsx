@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { Maybe, ValueLabel } from 'skiff-graphql';
 
 import FieldItemInput from './components/FieldItemInput';
@@ -8,7 +9,7 @@ import ContactUserProfileSectionRow from './ContactUserProfileSectionRow';
 export function renderFieldGroup(
   fieldConfig: FieldGroup,
   pendingContact: ContactWithoutTypename,
-  refs: { [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement> },
+  refs: { [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement | null> },
   onCopy: ((description: string, value: Maybe<string> | undefined) => void) | undefined,
   handleOnChange: (key: string, value: string | ValueLabel[]) => void,
   birthdayRow: JSX.Element,

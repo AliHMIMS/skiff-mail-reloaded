@@ -12,8 +12,8 @@ const LEFT_MARGIN = 5;
 
 export function useGetSelectionPosition(
   editor: Editor,
-  popupRef: RefObject<HTMLDivElement>,
-  editorContainerRef: React.RefObject<HTMLDivElement>
+  popupRef: RefObject<HTMLDivElement | null>,
+  editorContainerRef: React.RefObject<HTMLDivElement | null>
 ) {
   const coordsAtSelection = editor.view.coordsAtPos(editor.view.state.selection.to);
   const [position, setPosition] = useState<Position>({ top: 0, left: 0 });

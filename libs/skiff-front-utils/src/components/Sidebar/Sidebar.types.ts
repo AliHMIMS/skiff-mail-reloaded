@@ -1,5 +1,6 @@
 import { Icon } from 'nightwatch-ui';
 import React from 'react';
+import type { JSX } from 'react';
 
 export enum SidebarSectionType {
   Collapsible,

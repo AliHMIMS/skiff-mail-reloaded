@@ -11,7 +11,7 @@ const FilterActionOptionRowContainer = styled.div`
 interface FilterActionOptionProps {
   label: string;
   onClick: () => void;
-  buttonRef?: RefObject<HTMLDivElement> | undefined;
+  buttonRef?: RefObject<HTMLDivElement | null> | undefined;
   selectedOption?: string | boolean;
   isToggle?: boolean;
 }

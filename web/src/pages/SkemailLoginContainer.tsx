@@ -12,7 +12,6 @@ import React, { useState } from 'react';
 import { getEnvironment, saveCurrentUserData, sendUserDataToMobileApp, isMobileApp } from 'skiff-front-utils';
 import styled from 'styled-components';
 
-import MobileHead from '../components/shared/MobileHead';
 import useFetchCurrentUser from '../hooks/useFetchCurrentUser';
 import { useNavigate } from '../utils/navigation';
 
@@ -78,7 +77,6 @@ export function SkemailLoginContainer() {
 
   return (
     <StyledPage>
-      <MobileHead />
       <LoginContainer>
         {!loading && (env === 'development' || env === 'local' || env === 'review_app' || env === 'vercel') && (
           <>

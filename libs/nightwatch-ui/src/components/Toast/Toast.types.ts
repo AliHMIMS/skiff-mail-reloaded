@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { SnackbarKey } from 'notistack';
 
 import { Icon } from '../Icons';

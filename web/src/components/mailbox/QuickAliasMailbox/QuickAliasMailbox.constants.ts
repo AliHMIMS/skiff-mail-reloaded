@@ -10,7 +10,7 @@ export const QUICK_ALIAS_JOYRIDE_STEPS: IdentifiedJoyrideStep[] = [
     target: `.${FILTER_BY_ALIAS_STEP_CLASSNAME}`,
     content: "Find aliases you've created here once they've received an email",
     title: 'Your new Quick Alias',
-    disableBeacon: true,
+    skipBeacon: true,
     placement: 'left',
     id: JoyrideStepID.FILTER_BY_ALIAS
   },
@@ -18,13 +18,12 @@ export const QUICK_ALIAS_JOYRIDE_STEPS: IdentifiedJoyrideStep[] = [
     target: `.${MANAGE_ALIASES_STEP_CLASSNAME}`,
     content: 'Review and control your quick aliases in settings',
     title: 'Manage your aliases',
-    disableBeacon: true,
+    skipBeacon: true,
     id: JoyrideStepID.MANAGE_ALIASES
   }
 ];
 
 export const customJoyrideTooltipStyle = {
   arrowColor: 'transparent',
-  filter: 'none',
   overlayColor: 'transparent'
 };

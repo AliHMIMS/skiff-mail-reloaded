@@ -120,7 +120,7 @@ const Separator = styled.div`
 const DROPDOWN_GAP_FROM_ANCHOR = 24;
 interface ScheduleSendPopupProps {
   initialDate?: Dayjs;
-  buttonRef: RefObject<HTMLDivElement>;
+  buttonRef: RefObject<HTMLDivElement | null>;
   open: boolean;
   setOpen: (open: boolean) => void;
   handleSendClick: (scheduleSendAt?: Date) => Promise<void>;

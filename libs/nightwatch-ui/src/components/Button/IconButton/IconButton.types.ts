@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { HTMLMotionProps } from 'framer-motion';
 
 import { FilledVariant, ThemeMode, Type } from '../../../types';

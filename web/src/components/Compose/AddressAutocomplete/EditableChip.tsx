@@ -9,7 +9,7 @@ interface EditingChipProps {
   setEditingChipValue: (value: string) => void;
   setEditingChipIndex: (value?: number) => void;
   setAddresses: (addresses: AddressObject[]) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: React.RefObject<HTMLInputElement | null>;
   index: number;
 }
 

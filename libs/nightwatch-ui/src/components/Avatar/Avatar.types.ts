@@ -1,3 +1,4 @@
+import type { JSX } from 'react';
 import { Size, ThemeMode } from '../../types';
 import { AccentColor, Color } from '../../utils/colorUtils';
 import { RequireOnlyOne } from '../../utils/typeUtils';

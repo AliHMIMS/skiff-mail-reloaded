@@ -268,7 +268,7 @@ const checkVariants = {
 
 interface QuickAliasTutorialInteractiveProps {
   subdomain: string; // TODO: from BE?
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: React.RefObject<HTMLInputElement | null>;
   state: QuickAliasTutorialState;
   onNext: () => void;
 }

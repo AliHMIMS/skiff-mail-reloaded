@@ -1,4 +1,4 @@
-import { AnimatePresence, AnimateSharedLayout, motion } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import range from 'lodash/range';
 import uniq from 'lodash/uniq';
@@ -166,7 +166,7 @@ const CustomDomainSearchResults: React.FC<CustomDomainSearchResultsProps> = ({ s
   }
 
   return (
-    <AnimateSharedLayout>
+    <LayoutGroup>
       <Container layout transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
         {range(NUMBER_ROWS_SHOWN).map((i) => {
           const domainResult = results[i];
@@ -204,7 +204,7 @@ const CustomDomainSearchResults: React.FC<CustomDomainSearchResultsProps> = ({ s
           </AnimatePresence>
         )}
       </Container>
-    </AnimateSharedLayout>
+    </LayoutGroup>
   );
 };
 

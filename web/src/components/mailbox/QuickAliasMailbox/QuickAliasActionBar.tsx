@@ -1,7 +1,7 @@
 import { FilledVariant, Icon, IconText, Icons, Size, Typography, TypographySize, colors } from 'nightwatch-ui';
 import pluralize from 'pluralize';
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { CallBackProps } from 'react-joyride';
+import type { EventData } from 'react-joyride';
 import { useDispatch } from 'react-redux';
 import { FilterSelect, SettingValue, TabPage, useCurrentUserEmailAliases } from 'skiff-front-utils';
 import styled, { css } from 'styled-components';
@@ -123,7 +123,7 @@ export const QuickAliasActionBar: React.FC = () => {
     dispatch(skemailMailboxReducer.actions.clearQuickAliasFilter());
   }, [dispatch]);
 
-  const joyrideCallback = (data: CallBackProps) => {
+  const joyrideCallback = (data: EventData) => {
     const { step, status } = data;
     const id = (step as IdentifiedJoyrideStep).id;
     if (status === 'running') {

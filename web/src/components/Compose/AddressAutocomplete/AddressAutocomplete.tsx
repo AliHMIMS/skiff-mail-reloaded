@@ -46,7 +46,7 @@ interface AddressAutocompleteProps {
   isFocused?: boolean;
   onChipDelete?: (index: number) => void;
   placeholder?: string;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
 const AddressContainer = styled.div`
@@ -222,7 +222,9 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
           e.stopPropagation();
           inputRef?.current?.focus();
         }}
-        ref={editingChipIndex === undefined ? drag : undefined}
+        ref={(node: HTMLDivElement | null) => {
+          if (editingChipIndex === undefined) drag(node);
+        }}
       >
         {addresses
           .filter((option) => !!option?.address)
