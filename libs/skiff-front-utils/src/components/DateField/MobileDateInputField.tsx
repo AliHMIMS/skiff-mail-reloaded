@@ -1,4 +1,4 @@
-import { PickerOnChangeFn } from '@mui/x-date-pickers/internals/hooks/useViews';
+import type { DateSelectHandler } from '../DatePicker/DatePicker.types';
 import { Dayjs } from 'dayjs';
 import { InputField, InputFieldSize, ThemeMode, Icon } from 'nightwatch-ui';
 import React, { Dispatch, SetStateAction, useRef } from 'react';
@@ -17,7 +17,7 @@ interface MobileDateInputFieldProps {
   inputFieldSize: InputFieldSize;
   // Date format selected by the user in local settings
   userSelectedDateFormat: ShortDateFormatValue | DateInputFormats;
-  onSelectDate: PickerOnChangeFn<Date> & PickerOnChangeFn<unknown>;
+  onSelectDate: DateSelectHandler;
   setIsDatePickerOpen: Dispatch<SetStateAction<boolean>>;
   date?: Dayjs;
   drawerTitle?: string;
@@ -79,7 +79,7 @@ const MobileDateInputField: React.FC<MobileDateInputFieldProps> = ({
         <DatePicker
           forceTheme={ThemeMode.DARK}
           minDate={minDate}
-          onSelectDate={(newDate: Date | unknown) => {
+          onSelectDate={(newDate) => {
             onSelectDate(newDate);
             hideDrawer();
           }}

@@ -1,11 +1,13 @@
-import { PickerOnChangeFn } from '@mui/x-date-pickers/internals/hooks/useViews';
 import { Dayjs } from 'dayjs';
 import { AccentColor, ThemeMode } from 'nightwatch-ui';
+
+/** Called with the picked date (null when cleared). */
+export type DateSelectHandler = (date: Date | null) => void;
 
 export type DatePickerEvent = { date: Dayjs; events: { color: AccentColor }[] };
 
 export interface DatePickerProps {
-  onSelectDate: PickerOnChangeFn<Date> & PickerOnChangeFn<unknown>;
+  onSelectDate: DateSelectHandler;
   bgColor?: string;
   className?: string;
   datePickerEvents?: DatePickerEvent[];

@@ -1,4 +1,4 @@
-import { PickersDay, PickersDayProps } from '@mui/x-date-pickers/PickersDay';
+import { PickerDay, PickerDayProps } from '@mui/x-date-pickers/PickerDay';
 import { Dayjs } from 'dayjs';
 import { getThemedColor, TEXT_COLOR_VALUES, ThemeMode, AccentColor } from 'nightwatch-ui';
 import React from 'react';
@@ -19,7 +19,7 @@ const DayContainer = styled.div`
   align-items: center;
 `;
 
-const CustomPickersDay = styled(PickersDay)<{
+const CustomPickersDay = styled(PickerDay)<{
   $highlightCurrentWeek: boolean;
   $isInCurrWeek: boolean;
   $isToday: boolean;
@@ -27,14 +27,14 @@ const CustomPickersDay = styled(PickersDay)<{
   $isWeekEndDate: boolean;
   $forceTheme?: ThemeMode;
 }>`
-  &.MuiPickersDay-root {
+  &.MuiPickerDay-root {
     color: ${({ $forceTheme }) => getThemedColor(TEXT_COLOR_VALUES.primary, $forceTheme)};
 
-    &.MuiPickersDay-today {
+    &.MuiPickerDay-today {
       border: none;
     }
 
-    &.MuiPickersDay-dayWithMargin {
+    &.MuiPickerDay-root {
       ${DAY_PICKER_LABEL_CSS}
       ${({ $highlightCurrentWeek, $isInCurrWeek }) => $highlightCurrentWeek && $isInCurrWeek && WEEK_DAY_CSS}
       ${DAY_TYPE_CSS}
@@ -62,7 +62,7 @@ const StyledEventDot = styled(EventDot)<{ $isFirstDot: boolean; $bgColor?: strin
   }
 `;
 
-const DatePickerDay: React.FC<(PickersDayProps<Dayjs> | any) & DatePickerDayProps> = ({
+const DatePickerDay: React.FC<(PickerDayProps | any) & DatePickerDayProps> = ({
   day,
   selectedDate,
   forceTheme,
@@ -74,7 +74,7 @@ const DatePickerDay: React.FC<(PickersDayProps<Dayjs> | any) & DatePickerDayProp
   datePickerEvents,
   bgColor,
   ...other
-}: (PickersDayProps<Dayjs> | any) & DatePickerDayProps) => {
+}: (PickerDayProps | any) & DatePickerDayProps) => {
   const dateValue = dayjs(day).utc(true);
 
   const isToday = isSameDate(currentDayWithTimeZone, dateValue);

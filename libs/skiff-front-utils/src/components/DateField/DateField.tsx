@@ -1,4 +1,4 @@
-import { PickerOnChangeFn } from '@mui/x-date-pickers/internals/hooks/useViews';
+import type { DateSelectHandler } from '../DatePicker/DatePicker.types';
 import { Dayjs } from 'dayjs';
 import { Icon, Size } from 'nightwatch-ui';
 import React, { useState } from 'react';
@@ -19,7 +19,7 @@ const DateFieldContainer = styled.div<{ $width?: number }>`
 `;
 
 interface DateFieldProps {
-  onSelectDate: PickerOnChangeFn<Date> & PickerOnChangeFn<unknown>;
+  onSelectDate: DateSelectHandler;
   date?: Dayjs;
   error?: boolean;
   // Whether or not it's a multi-day event

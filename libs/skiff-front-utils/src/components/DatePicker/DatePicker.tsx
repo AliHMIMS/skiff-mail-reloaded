@@ -1,6 +1,7 @@
 import { DateCalendar, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import locale from 'date-fns/locale/en-US';
+import type { PickerDayProps } from '@mui/x-date-pickers/PickerDay';
+import { enUS as locale } from 'date-fns/locale/en-US';
 import { Dayjs } from 'dayjs';
 import { getThemedColor, Icon, Icons, Size, TEXT_COLOR_VALUES, ThemeMode } from 'nightwatch-ui';
 import { TYPOGRAPHY_MEDIUM_CSS } from 'nightwatch-ui';
@@ -82,7 +83,7 @@ const StyledDateCalendar = styled(DateCalendar)<{
         grid-template-columns: repeat(7, 1fr);
       }
 
-      .MuiPickersDay-dayWithMargin {
+      .MuiPickerDay-root {
         background: none;
         transition: none;
       }
@@ -91,7 +92,7 @@ const StyledDateCalendar = styled(DateCalendar)<{
         color: ${(props) => getThemedColor(TEXT_COLOR_VALUES.disabled, props.$forceTheme)} !important;
       }
 
-      .MuiPickersDay-dayOutsideMonth {
+      .MuiPickerDay-dayOutsideMonth {
         color: ${(props) => getThemedColor(TEXT_COLOR_VALUES.tertiary, props.$forceTheme)};
       }
     }
@@ -177,7 +178,8 @@ const DatePicker: React.FC<DatePickerProps> = ({
         reduceAnimations
         showDaysOutsideCurrentMonth
         slotProps={{
-          day: datePickerDayProps,
+          // the custom day slot (DatePickerDay) takes these on top of the picker's own props
+          day: datePickerDayProps as Partial<PickerDayProps>,
           leftArrowIcon: leftArrowIconProps,
           rightArrowIcon: rightArrowIconProps
         }}

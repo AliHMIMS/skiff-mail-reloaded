@@ -1,5 +1,5 @@
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { CalendarPicker, CalendarPickerProps } from '@mui/x-date-pickers/CalendarPicker';
+import { DateCalendar, DateCalendarProps } from '@mui/x-date-pickers/DateCalendar';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import customParserFormat from 'dayjs/plugin/customParseFormat';
@@ -40,7 +40,7 @@ import { useLocalHourFormat } from '../../hooks/useDate';
 dayjs.extend(customParserFormat);
 
 const MobileCalenderStyles = css`
-  &.MuiCalendarPicker-root {
+  &.MuiDateCalendar-root {
     width: 100%;
 
     .MuiTypography-root {
@@ -57,7 +57,7 @@ const MobileCalenderStyles = css`
   }
 `;
 
-const StyledCalenderPicker = styled(CalendarPicker)<CalendarPickerProps<Date>>`
+const StyledCalenderPicker = styled(DateCalendar)<DateCalendarProps>`
   svg:not(:root) {
     width: 1em;
     height: 1em;
@@ -328,13 +328,11 @@ export const useScheduleSendPopupAndDrawer = ({
               {activePicker === ActivePicker.DATE && (
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                   <StyledCalenderPicker
-                    date={dateAndTime?.toDate() || null}
                     disablePast
-                    onChange={(newDate) => {
-                      if (typeof newDate === 'string') {
-                        updateDate(newDate);
-                      }
+                    onChange={(newDate: Date | null) => {
+                      if (newDate) updateDate(dayjs(newDate).toString());
                     }}
+                    value={dateAndTime?.toDate() || null}
                     views={['day', 'month']}
                   />
                 </LocalizationProvider>

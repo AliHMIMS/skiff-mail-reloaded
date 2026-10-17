@@ -8,7 +8,6 @@ export interface DatePickerDayProps {
   weekStartDate: Dayjs;
   weekEndDate: Dayjs;
   shouldDisplayEvents: boolean;
-  day?: Dayjs;
   selectedDate?: Dayjs;
   forceTheme?: ThemeMode;
   highlightCurrentWeek?: boolean;

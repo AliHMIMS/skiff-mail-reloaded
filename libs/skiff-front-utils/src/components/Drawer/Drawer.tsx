@@ -196,9 +196,7 @@ const Drawer: React.FC<DrawerProps> = ({
           $keyboardHeight={keyboardHeight > MIN_REGISTERED_KEYBOARD_HEIGHT ? keyboardHeight : 0}
           $maxHeight={maxHeight}
           $verticalScroll={verticalScroll}
-          PaperProps={{
-            id: paperId
-          }}
+          slotProps={{ paper: { id: paperId } }}
           anchor={ANCHOR}
           className={DRAWER_CLASSNAME}
           onClose={hideDrawer}
@@ -213,9 +211,7 @@ const Drawer: React.FC<DrawerProps> = ({
           $forceTheme={forceTheme}
           $maxHeight={maxHeight}
           $verticalScroll={verticalScroll}
-          PaperProps={{
-            id: paperId
-          }}
+          slotProps={{ paper: { id: paperId } }}
           anchor={ANCHOR}
           className={DRAWER_CLASSNAME}
           disableDiscovery

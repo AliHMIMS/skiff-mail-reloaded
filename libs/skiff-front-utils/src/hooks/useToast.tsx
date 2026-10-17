@@ -38,7 +38,8 @@ const useToast = () => {
       // extract props for notistack configs
       const { duration = TOAST_DEFAULT_DURATION, actions, persist, onClose } = customToastProps;
       const defaultDuration = !!actions ? duration + 500 * actions.length : duration;
-      toastKey.current = enqueueSnackbar(null, {
+      // notistack 3 rejects a null message: pass everything as the options object
+      toastKey.current = enqueueSnackbar({
         // this is safe since our interface enumerates all members of props
         /* eslint-disable-next-line react/jsx-props-no-spreading */
         content: (key: SnackbarKey) => (

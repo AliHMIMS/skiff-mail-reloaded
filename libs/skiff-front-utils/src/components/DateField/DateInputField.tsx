@@ -1,4 +1,4 @@
-import { PickerOnChangeFn } from '@mui/x-date-pickers/internals/hooks/useViews';
+import type { DateSelectHandler } from '../DatePicker/DatePicker.types';
 import dayjs, { Dayjs } from 'dayjs';
 import { Dropdown, Icon, InputField, InputFieldSize, ThemeMode, useOnClickOutside } from 'nightwatch-ui';
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
@@ -18,7 +18,7 @@ interface DateInputFieldProps {
   inputFieldSize: InputFieldSize;
   // Date format selected by the user in local settings
   userSelectedDateFormat: ShortDateFormatValue | DateInputFormats;
-  onSelectDate: PickerOnChangeFn<Date> & PickerOnChangeFn<unknown>;
+  onSelectDate: DateSelectHandler;
   setIsDatePickerOpen: Dispatch<SetStateAction<boolean>>;
   date?: Dayjs;
   error?: boolean;
@@ -173,7 +173,7 @@ const DateInputField: React.FC<DateInputFieldProps> = ({
         <DatePicker
           forceTheme={ThemeMode.DARK}
           minDate={minDate}
-          onSelectDate={(newDate: Date | unknown) => {
+          onSelectDate={(newDate) => {
             onSelectDate(newDate);
             setIsDatePickerOpen(false);
             resetValues();
