@@ -95,7 +95,7 @@ mod tests {
     // Generated with secure-remote-password 0.3.1 (client + server) from the repo's yarn cache.
     const SALT: &str = "a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1";
     const X: &str = "f6935294ad2c603f967249fd330aa80817f3278a3363aca3bf42b4791475c800";
-    
+
     fn vectors() -> serde_json::Value {
         serde_json::from_str(include_str!("../tests/srp_vectors.json")).unwrap()
     }
@@ -124,8 +124,15 @@ mod tests {
         .unwrap();
         assert_eq!(proof, v["serverProof"].as_str().unwrap());
         assert!(
-            verify_session(b, v["A"].as_str().unwrap(), SALT, "other", v["v"].as_str().unwrap(), v["M"].as_str().unwrap())
-                .is_err()
+            verify_session(
+                b,
+                v["A"].as_str().unwrap(),
+                SALT,
+                "other",
+                v["v"].as_str().unwrap(),
+                v["M"].as_str().unwrap()
+            )
+            .is_err()
         );
     }
 }

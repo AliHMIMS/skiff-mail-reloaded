@@ -103,11 +103,9 @@ impl Checkpoint {
         let Some(v) = store.kv_get("sync_all_checkpoint")? else { return Ok(None) };
         let parts: Vec<&str> = v.split(':').collect();
         Ok(match parts.as_slice() {
-            [validity, last_uid, modseq] => Some(Self {
-                validity: validity.parse()?,
-                last_uid: last_uid.parse()?,
-                modseq: modseq.parse().ok(),
-            }),
+            [validity, last_uid, modseq] => {
+                Some(Self { validity: validity.parse()?, last_uid: last_uid.parse()?, modseq: modseq.parse().ok() })
+            }
             _ => None,
         })
     }
@@ -161,7 +159,12 @@ fn tls_connector() -> Result<TlsConnector> {
 }
 
 impl Gmail {
-    pub fn new(address: String, app_password: Option<String>, sync_days: i64, oauth: Option<(Arc<Google>, Arc<Store>)>) -> Self {
+    pub fn new(
+        address: String,
+        app_password: Option<String>,
+        sync_days: i64,
+        oauth: Option<(Arc<Google>, Arc<Store>)>,
+    ) -> Self {
         Self {
             address,
             app_password: app_password.map(|p| p.replace(' ', "")),
@@ -184,7 +187,10 @@ impl Gmail {
                 .await
                 .map_err(|(e, _)| anyhow!("Gmail IMAP OAuth login failed: {e}"))?,
             None => {
-                let password = self.app_password.as_deref().ok_or_else(|| anyhow!("no Gmail credentials (connect Google or set GMAIL_APP_PASSWORD)"))?;
+                let password = self
+                    .app_password
+                    .as_deref()
+                    .ok_or_else(|| anyhow!("no Gmail credentials (connect Google or set GMAIL_APP_PASSWORD)"))?;
                 client
                     .login(&self.address, password)
                     .await
@@ -194,7 +200,8 @@ impl Gmail {
 
         // Locate special-use folders; their names are localised.
         let names: Vec<_> = session.list(Some(""), Some("*")).await?.try_collect().await?;
-        let mut folders = Folders { all: "[Gmail]/All Mail".into(), trash: "[Gmail]/Trash".into(), spam: "[Gmail]/Spam".into() };
+        let mut folders =
+            Folders { all: "[Gmail]/All Mail".into(), trash: "[Gmail]/Trash".into(), spam: "[Gmail]/Spam".into() };
         for n in &names {
             for attr in n.attributes() {
                 let a = format!("{attr:?}");
@@ -293,30 +300,31 @@ impl Gmail {
 
         // 1. metadata for every message in the window, per folder
         let (listing, checkpoint) = imap!(self, |s, folders| {
-                let mut out: Vec<(String, u32, GmailMeta)> = Vec::new();
-                let mut checkpoint = None;
-                for kind in [FOLDER_ALL, FOLDER_TRASH, FOLDER_SPAM] {
-                    if kind == FOLDER_ALL {
-                        checkpoint = Some(Checkpoint::of(&s.select_condstore(folders.name(kind)).await?));
-                    } else {
-                        s.select(folders.name(kind)).await?;
-                    }
-                    let mut uids: Vec<u32> = s.uid_search(format!("SINCE {since}")).await?.into_iter().collect();
-                    uids.sort_unstable();
-                    for chunk in uids.chunks(500) {
-                        let fetches: Vec<Fetch> = s
-                            .uid_fetch(uid_set(chunk), "(UID X-GM-MSGID X-GM-THRID X-GM-LABELS FLAGS INTERNALDATE)")
-                            .await?
-                            .try_collect()
-                            .await?;
-                        out.extend(fetches.iter().filter_map(|f| Some((kind.to_string(), f.uid?, meta_of(f, kind)?))));
-                    }
+            let mut out: Vec<(String, u32, GmailMeta)> = Vec::new();
+            let mut checkpoint = None;
+            for kind in [FOLDER_ALL, FOLDER_TRASH, FOLDER_SPAM] {
+                if kind == FOLDER_ALL {
+                    checkpoint = Some(Checkpoint::of(&s.select_condstore(folders.name(kind)).await?));
+                } else {
+                    s.select(folders.name(kind)).await?;
                 }
-                Ok((out, checkpoint))
-            })?;
+                let mut uids: Vec<u32> = s.uid_search(format!("SINCE {since}")).await?.into_iter().collect();
+                uids.sort_unstable();
+                for chunk in uids.chunks(500) {
+                    let fetches: Vec<Fetch> = s
+                        .uid_fetch(uid_set(chunk), "(UID X-GM-MSGID X-GM-THRID X-GM-LABELS FLAGS INTERNALDATE)")
+                        .await?
+                        .try_collect()
+                        .await?;
+                    out.extend(fetches.iter().filter_map(|f| Some((kind.to_string(), f.uid?, meta_of(f, kind)?))));
+                }
+            }
+            Ok((out, checkpoint))
+        })?;
 
         // 2. reconcile state of known messages, collect new ones (Gmail drafts are not mail yet)
-        let listing: Vec<_> = listing.into_iter().filter(|(_, _, m)| !m.labels.iter().any(|l| l == "\\Draft")).collect();
+        let listing: Vec<_> =
+            listing.into_iter().filter(|(_, _, m)| !m.labels.iter().any(|l| l == "\\Draft")).collect();
         let mut keep = HashSet::new();
         let mut missing: HashMap<String, Vec<(u32, GmailMeta)>> = HashMap::new();
         for (kind, uid, meta) in listing {
@@ -362,7 +370,8 @@ impl Gmail {
                 return Ok(None);
             }
             const META: &str = "UID X-GM-MSGID X-GM-THRID X-GM-LABELS FLAGS INTERNALDATE";
-            let new: Vec<Fetch> = s.uid_fetch(format!("{}:*", previous.last_uid + 1), format!("({META})")).await?.try_collect().await?;
+            let new: Vec<Fetch> =
+                s.uid_fetch(format!("{}:*", previous.last_uid + 1), format!("({META})")).await?.try_collect().await?;
             let changed: Vec<Fetch> = match previous.modseq {
                 Some(ms) => s.uid_fetch("1:*", format!("({META}) (CHANGEDSINCE {ms})")).await?.try_collect().await?,
                 None => Vec::new(),
@@ -399,7 +408,13 @@ impl Gmail {
     }
 
     /// Download, encrypt and store new messages of one folder, newest first.
-    async fn import_new(&self, store: &Store, to: &Recipient<'_>, kind: &str, mut items: Vec<(u32, GmailMeta)>) -> Result<usize> {
+    async fn import_new(
+        &self,
+        store: &Store,
+        to: &Recipient<'_>,
+        kind: &str,
+        mut items: Vec<(u32, GmailMeta)>,
+    ) -> Result<usize> {
         let mut imported = 0;
         items.sort_by_key(|(_, m)| std::cmp::Reverse(m.internal_date_ms));
         for chunk in items.chunks(25) {
@@ -425,7 +440,8 @@ impl Gmail {
 
     fn ensure_labels(&self, store: &Store, new: &HashMap<String, Vec<(u32, GmailMeta)>>) -> Result<()> {
         let known: HashSet<String> = store.labels()?.into_iter().map(|l| l.gmail_name).collect();
-        let names: HashSet<&String> = new.values().flatten().flat_map(|(_, m)| &m.labels).filter(|l| !l.starts_with('\\')).collect();
+        let names: HashSet<&String> =
+            new.values().flatten().flat_map(|(_, m)| &m.labels).filter(|l| !l.starts_with('\\')).collect();
         for name in names.into_iter().filter(|n| !known.contains(*n)) {
             store.upsert_label(&Label {
                 label_id: label_id_for(name),
@@ -531,7 +547,10 @@ impl Gmail {
         // port 587 + STARTTLS: many hosts (including this one) block outbound 465/25
         let (secret, mechanism) = match self.oauth_token().await {
             Some(token) => (token, Mechanism::Xoauth2),
-            None => (self.app_password.clone().ok_or_else(|| anyhow!("no Gmail credentials for sending"))?, Mechanism::Plain),
+            None => (
+                self.app_password.clone().ok_or_else(|| anyhow!("no Gmail credentials for sending"))?,
+                Mechanism::Plain,
+            ),
         };
         let transport = AsyncSmtpTransport::<Tokio1Executor>::starttls_relay("smtp.gmail.com")?
             .credentials(Credentials::new(self.address.clone(), secret))

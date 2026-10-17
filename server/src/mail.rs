@@ -186,16 +186,31 @@ mod tests {
 Message-ID: <abc@example.com>\r\nMIME-Version: 1.0\r\nContent-Type: multipart/mixed; boundary=b\r\n\r\n\
 --b\r\nContent-Type: text/plain\r\n\r\nHello <world> & co\r\n--b\r\nContent-Type: application/pdf\r\n\
 Content-Disposition: attachment; filename=\"x.pdf\"\r\nContent-Transfer-Encoding: base64\r\n\r\nJVBERi0=\r\n--b--\r\n";
-        let meta = GmailMeta { msgid: 255, thrid: 4096, labels: vec!["\\Inbox".into()], seen: false, folder: "all".into(), internal_date_ms: 1 };
+        let meta = GmailMeta {
+            msgid: 255,
+            thrid: 4096,
+            labels: vec!["\\Inbox".into()],
+            seen: false,
+            folder: "all".into(),
+            internal_date_ms: 1,
+        };
         let to = Recipient { user_public_key: &user_pk, server_secret_key: &server_sk };
         let e = import(raw, &meta, &to).unwrap();
         assert_eq!(e.id, "gmff");
         assert_eq!(e.thread_id, "1000");
         assert_eq!(e.from["address"], "alice@example.com");
         // the user decrypts with their secret key and the server public key (encryptedBy)
-        let key = String::from_utf8(crypto::box_decrypt(&e.encrypted_session_key, &server_pk, &user_sk).unwrap()).unwrap();
-        assert_eq!(crypto::decrypt_string_field(datagram::MAIL_SUBJECT, &e.encrypted_subject, &key).unwrap(), "Hi there");
-        assert!(crypto::decrypt_string_field(datagram::MAIL_TEXT_AS_HTML, &e.encrypted_text_as_html, &key).unwrap().contains("&lt;world&gt;"));
+        let key =
+            String::from_utf8(crypto::box_decrypt(&e.encrypted_session_key, &server_pk, &user_sk).unwrap()).unwrap();
+        assert_eq!(
+            crypto::decrypt_string_field(datagram::MAIL_SUBJECT, &e.encrypted_subject, &key).unwrap(),
+            "Hi there"
+        );
+        assert!(
+            crypto::decrypt_string_field(datagram::MAIL_TEXT_AS_HTML, &e.encrypted_text_as_html, &key)
+                .unwrap()
+                .contains("&lt;world&gt;")
+        );
         assert_eq!(e.attachments.len(), 1);
         let meta = AttachmentMetadata::decrypt(&e.attachments[0].encrypted_metadata, &key).unwrap();
         assert_eq!((meta.filename.as_str(), meta.size), ("x.pdf", 5));
@@ -208,8 +223,10 @@ Content-Disposition: attachment; filename=\"x.pdf\"\r\nContent-Transfer-Encoding
         let (_, server_sk) = crypto::generate_keypair();
         let mid = own_message_id("5f0c", "me@gmail.com");
         let raw = format!("From: me@gmail.com\r\nMessage-ID: {mid}\r\nSubject: s\r\n\r\nbody\r\n");
-        let meta = GmailMeta { msgid: 1, thrid: 1, labels: vec![], seen: true, folder: "all".into(), internal_date_ms: 1 };
-        let e = import(raw.as_bytes(), &meta, &Recipient { user_public_key: &user_pk, server_secret_key: &server_sk }).unwrap();
+        let meta =
+            GmailMeta { msgid: 1, thrid: 1, labels: vec![], seen: true, folder: "all".into(), internal_date_ms: 1 };
+        let e = import(raw.as_bytes(), &meta, &Recipient { user_public_key: &user_pk, server_secret_key: &server_sk })
+            .unwrap();
         assert_eq!(e.id, "5f0c");
     }
 }

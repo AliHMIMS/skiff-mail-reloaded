@@ -31,7 +31,8 @@ pub fn to_gmail_query(node: &Json, session_key: Option<&str>) -> Result<String> 
         let data = node["serializedData"].as_str().unwrap_or_default();
         Ok(match kind {
             "SUBJECT" | "BODY" => {
-                let key = session_key.context("this filter's text can't be read by the server; edit and save it again")?;
+                let key =
+                    session_key.context("this filter's text can't be read by the server; edit and save it again")?;
                 let datagram = if kind == "SUBJECT" { SUBJECT_DATAGRAM } else { BODY_DATAGRAM };
                 crypto::decrypt_string_field(datagram, data, key)?
             }
@@ -57,14 +58,20 @@ pub fn to_gmail_query(node: &Json, session_key: Option<&str>) -> Result<String> 
 }
 
 /// Skiff filter actions -> Gmail label changes. `gmail_label_ids` maps Gmail label names to ids.
-pub fn to_gmail_action(actions: &[Json], labels: &[Label], gmail_label_ids: &HashMap<String, String>) -> Result<FilterAction> {
+pub fn to_gmail_action(
+    actions: &[Json],
+    labels: &[Label],
+    gmail_label_ids: &HashMap<String, String>,
+) -> Result<FilterAction> {
     let mut out = FilterAction::default();
     for a in actions {
         let data = a["serializedData"].as_str().unwrap_or_default();
         match a["actionType"].as_str().unwrap_or_default() {
             "APPLY_LABEL" => {
                 let label = labels.iter().find(|l| l.label_id == data).ok_or_else(|| anyhow!("unknown label"))?;
-                let id = gmail_label_ids.get(&label.gmail_name).ok_or_else(|| anyhow!("label {} not found in Gmail", label.name))?;
+                let id = gmail_label_ids
+                    .get(&label.gmail_name)
+                    .ok_or_else(|| anyhow!("label {} not found in Gmail", label.name))?;
                 out.add_label_ids.push(id.clone());
             }
             "APPLY_SYSTEM_LABEL" => match data {
@@ -120,10 +127,13 @@ pub fn from_gmail_filter(
         conditions.push(json!({ "filterType": "RECIPIENT", "filterField": "CONTAINS", "serializedData": v }));
     }
     if let Some(v) = &c.subject {
-        conditions.push(json!({ "filterType": "SUBJECT", "filterField": "CONTAINS", "serializedData": enc(SUBJECT_DATAGRAM, v)? }));
+        conditions.push(
+            json!({ "filterType": "SUBJECT", "filterField": "CONTAINS", "serializedData": enc(SUBJECT_DATAGRAM, v)? }),
+        );
     }
     if let Some(v) = &c.query {
-        conditions.push(json!({ "filterType": "BODY", "filterField": "CONTAINS", "serializedData": enc(BODY_DATAGRAM, v)? }));
+        conditions
+            .push(json!({ "filterType": "BODY", "filterField": "CONTAINS", "serializedData": enc(BODY_DATAGRAM, v)? }));
     }
     if let Some(v) = &c.negated_query {
         conditions.push(json!({ "filterType": "NOT", "subFilter": [{ "filterType": "BODY", "serializedData": enc(BODY_DATAGRAM, v)? }] }));

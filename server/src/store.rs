@@ -184,7 +184,11 @@ impl Store {
         conn.pragma_update(None, "journal_mode", "WAL")?;
         conn.pragma_update(None, "synchronous", "NORMAL")?;
         conn.execute_batch(SCHEMA)?;
-        Ok(Self { conn: Mutex::new(conn), events: tokio::sync::broadcast::channel(4096).0, generation: Default::default() })
+        Ok(Self {
+            conn: Mutex::new(conn),
+            events: tokio::sync::broadcast::channel(4096).0,
+            generation: Default::default(),
+        })
     }
 
     pub fn subscribe(&self) -> tokio::sync::broadcast::Receiver<Change> {
@@ -299,7 +303,11 @@ impl Store {
     // -- emails ---------------------------------------------------------------
 
     pub fn has_email(&self, gm_msgid: &str) -> Result<bool> {
-        Ok(self.db().query_row("SELECT 1 FROM emails WHERE gm_msgid = ?1", [gm_msgid], |_| Ok(())).optional()?.is_some())
+        Ok(self
+            .db()
+            .query_row("SELECT 1 FROM emails WHERE gm_msgid = ?1", [gm_msgid], |_| Ok(()))
+            .optional()?
+            .is_some())
     }
 
     pub fn insert_email(&self, e: &EmailRow) -> Result<()> {
@@ -373,8 +381,10 @@ impl Store {
     }
 
     pub fn delete_email(&self, gm_msgid: &str) -> Result<()> {
-        let thread: Option<String> =
-            self.db().query_row("DELETE FROM emails WHERE gm_msgid = ?1 RETURNING thread_id", [gm_msgid], |r| r.get(0)).optional()?;
+        let thread: Option<String> = self
+            .db()
+            .query_row("DELETE FROM emails WHERE gm_msgid = ?1 RETURNING thread_id", [gm_msgid], |r| r.get(0))
+            .optional()?;
         if let Some(t) = thread {
             self.emit(Change::Thread(t));
         }
@@ -398,7 +408,11 @@ impl Store {
     }
 
     pub fn all_emails(&self) -> Result<Vec<EmailRow>> {
-        Ok(self.db().prepare("SELECT * FROM emails")?.query_map([], email_from_row)?.collect::<rusqlite::Result<_>>()?)
+        Ok(self
+            .db()
+            .prepare("SELECT * FROM emails")?
+            .query_map([], email_from_row)?
+            .collect::<rusqlite::Result<_>>()?)
     }
 
     pub fn thread_emails(&self, thread_id: &str) -> Result<Vec<EmailRow>> {
@@ -449,7 +463,13 @@ impl Store {
             .db()
             .prepare("SELECT label_id, name, color, variant, gmail_name FROM labels ORDER BY name")?
             .query_map([], |r| {
-                Ok(Label { label_id: r.get(0)?, name: r.get(1)?, color: r.get(2)?, variant: r.get(3)?, gmail_name: r.get(4)? })
+                Ok(Label {
+                    label_id: r.get(0)?,
+                    name: r.get(1)?,
+                    color: r.get(2)?,
+                    variant: r.get(3)?,
+                    gmail_name: r.get(4)?,
+                })
             })?
             .collect::<rusqlite::Result<_>>()?)
     }

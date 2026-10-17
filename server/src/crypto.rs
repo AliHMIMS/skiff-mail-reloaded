@@ -104,9 +104,7 @@ pub fn box_decrypt(data_b64: &str, their_pk_b64: &str, my_sk_b64: &str) -> Resul
     }
     let (nonce, sealed) = data.split_at(24);
     let nonce: [u8; 24] = nonce.try_into()?;
-    salsa_box(their_pk_b64, my_sk_b64)?
-        .decrypt(&nonce.into(), sealed)
-        .map_err(|_| anyhow!("box decrypt failed"))
+    salsa_box(their_pk_b64, my_sk_b64)?.decrypt(&nonce.into(), sealed).map_err(|_| anyhow!("box decrypt failed"))
 }
 
 pub fn public_key_of(sk_b64: &str) -> Result<String> {

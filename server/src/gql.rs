@@ -9,8 +9,7 @@ use std::{collections::HashMap, future::Future, io::Read, pin::Pin, sync::Arc};
 
 use anyhow::{Context as _, Result};
 use async_graphql::{
-    ErrorExtensions as _,
-    Name, Value,
+    ErrorExtensions as _, Name, Value,
     dynamic::{
         Enum, EnumItem, Field, FieldFuture, FieldValue, InputObject, InputValue, Interface, InterfaceField, Object,
         ResolverContext, Scalar, Schema, SchemaBuilder, TypeRef, Union,
@@ -120,9 +119,9 @@ impl Catalog {
                     (_, "Date") => FieldValue::value(0),
                     (_, "PublicKey" | "PublicKeyWithSignature") => FieldValue::value(json_to_gql(&json!({"key": ""}))),
                     (_, "JSON") => FieldValue::value(json_to_gql(&json!({}))),
-                    (Some(Kind::Enum), _) => {
-                        FieldValue::value(Value::Enum(Name::new(self.first_enum_value.get(name).cloned().unwrap_or_default())))
-                    }
+                    (Some(Kind::Enum), _) => FieldValue::value(Value::Enum(Name::new(
+                        self.first_enum_value.get(name).cloned().unwrap_or_default(),
+                    ))),
                     (Some(Kind::Object), _) => FieldValue::owned_any(Json::Object(Map::new())),
                     (Some(Kind::Abstract), _) => FieldValue::owned_any(Json::Object(Map::new()))
                         .with_type(self.first_possible_type.get(name).cloned().unwrap_or_default()),
@@ -273,19 +272,25 @@ pub fn build<S: Send + Sync + 'static>(sdl: &str, handlers: Handlers<S>, state: 
         builder = match def.kind {
             TypeKind::Scalar => builder.register(Scalar::new(type_name)),
             TypeKind::Enum(e) => builder.register(
-                e.values.iter().fold(Enum::new(type_name), |en, v| en.item(EnumItem::new(v.node.value.node.to_string()))),
+                e.values
+                    .iter()
+                    .fold(Enum::new(type_name), |en, v| en.item(EnumItem::new(v.node.value.node.to_string()))),
             ),
-            TypeKind::InputObject(io) => builder.register(io.fields.iter().fold(InputObject::new(type_name), |obj, f| {
-                obj.field(InputValue::new(f.node.name.node.to_string(), type_ref(&f.node.ty.node)))
-            })),
-            TypeKind::Union(u) => {
-                builder.register(u.members.iter().fold(Union::new(type_name), |un, m| un.possible_type(m.node.to_string())))
+            TypeKind::InputObject(io) => {
+                builder.register(io.fields.iter().fold(InputObject::new(type_name), |obj, f| {
+                    obj.field(InputValue::new(f.node.name.node.to_string(), type_ref(&f.node.ty.node)))
+                }))
             }
+            TypeKind::Union(u) => builder
+                .register(u.members.iter().fold(Union::new(type_name), |un, m| un.possible_type(m.node.to_string()))),
             TypeKind::Interface(i) => builder.register(i.fields.iter().fold(Interface::new(type_name), |iface, f| {
-                let field = f.node.arguments.iter().fold(
-                    InterfaceField::new(f.node.name.node.to_string(), type_ref(&f.node.ty.node)),
-                    |fd, a| fd.argument(InputValue::new(a.node.name.node.to_string(), type_ref(&a.node.ty.node))),
-                );
+                let field = f
+                    .node
+                    .arguments
+                    .iter()
+                    .fold(InterfaceField::new(f.node.name.node.to_string(), type_ref(&f.node.ty.node)), |fd, a| {
+                        fd.argument(InputValue::new(a.node.name.node.to_string(), type_ref(&a.node.ty.node)))
+                    });
                 iface.field(field)
             })),
             TypeKind::Object(o) => {
@@ -319,7 +324,8 @@ pub fn build<S: Send + Sync + 'static>(sdl: &str, handlers: Handlers<S>, state: 
                         })
                     });
                     for a in f.node.arguments {
-                        field = field.argument(InputValue::new(a.node.name.node.to_string(), type_ref(&a.node.ty.node)));
+                        field =
+                            field.argument(InputValue::new(a.node.name.node.to_string(), type_ref(&a.node.ty.node)));
                     }
                     obj = obj.field(field);
                 }

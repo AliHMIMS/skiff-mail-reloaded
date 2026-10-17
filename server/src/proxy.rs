@@ -32,7 +32,11 @@ fn is_public(ip: IpAddr) -> bool {
                 return is_public(IpAddr::V4(v4));
             }
             let seg0 = v6.segments()[0];
-            !(v6.is_loopback() || v6.is_unspecified() || v6.is_multicast() || (seg0 & 0xfe00) == 0xfc00 || (seg0 & 0xffc0) == 0xfe80)
+            !(v6.is_loopback()
+                || v6.is_unspecified()
+                || v6.is_multicast()
+                || (seg0 & 0xfe00) == 0xfc00
+                || (seg0 & 0xffc0) == 0xfe80)
         }
     }
 }
@@ -107,7 +111,18 @@ mod tests {
 
     #[test]
     fn classifies_addresses() {
-        for private in ["127.0.0.1", "10.1.2.3", "192.168.0.1", "172.16.5.4", "100.64.0.1", "169.254.1.1", "::1", "fd00::1", "fe80::1", "::ffff:127.0.0.1"] {
+        for private in [
+            "127.0.0.1",
+            "10.1.2.3",
+            "192.168.0.1",
+            "172.16.5.4",
+            "100.64.0.1",
+            "169.254.1.1",
+            "::1",
+            "fd00::1",
+            "fe80::1",
+            "::ffff:127.0.0.1",
+        ] {
             assert!(!is_public(private.parse().unwrap()), "{private}");
         }
         for public in ["8.8.8.8", "142.250.1.1", "2a00:1450::1"] {

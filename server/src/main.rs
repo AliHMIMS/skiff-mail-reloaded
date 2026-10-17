@@ -144,8 +144,10 @@ async fn graphql(State(http): State<Http>, headers: HeaderMap, req: GraphQLBatch
 /// Plain-text download responses. Never 403: the client treats 403 as a Cloudflare challenge.
 fn text_response(result: Result<String>) -> Response {
     match result {
-        Ok(body) => ([(header::CONTENT_TYPE, "text/plain; charset=utf-8"), (header::CACHE_CONTROL, "private, no-store")], body)
-            .into_response(),
+        Ok(body) => {
+            ([(header::CONTENT_TYPE, "text/plain; charset=utf-8"), (header::CACHE_CONTROL, "private, no-store")], body)
+                .into_response()
+        }
         Err(e) => {
             let status = match e.downcast_ref::<CodedError>().map(|c| c.code) {
                 Some("NOT_AUTHORIZED") => StatusCode::UNAUTHORIZED,
@@ -222,7 +224,8 @@ async fn oauth_callback(
     let (Some(google), Some(gm)) = (&app.google, &app.gmail) else {
         return oauth_page(StatusCode::BAD_REQUEST, "Google OAuth isn't configured on the server.");
     };
-    let (state, code) = (params.get("state").cloned().unwrap_or_default(), params.get("code").cloned().unwrap_or_default());
+    let (state, code) =
+        (params.get("state").cloned().unwrap_or_default(), params.get("code").cloned().unwrap_or_default());
     match google.complete(&app.store, &user.user_id, &state, &code, &gm.address).await {
         Ok(()) => {
             gm.reconnect().await; // switch IMAP to OAuth
@@ -254,7 +257,10 @@ async fn events_ws(State(http): State<Http>, headers: HeaderMap, ws: axum::extra
 
 /// Pub/Sub push endpoint: Gmail reports a mailbox change; run a quick sync right away.
 /// Always answers quickly (Pub/Sub retries anything that isn't a 2xx).
-async fn gmail_push(State(http): State<Http>, Query(params): Query<std::collections::HashMap<String, String>>) -> StatusCode {
+async fn gmail_push(
+    State(http): State<Http>,
+    Query(params): Query<std::collections::HashMap<String, String>>,
+) -> StatusCode {
     let given = params.get("token").map(String::as_bytes).unwrap_or_default();
     let expected = http.push_token.as_deref().map(str::as_bytes).unwrap_or_default();
     // constant-time comparison so the token can't be guessed byte by byte
@@ -275,7 +281,8 @@ async fn watch_loop(app: Arc<App>, topic: String) {
         let wait = match &app.google {
             Some(google) if google::Google::is_connected(&app.store) => match google.watch(&app.store, &topic).await {
                 Ok(expiry) => {
-                    let expires = chrono::DateTime::from_timestamp_millis(expiry).map(|d| d.to_rfc3339()).unwrap_or_default();
+                    let expires =
+                        chrono::DateTime::from_timestamp_millis(expiry).map(|d| d.to_rfc3339()).unwrap_or_default();
                     tracing::info!("Gmail push notifications active (watch renewed, expires {expires})");
                     Duration::from_secs(24 * 3600)
                 }
@@ -377,7 +384,8 @@ async fn serve(config: Config) -> Result<()> {
             images: Arc::new(proxy::ImageProxy::new()?),
             push_token: config.push_token.as_deref().map(Arc::from),
         });
-    let listener = tokio::net::TcpListener::bind(&config.listen).await.with_context(|| format!("binding {}", config.listen))?;
+    let listener =
+        tokio::net::TcpListener::bind(&config.listen).await.with_context(|| format!("binding {}", config.listen))?;
     tracing::info!("listening on {} (public URL {})", config.listen, config.public_url);
     axum::serve(listener, router).await?;
     Ok(())
@@ -414,7 +422,10 @@ fn create_user(config: &Config, username: &str) -> Result<()> {
         public_key: acct.public_key,
         public_key_signature: acct.public_key_signature,
         signing_public_key: acct.signing_public_key,
-        root_org_id: existing.as_ref().map(|u| u.root_org_id.clone()).unwrap_or_else(|| uuid::Uuid::new_v4().to_string()),
+        root_org_id: existing
+            .as_ref()
+            .map(|u| u.root_org_id.clone())
+            .unwrap_or_else(|| uuid::Uuid::new_v4().to_string()),
         display_name: String::new(),
     })?;
     if existing.is_some() {
@@ -473,7 +484,9 @@ async fn main() -> Result<()> {
             println!("imported {} into thread {}", row.id, row.thread_id);
             Ok(())
         }
-        Some(other) => bail!("unknown command {other}; use serve | create-user <email> | check-gmail | import-eml <file>"),
+        Some(other) => {
+            bail!("unknown command {other}; use serve | create-user <email> | check-gmail | import-eml <file>")
+        }
     }
 }
 
@@ -504,9 +517,8 @@ mod tests {
         let mut handlers = crate::gql::Handlers::<()>::default();
         handlers.on("Query.usersFromEmailAliasWithCatchall", |_| async { Ok(serde_json::json!([null])) });
         let schema = crate::gql::build(include_str!("../schema.graphql"), handlers, Arc::new(())).unwrap();
-        let res = schema
-            .execute("{ usersFromEmailAliasWithCatchall(emailAliases: [\"a@b.c\"]) { userID publicKey } }")
-            .await;
+        let res =
+            schema.execute("{ usersFromEmailAliasWithCatchall(emailAliases: [\"a@b.c\"]) { userID publicKey } }").await;
         assert!(res.errors.is_empty(), "{:?}", res.errors);
         assert_eq!(res.data.into_json().unwrap()["usersFromEmailAliasWithCatchall"], serde_json::json!([null]));
     }

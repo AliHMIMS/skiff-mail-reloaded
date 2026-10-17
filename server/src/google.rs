@@ -134,7 +134,14 @@ impl Google {
     }
 
     /// Finish the consent flow: exchange the code, check the Google account matches, keep the refresh token.
-    pub async fn complete(&self, store: &Store, user_id: &str, state: &str, code: &str, expected_email: &str) -> Result<()> {
+    pub async fn complete(
+        &self,
+        store: &Store,
+        user_id: &str,
+        state: &str,
+        code: &str,
+        expected_email: &str,
+    ) -> Result<()> {
         let issued_to = self.states.lock().unwrap_or_else(|p| p.into_inner()).remove(state);
         match issued_to {
             Some((uid, t)) if uid == user_id && t.elapsed() < STATE_TTL => {}
@@ -148,7 +155,8 @@ impl Google {
             ])
             .await?;
         let refresh = tokens.refresh_token.ok_or_else(|| anyhow!("Google returned no refresh token"))?;
-        *self.access_token.lock().await = Some((tokens.access_token, Instant::now() + Duration::from_secs(tokens.expires_in)));
+        *self.access_token.lock().await =
+            Some((tokens.access_token, Instant::now() + Duration::from_secs(tokens.expires_in)));
         let profile = self.api(Method::GET, "/profile", None).await?;
         let email = profile["emailAddress"].as_str().unwrap_or_default();
         if !email.eq_ignore_ascii_case(expected_email) {
@@ -167,7 +175,10 @@ impl Google {
         let status = resp.status();
         let body: Json = resp.json().await.unwrap_or_default();
         if !status.is_success() {
-            bail!("Google token request failed ({status}): {}", body["error_description"].as_str().or(body["error"].as_str()).unwrap_or("unknown error"));
+            bail!(
+                "Google token request failed ({status}): {}",
+                body["error_description"].as_str().or(body["error"].as_str()).unwrap_or("unknown error")
+            );
         }
         Ok(serde_json::from_value(body)?)
     }
@@ -196,7 +207,9 @@ impl Google {
         let status = resp.status();
         let text = resp.text().await?;
         if !status.is_success() {
-            let msg = serde_json::from_str::<Json>(&text).ok().and_then(|j| j["error"]["message"].as_str().map(str::to_string));
+            let msg = serde_json::from_str::<Json>(&text)
+                .ok()
+                .and_then(|j| j["error"]["message"].as_str().map(str::to_string));
             bail!("Gmail API {path} failed ({status}): {}", msg.unwrap_or(text));
         }
         Ok(if text.trim().is_empty() { Json::Null } else { serde_json::from_str(&text)? })

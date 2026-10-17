@@ -78,7 +78,9 @@ impl App {
     }
 
     fn gmail(&self) -> Result<&Gmail> {
-        self.gmail.as_ref().ok_or_else(|| anyhow!("Gmail is not configured on the server (GMAIL_ADDRESS / GMAIL_APP_PASSWORD)"))
+        self.gmail
+            .as_ref()
+            .ok_or_else(|| anyhow!("Gmail is not configured on the server (GMAIL_ADDRESS / GMAIL_APP_PASSWORD)"))
     }
 
     /// The Google client, if Google has been connected (needed for filters and the vacation responder).
@@ -89,7 +91,9 @@ impl App {
                 "BAD_REQUEST",
                 format!("Connect your Google account first: open {}/graphql/oauth/start", self.public_url),
             )),
-            None => Err(coded("BAD_REQUEST", "Google OAuth isn't configured (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET)")),
+            None => {
+                Err(coded("BAD_REQUEST", "Google OAuth isn't configured (GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET)"))
+            }
         }
     }
 
@@ -129,10 +133,9 @@ fn strings(v: &Json, key: &str) -> Vec<String> {
 fn parse_date(v: Option<&Json>) -> Option<i64> {
     match v? {
         Json::Number(n) => n.as_i64().or_else(|| n.as_f64().map(|f| f as i64)),
-        Json::String(s) => s
-            .parse::<i64>()
-            .ok()
-            .or_else(|| chrono::DateTime::parse_from_rfc3339(s).ok().map(|d| d.timestamp_millis())),
+        Json::String(s) => {
+            s.parse::<i64>().ok().or_else(|| chrono::DateTime::parse_from_rfc3339(s).ok().map(|d| d.timestamp_millis()))
+        }
         _ => None,
     }
 }
@@ -277,11 +280,8 @@ fn build_thread(thread_id: String, mut emails: Vec<EmailRow>, labels_by_gmail: &
             system_labels.push("ARCHIVE");
         }
     }
-    let mut user_labels: Vec<Label> = live
-        .iter()
-        .flat_map(|e| &e.gm_labels)
-        .filter_map(|l| labels_by_gmail.get(l).cloned())
-        .collect();
+    let mut user_labels: Vec<Label> =
+        live.iter().flat_map(|e| &e.gm_labels).filter_map(|l| labels_by_gmail.get(l).cloned()).collect();
     user_labels.sort_by(|a, b| a.label_id.cmp(&b.label_id));
     user_labels.dedup_by(|a, b| a.label_id == b.label_id);
     ThreadView {
@@ -575,11 +575,8 @@ async fn modify_labels(c: C, add: bool) -> Result<Json> {
     let system = strings(req, "systemLabels");
     let label_ids = strings(req, "userLabels");
     let all_labels = c.state.store.labels()?;
-    let gmail_names: Vec<String> = all_labels
-        .iter()
-        .filter(|l| label_ids.contains(&l.label_id))
-        .map(|l| l.gmail_name.clone())
-        .collect();
+    let gmail_names: Vec<String> =
+        all_labels.iter().filter(|l| label_ids.contains(&l.label_id)).map(|l| l.gmail_name.clone()).collect();
     let gm = c.state.gmail()?;
     let store = &c.state.store;
 
@@ -594,7 +591,11 @@ async fn modify_labels(c: C, add: bool) -> Result<Json> {
             match (label.as_str(), add) {
                 ("TRASH", true) => {
                     gm.apply(&refs(&live), Action::MoveTo(FOLDER_TRASH)).await?;
-                    gm.apply(&refs(&dead.iter().copied().filter(|e| e.folder == FOLDER_SPAM).collect::<Vec<_>>()), Action::MoveTo(FOLDER_TRASH)).await?;
+                    gm.apply(
+                        &refs(&dead.iter().copied().filter(|e| e.folder == FOLDER_SPAM).collect::<Vec<_>>()),
+                        Action::MoveTo(FOLDER_TRASH),
+                    )
+                    .await?;
                     moved_to = Some((FOLDER_TRASH, false));
                 }
                 ("SPAM", true) => {
@@ -710,8 +711,16 @@ async fn edit_user_label(c: C) -> Result<Json> {
     auth(&c)?;
     let req = &c.args["request"];
     let id = s(req, "labelID");
-    let mut label = c.state.store.labels()?.into_iter().find(|l| l.label_id == id).ok_or_else(|| coded("NOT_FOUND", "no such label"))?;
-    if let Some(name) = req.get("labelName").and_then(Json::as_str).map(str::trim).filter(|n| !n.is_empty() && *n != label.name) {
+    let mut label = c
+        .state
+        .store
+        .labels()?
+        .into_iter()
+        .find(|l| l.label_id == id)
+        .ok_or_else(|| coded("NOT_FOUND", "no such label"))?;
+    if let Some(name) =
+        req.get("labelName").and_then(Json::as_str).map(str::trim).filter(|n| !n.is_empty() && *n != label.name)
+    {
         c.state.gmail()?.rename_label(&label.gmail_name, name).await?;
         label.name = name.to_string();
         label.gmail_name = name.to_string();
@@ -789,8 +798,11 @@ async fn send(c: C, reply: bool) -> Result<Json> {
     let mut atts = Vec::new();
     for a in msg.get("attachments").and_then(Json::as_array).into_iter().flatten() {
         let meta = AttachmentMetadata::decrypt(s(&a["encryptedMetadata"], "encryptedData"), &session_key)?;
-        let content =
-            crypto::decrypt_string_field(datagram::ATTACHMENT, s(&a["encryptedContent"], "encryptedFile"), &session_key)?;
+        let content = crypto::decrypt_string_field(
+            datagram::ATTACHMENT,
+            s(&a["encryptedContent"], "encryptedFile"),
+            &session_key,
+        )?;
         atts.push(OutAttachment { meta, bytes: decode_attachment_content(&content)? });
     }
 
@@ -835,7 +847,8 @@ async fn send(c: C, reply: bool) -> Result<Json> {
     } else {
         let mut related = MultiPart::related().singlepart(SinglePart::html(html));
         for a in inline {
-            let ct = ContentType::parse(&a.meta.content_type).unwrap_or(ContentType::parse("application/octet-stream")?);
+            let ct =
+                ContentType::parse(&a.meta.content_type).unwrap_or(ContentType::parse("application/octet-stream")?);
             let cid = a.meta.content_id.trim_matches(|c| c == '<' || c == '>').to_string();
             related = related.singlepart(Attachment::new_inline(cid).body(a.bytes, ct));
         }
@@ -916,9 +929,11 @@ async fn save_filter(app: &App, user: &User, input: &Json) -> Result<()> {
     let google = app.google()?;
     // The client seals the filter's session key to the server (user secret key + server public key).
     let session_key = match input["encryptedByKey"].as_str() {
-        Some(k) if k == app.server_public_key => Some(
-            String::from_utf8(crypto::box_decrypt(s(input, "encryptedSessionKey"), &user.public_key, &app.server_secret_key)?)?,
-        ),
+        Some(k) if k == app.server_public_key => Some(String::from_utf8(crypto::box_decrypt(
+            s(input, "encryptedSessionKey"),
+            &user.public_key,
+            &app.server_secret_key,
+        )?)?),
         _ => None,
     };
     let (label_ids, _) = gmail_label_maps(app).await?;
@@ -1157,7 +1172,8 @@ pub fn handlers() -> Handlers<App> {
 /// Encrypted attachment content for the download link (fetched from Gmail on demand).
 pub async fn attachment_download(app: &App, token: Option<&str>, attachment_id: &str) -> Result<String> {
     let (_, user) = app.session_user(token)?;
-    let (email, att) = app.store.email_by_attachment(attachment_id)?.ok_or_else(|| coded("NOT_FOUND", "no such attachment"))?;
+    let (email, att) =
+        app.store.email_by_attachment(attachment_id)?.ok_or_else(|| coded("NOT_FOUND", "no such attachment"))?;
     let raw = app.gmail()?.fetch_raw(&email.folder, &email.gm_msgid).await?;
     let key = mail::open_session_key(&email.encrypted_session_key, &app.recipient(&user))?;
     let content = mail::attachment_content_b64(&raw, att.part_index)?;
@@ -1172,4 +1188,3 @@ pub async fn raw_mime_download(app: &App, token: Option<&str>, email_id: &str) -
     let key = mail::open_session_key(&email.encrypted_session_key, &app.recipient(&user))?;
     crypto::encrypt_string_field(datagram::RAW_MIME, &String::from_utf8_lossy(&raw), &key)
 }
-

@@ -66,7 +66,11 @@ pub fn create(password: &str) -> Result<NewAccount> {
     let signed = serde_json::to_string(&["USER_PUBLIC_KEY", "NO_CONTEXT", public_key.as_str()])?;
     Ok(NewAccount {
         verifier: srp::derive_verifier(&srp_key)?,
-        encrypted_user_data: crypto::v1_encrypt(crypto::PRIVATE_USER_DATA_DATAGRAM, &private, &password_derived_secret)?,
+        encrypted_user_data: crypto::v1_encrypt(
+            crypto::PRIVATE_USER_DATA_DATAGRAM,
+            &private,
+            &password_derived_secret,
+        )?,
         public_key_signature: b64(&signing.sign(signed.as_bytes()).to_bytes()),
         signing_public_key: b64(signing.verifying_key().as_bytes()),
         public_key,
