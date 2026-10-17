@@ -1,0 +1,50 @@
+[package]
+name = "mymail-server"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+anyhow = "1.0.104"
+argon2 = "0.5"
+async-graphql = { version = "7", features = ["dynamic-schema", "chrono"] }
+async-graphql-axum = "7"
+async-imap = { version = "0.12.0", default-features = false, features = ["runtime-tokio"] }
+axum = { version = "0.8", features = ["ws"] }
+base64 = "0.22"
+chacha20poly1305 = "0.10"
+chrono = "0.4.45"
+crypto_box = { version = "0.9", features = ["std", "salsa20"] }
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+futures = "0.3.34"
+hex = "0.4"
+hkdf = "0.12"
+lettre = { version = "0.11.23", default-features = false, features = ["builder", "smtp-transport", "tokio1", "tokio1-rustls", "ring", "webpki-roots"] }
+mail-parser = "0.11.9"
+num-bigint = "0.4"
+rand = "0.8"
+reqwest = { version = "0.13", default-features = false, features = ["form", "json", "rustls-no-provider", "stream"] }
+rpassword = "7.5.4"
+rusqlite = { version = "0.40.2", features = ["bundled"] }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+sha2 = "0.10"
+tokio = { version = "1.53.3", features = ["full"] }
+tokio-rustls = { version = "0.26.6", default-features = false, features = ["ring", "tls12", "logging"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
+uuid = { version = "1.28.0", features = ["v4"] }
+webpki-roots = "1.0.9"
+
+[profile.dev]
+debug = 0
+
+[profile.release]
+debug = 0
+strip = true
+
+# Vendored with small patches (see the "mymail-server patch" comments):
+# - async-imap: `Fetch::gmail_thr_id()` accessor for X-GM-THRID
+# - async-graphql: null object items inside lists in dynamic schemas
+[patch.crates-io]
+async-imap = { path = "vendor/async-imap" }
+async-graphql = { path = "vendor/async-graphql" }

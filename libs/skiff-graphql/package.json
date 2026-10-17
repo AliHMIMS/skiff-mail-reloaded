@@ -1,0 +1,29 @@
+{
+  "name": "skiff-graphql",
+  "version": "0.0.1",
+  "description": "Graphql types",
+  "main": "./dist/cjs/index.js",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "types": "dist/src/index.d.ts",
+  "private": true,
+  "scripts": {},
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "@graphql-codegen/cli": "^2.6.2",
+    "@graphql-codegen/typescript": "^2.4.11",
+    "apollo-server-errors": "^3.3.1",
+    "graphql": "16.8.1",
+    "skiff-utils": "workspace:*",
+    "tslib": "^2.4.0"
+  }
+}

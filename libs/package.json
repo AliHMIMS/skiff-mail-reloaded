@@ -1,0 +1,16 @@
+{
+  "workspaces": [
+    "*"
+  ],
+  "name": "libs",
+  "packageManager": "yarn@4.18.1",
+  "scripts": {
+    "-- foreach flags Docs --": "https://yarnpkg.com/cli/workspaces/foreach",
+    "-v,--verbose": "Prefix each output line with the name of the originating workspace",
+    "-p,--parallel": "Run the commands in parallel",
+    "-i,--interlaced": "Print the output of commands in real-time instead of buffering it",
+    "-j,--jobs": "The maximum number of parallel tasks that the execution will be limited to",
+    "-t,--topological": "Run the command after all workspaces it depends on (regular) have finished",
+    "build": "SKIP_TSC=1 yarn workspace nightwatch-ui build && yarn workspace skiff-utils build && yarn workspace skiff-mail-protos build && yarn workspace skiff-graphql build && yarn workspace skiff-crypto build && SKIP_TSC=1 yarn workspace skiff-crypto-v2 build && SKIP_TSC=1 yarn workspace skiff-front-search build && yarn workspace skiff-front-graphql build && SKIP_TSC=1 yarn workspace skiff-front-utils build"
+  }
+}

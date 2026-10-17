@@ -1,0 +1,44 @@
+{
+  "name": "skiff-crypto-v2",
+  "version": "2.0.0",
+  "description": "Cryptographic related functions and helpers v2",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    "import": "./dist/esm/index.js",
+    "require": "./dist/cjs/index.js"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": "20.9.0"
+  },
+  "types": "dist/src/index.d.ts",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "@stablelib/base64": "^1.0.1",
+    "@stablelib/chacha20poly1305": "^1.0.1",
+    "long": "^5.2.0",
+    "openpgp": "^5.11.0",
+    "protobufjs": "^7.2.4",
+    "semver": "^7.3.5",
+    "skiff-crypto": "workspace:*",
+    "skiff-graphql": "workspace:*",
+    "skiff-utils": "workspace:*",
+    "tslib": "^2.4.0",
+    "validator": "^13.7.0",
+    "varint": "^6.0.0",
+    "zbase32": "^2.0.3"
+  },
+  "devDependencies": {
+    "@openpgp/web-stream-tools": "^0.0.14",
+    "@types/node": "^22",
+    "@types/semver": "^7",
+    "@types/validator": "13.7.3",
+    "@types/varint": "^6.0.0",
+    "typescript": "^5.9.3"
+  }
+}

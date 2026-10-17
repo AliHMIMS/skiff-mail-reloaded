@@ -1,0 +1,20 @@
+{
+  // Shared base for libs/* (missing from the open-source export, reconstructed).
+  // esbuild emits the JS bundles; tsc -b only emits declarations.
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmit": false,
+    "allowJs": false,
+    "rootDir": "${configDir}",
+    "lib": ["es2022", "dom", "dom.iterable"],
+    "jsx": "react-jsx",
+    "skipLibCheck": true,
+    // esbuild handles per-file transpilation; tsc here only emits .d.ts
+    "isolatedModules": false
+  },
+  "include": ["${configDir}/src", "${configDir}/generated", "${configDir}/*.d.ts"],
+  "exclude": ["${configDir}/dist", "${configDir}/**/*.test.ts", "${configDir}/**/*.test.tsx", "${configDir}/**/__tests__/**", "${configDir}/**/__mocks__/**"]
+}

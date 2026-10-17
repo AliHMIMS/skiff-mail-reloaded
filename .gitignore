@@ -1,0 +1,21 @@
+.DS_Store
+node_modules/
+coverage/
+*.log
+*.tsbuildinfo
+**/*.map
+.eslintcache
+
+# local pnpm install (see README)
+.tools/
+
+# web client builds
+dist/
+dist-next/
+
+# server: build output, binary, secrets, mail database
+server/target/
+server/bin/
+server/data/
+.env
+!.env.example

@@ -1,0 +1,9 @@
+{
+  "name": "mymail",
+  "private": true,
+  "packageManager": "pnpm@12.14.0",
+  "scripts": {
+    "dev": "cd skemail-web && ./node_modules/.bin/vite",
+    "build": "cd skemail-web && ./node_modules/.bin/vite build && rm -rf src/dist && mv src/dist-next src/dist"
+  }
+}
