@@ -37,7 +37,7 @@ cp .env.example .env                         # fill in, chmod 600
 ./bin/mymail-server serve
 ```
 
-Proxy `/graphql*` (WebSocket included) and `/image_proxy/*` to `LISTEN`. Serve `skemail-web/src/dist` at `/mail/`, with `Cache-Control: no-cache` on everything except `/mail/assets/*` (hashed, cache forever), so clients pick up new builds.
+Proxy `/graphql*` (WebSocket included) and `/image_proxy/*` to `LISTEN`. Serve `web/dist` at `/mail/`, with `Cache-Control: no-cache` on everything except `/mail/assets/*` (hashed, cache forever), so clients pick up new builds.
 
 ### Google OAuth (filters, auto-reply, XOAUTH2)
 

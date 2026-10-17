@@ -57,16 +57,37 @@ Measured on a 2 vCPU / 4 GB server.
 | Package manager          | Yarn 3 PnP                                    | pnpm 12                        |
 | Linter                   | ESLint (airbnb-typescript)                    | oxlint, ~2.6 s for 1,400 files |
 | Formatter                | Prettier                                      | oxfmt, ~0.7 s for 1,400 files  |
-| Root dependencies        | 210                                           | 2 (oxlint, oxfmt)              |
-| Web app dev dependencies | 119                                           | 38                             |
+| Type check               | ~68 s (TypeScript 5)                          | ~24 s (TypeScript 7)           |
+| Root dependencies        | 210                                           | 3 (oxlint, oxfmt, TypeScript)  |
+| Web app dev dependencies | 119                                           | 25                             |
 | Mailbox refresh          | Polling every 20 s                            | WebSocket push (60 s fallback) |
 | Changes across clients   | Up to 20 s                                    | ~3 s                           |
 
 ## Getting started
 
+A pnpm workspace:
+
+| Folder             |                                            |
+| ------------------ | ------------------------------------------ |
+| [`web`](web)       | The Skiff Mail client (React, Vite)        |
+| [`server`](server) | The backend (Rust); scripts wrap `cargo`   |
+| [`libs`](libs)     | Skiff's shared libraries, used from source |
+
 1. Build and run the server: [server/README.md](server/README.md).
-2. Build the web client: [skemail-web/README.md](skemail-web/README.md).
+2. Build the web client: [web/README.md](web/README.md).
 3. Put both behind HTTPS on one domain. The app is served at `/mail/`, and `/graphql*` and `/image_proxy/*` go to the server.
+
+From the root, with Node 22, pnpm 12 and Rust:
+
+```bash
+pnpm install
+pnpm build          # web/dist and server/bin/mymail-server
+pnpm dev            # web dev server
+pnpm test
+pnpm lint           # oxlint + clippy
+pnpm format         # oxfmt + rustfmt
+pnpm typecheck
+```
 
 ## License
 

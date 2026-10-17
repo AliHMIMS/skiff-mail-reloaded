@@ -1,11 +1,11 @@
 {
-  "name": "skemail-web",
+  "name": "web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build": "vite build && rm -rf src/dist && mv src/dist-next src/dist",
-    "preview": "vite preview"
+    "build": "vite build && rm -rf dist && mv dist-next dist",
+    "preview": "vite preview --outDir dist"
   },
   "dependencies": {
     "@apollo/client": "^3.14.1",

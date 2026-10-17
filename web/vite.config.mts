@@ -120,7 +120,7 @@ export default defineConfig(({ mode }) => ({
   },
   worker: { format: 'es', rolldownOptions: { transform: { inject: NODE_GLOBALS } } },
   build: {
-    outDir: 'src/dist-next',
+    outDir: 'dist-next',
     emptyOutDir: true,
     target: 'es2020',
     // Oxc end to end: Rolldown bundles with Oxc's parser/resolver/transformer; Oxc minifies JS

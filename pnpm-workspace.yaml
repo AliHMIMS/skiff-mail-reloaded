@@ -1,14 +1,7 @@
 packages:
-  - libs/nightwatch-ui
-  - libs/skiff-crypto
-  - libs/skiff-crypto-v2
-  - libs/skiff-front-graphql
-  - libs/skiff-front-search
-  - libs/skiff-front-utils
-  - libs/skiff-graphql
-  - libs/skiff-mail-protos
-  - libs/skiff-utils
-  - skemail-web
+  - libs/*
+  - web
+  - server
 
 # Single copies of the editor stack (two ProseMirror instances crash the composer)
 overrides:

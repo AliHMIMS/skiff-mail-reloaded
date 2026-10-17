@@ -804,7 +804,9 @@ importers:
         specifier: 13.7.1
         version: 13.7.1
 
-  skemail-web:
+  server: {}
+
+  web:
     dependencies:
       '@apollo/client':
         specifier: ^3.14.1
