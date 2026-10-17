@@ -422,7 +422,7 @@ const Compose: React.FC = () => {
   // If the user tries to close the window while the email is sending, warn the user
   useWarnBeforeUnloading(isSending);
 
-  const editorContentSize = editor?.storage.messageSizeExtension.messageSize || 0;
+  const editorContentSize = editor?.storage.messageSizeExtension?.messageSize || 0;
   const messageSizeExceeded = editorContentSize + attachmentsSize > MESSAGE_MAX_SIZE_IN_BYTES;
 
   const composeIsDirty = isEditorDirty || mailFormDirty.current;
