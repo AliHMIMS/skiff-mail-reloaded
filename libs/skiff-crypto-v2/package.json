@@ -31,5 +31,8 @@
     "@types/semver": "^7.8.0",
     "@types/validator": "13.7.3",
     "@types/varint": "^6.0.3"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
   }
 }

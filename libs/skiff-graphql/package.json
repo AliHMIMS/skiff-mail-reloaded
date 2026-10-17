@@ -15,5 +15,8 @@
     "apollo-server-errors": "^3.3.1",
     "graphql": "16.8.1",
     "skiff-utils": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
   }
 }

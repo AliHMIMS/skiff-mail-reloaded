@@ -11,9 +11,10 @@
     "lint": "oxlint web/src web/tests libs && pnpm --filter server lint",
     "format": "oxfmt && pnpm --filter server format",
     "format:check": "oxfmt --check && pnpm --filter server format:check",
-    "typecheck": "tsc -p web"
+    "typecheck": "pnpm -r --workspace-concurrency=1 typecheck"
   },
   "devDependencies": {
+    "@types/node": "^22.20.5",
     "jsdom": "^29.1.1",
     "oxfmt": "^0.73.0",
     "oxlint": "^1.88.0",

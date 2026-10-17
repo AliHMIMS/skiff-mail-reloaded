@@ -36,5 +36,8 @@
   },
   "installConfig": {
     "hoistingLimits": "none"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
   }
 }

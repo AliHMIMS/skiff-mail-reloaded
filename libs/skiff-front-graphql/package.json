@@ -35,5 +35,8 @@
     "skiff-mail-protos": "workspace:*",
     "skiff-utils": "workspace:*",
     "uuid": "^8.3.2"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
   }
 }

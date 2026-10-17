@@ -16,5 +16,8 @@
     "graphql": "16.8.1",
     "long": "^5.3.2",
     "protobufjs": "^7.6.6"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
   }
 }

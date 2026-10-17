@@ -3,10 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
     "build": "vite build && rm -rf dist && mv dist-next dist",
+    "dev": "vite",
     "preview": "vite preview --outDir dist",
-    "test": "vitest run"
+    "test": "vitest run",
+    "typecheck": "tsc -p ."
   },
   "dependencies": {
     "@apollo/client": "^4.3.4",
