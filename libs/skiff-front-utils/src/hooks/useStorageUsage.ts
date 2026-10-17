@@ -1,9 +1,28 @@
+import { gql, useQuery } from '@apollo/client';
 import { useGetCreditsQuery, useGetUserMailStorageUsedQuery, useGetUserStorageUsedQuery } from 'skiff-front-graphql';
 import { CreditInfo, EntityType } from 'skiff-graphql';
 
 import useStorageLimit from './useStorageLimit';
 
+// mymail-server: the mail database size vs free disk space on the server, instead of plan quotas
+const InstanceStorageDocument = gql`
+  query instanceStorage {
+    instanceStorage {
+      databaseBytes
+      availableBytes
+    }
+  }
+`;
+
+interface InstanceStorageQuery {
+  instanceStorage: { databaseBytes: number; availableBytes: number } | null;
+}
+
 export const useStorageUsage = (userID: string) => {
+  const { data: instanceData, loading: instanceLoading } = useQuery<InstanceStorageQuery>(InstanceStorageDocument, {
+    pollInterval: 5 * 60 * 1000
+  });
+
   const { data: pagesStorageData, loading: pagesStorageLoading } = useGetUserStorageUsedQuery({
     variables: {
       request: { userID }
@@ -39,5 +58,18 @@ export const useStorageUsage = (userID: string) => {
   const totalMailUsageBytes = Number(storageUsed.attachmentUsageBytes) + Number(storageUsed.messageUsageBytes);
   const totalPagesUsageBytes = Number(pagesStorageData?.user?.storageUsed || 0);
   const totalUsageBytes = totalMailUsageBytes + totalPagesUsageBytes;
-  return { totalUsageBytes, maxTotalStorageMB, isLoading: pagesStorageLoading || mailStorageLoading || storageLoading };
+
+  const instance = instanceData?.instanceStorage;
+  if (instance) {
+    return {
+      totalUsageBytes: instance.databaseBytes,
+      maxTotalStorageMB: instance.availableBytes / 1_000_000,
+      isLoading: instanceLoading
+    };
+  }
+  return {
+    totalUsageBytes,
+    maxTotalStorageMB,
+    isLoading: instanceLoading || pagesStorageLoading || mailStorageLoading || storageLoading
+  };
 };

@@ -142,7 +142,6 @@ export const MailSidebar: React.FC = () => {
   const openContactSettings = () => {
     openSettings({ tab: TabPage.Contacts, setting: SettingValue.Contacts });
   };
-  const openPlanPage = () => openSettings({ tab: TabPage.Plans });
 
   // open invite users modal
   const openInviteUsersModal = (e?: React.MouseEvent) => {
@@ -347,7 +346,6 @@ export const MailSidebar: React.FC = () => {
           {!silenceFooterOpen && (
             <StorageBar
               maxStorageMegabytes={isLoading ? undefined : maxTotalStorageMB}
-              onClick={openPlanPage}
               linear
               storageBytesUsed={isLoading ? undefined : totalUsageBytes}
             />
