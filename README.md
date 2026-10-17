@@ -57,7 +57,7 @@ Measured on a 2 vCPU / 4 GB server.
 | Package manager          | Yarn 3 PnP                                    | pnpm 12                        |
 | Linter                   | ESLint (airbnb-typescript)                    | oxlint, ~2.6 s for 1,400 files |
 | Formatter                | Prettier                                      | oxfmt, ~0.7 s for 1,400 files  |
-| Root dependencies        | 210                                           | 0                              |
+| Root dependencies        | 210                                           | 2 (oxlint, oxfmt)              |
 | Web app dev dependencies | 119                                           | 38                             |
 | Mailbox refresh          | Polling every 20 s                            | WebSocket push (60 s fallback) |
 | Changes across clients   | Up to 20 s                                    | ~3 s                           |
