@@ -565,16 +565,6 @@ impl Gmail {
     }
 }
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn unescapes_imap_labels() {
-        assert_eq!(super::unescape("\\\\Inbox"), "\\Inbox");
-        assert_eq!(super::unescape(r#"Say \"hi\""#), r#"Say "hi""#);
-        assert_eq!(super::unescape("Plain"), "Plain");
-    }
-}
-
 pub fn label_id_for(gmail_name: &str) -> String {
     use sha2::{Digest, Sha256};
     format!("gl{}", &hex::encode(Sha256::digest(gmail_name.as_bytes()))[..16])
@@ -599,4 +589,14 @@ fn meta_of(f: &Fetch, kind: &str) -> Option<GmailMeta> {
         folder: kind.to_string(),
         internal_date_ms: f.internal_date().map(|d| d.timestamp_millis()).unwrap_or_else(crate::store::now_ms),
     })
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn unescapes_imap_labels() {
+        assert_eq!(super::unescape("\\\\Inbox"), "\\Inbox");
+        assert_eq!(super::unescape(r#"Say \"hi\""#), r#"Say "hi""#);
+        assert_eq!(super::unescape("Plain"), "Plain");
+    }
 }
