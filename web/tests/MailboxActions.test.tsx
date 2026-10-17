@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
 import { ApplyLabelsDocument } from 'skiff-front-graphql';
@@ -88,7 +88,9 @@ describe('MailboxActions', () => {
       </Provider>
     );
     // option shown only after thread selected
-    store.dispatch(skemailMailboxReducer.actions.setSelectedThreadIDs({ selectedThreadIDs: [MOCK_THREAD.threadID] }));
+    act(() => {
+      store.dispatch(skemailMailboxReducer.actions.setSelectedThreadIDs({ selectedThreadIDs: [MOCK_THREAD.threadID] }));
+    });
     expect(screen.getByTestId(MailboxActionsDataTest.moveToTrashIcon)).toBeInTheDocument();
   });
 
@@ -109,7 +111,9 @@ describe('MailboxActions', () => {
       </Provider>
     );
     // option shown only after thread selected
-    store.dispatch(skemailMailboxReducer.actions.setSelectedThreadIDs({ selectedThreadIDs: [MOCK_THREAD.threadID] }));
+    act(() => {
+      store.dispatch(skemailMailboxReducer.actions.setSelectedThreadIDs({ selectedThreadIDs: [MOCK_THREAD.threadID] }));
+    });
     expect(screen.getByTestId(MailboxActionsDataTest.undoTrashIcon)).toBeInTheDocument();
     expect(screen.queryByTestId(MailboxActionsDataTest.moveToTrashIcon)).not.toBeInTheDocument();
   });

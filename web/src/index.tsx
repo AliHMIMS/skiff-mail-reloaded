@@ -1,13 +1,10 @@
 import './polyfills';
-import React from 'react';
 import './theme/app.global.css';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import App from './App';
 
-/**
- * While loading the App component display loader
- */
 document.addEventListener('DOMContentLoaded', () => {
-  render(<App />, document.getElementById('root'));
+  const container = document.getElementById('root');
+  if (container) createRoot(container).render(<App />);
 });

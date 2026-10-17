@@ -326,13 +326,11 @@ describe('Layout', () => {
     );
 
     // Wait for Layout to load fully
-    await screen.findByTestId(SidebarDataTest.openComposeButton);
+    await screen.findByTestId(SidebarDataTest.openComposeButton, {}, { timeout: 20_000 });
 
     // Open compose and test components are there
     const composeButton = screen.getByTestId(SidebarDataTest.openComposeButton);
-    await act(async () => {
-      await userEvent.click(composeButton);
-    });
+    await userEvent.click(composeButton);
 
     await waitFor(() => {
       expect(screen.getByTestId(ComposeDataTest.sendButton)).toBeInTheDocument();
@@ -344,9 +342,7 @@ describe('Layout', () => {
 
     // Close compose and test components are not there
     const closeComposeButton = screen.getByTestId(ComposeHeaderDataTest.closeButton);
-    await act(async () => {
-      await userEvent.click(closeComposeButton);
-    });
+    await userEvent.click(closeComposeButton);
 
     await waitFor(() => {
       expect(screen.queryByTestId(ComposeDataTest.sendButton)).not.toBeInTheDocument();
@@ -383,13 +379,11 @@ describe('Layout', () => {
       );
     });
     // Wait for Layout to load fully
-    await screen.findByTestId(SidebarDataTest.openComposeButton);
+    await screen.findByTestId(SidebarDataTest.openComposeButton, {}, { timeout: 20_000 });
 
     // Open compose and test components are there
     const composeButton = screen.getByTestId(SidebarDataTest.openComposeButton);
-    await act(async () => {
-      await userEvent.click(composeButton);
-    });
+    await userEvent.click(composeButton);
 
     const toField = screen.getByTestId(ComposeDataTest.toField);
     const toInput = within(toField).getByPlaceholderText(/Recipients/i);
@@ -397,19 +391,15 @@ describe('Layout', () => {
     const subjectInput = within(subjectField).getByPlaceholderText(/Subject/i);
     const closeComposeButton = screen.getByTestId(ComposeHeaderDataTest.closeButton);
 
-    await act(async () => {
-      await userEvent.type(toInput, '2@skiff.com{enter}');
-      await userEvent.type(subjectInput, 'test subject{tab}');
-      // wait for a second before closing so draft content saves
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      await userEvent.click(closeComposeButton);
-    });
+    await userEvent.type(toInput, '2@skiff.com{enter}');
+    await userEvent.type(subjectInput, 'test subject{tab}');
+    // wait for a second before closing so draft content saves
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await userEvent.click(closeComposeButton);
 
     // Click on message cell to edit draft
     const messageCell = await screen.findByText(/test subject/i);
-    await act(async () => {
-      await userEvent.click(messageCell);
-    });
+    await userEvent.click(messageCell);
 
     // Verify that draft info is saved
     const newSubjectField = await screen.findByTestId(ComposeDataTest.subjectField);

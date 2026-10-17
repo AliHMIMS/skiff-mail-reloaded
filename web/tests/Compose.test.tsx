@@ -176,21 +176,19 @@ describe('Compose', () => {
         </MockedProvider>
       </Provider>
     );
-    await act(async () => {
-      // Open Cc input field, hidden on default as we are composing a new
-      // message and there are no stored Cc addresses
-      const ccButton = screen.getByTestId(ComposeDataTest.showCcButton);
-      await userEvent.click(ccButton);
+    // Open Cc input field, hidden on default as we are composing a new
+    // message and there are no stored Cc addresses
+    const ccButton = screen.getByTestId(ComposeDataTest.showCcButton);
+    await userEvent.click(ccButton);
 
-      // Type in the test Cc email in the Cc input
-      const ccField = screen.getByTestId(ComposeDataTest.ccField);
-      const ccInput = within(ccField).getByPlaceholderText(/Recipients/i);
-      await userEvent.type(ccInput, `${testCcEmail}{enter}`);
-      // Close the Cc field by clicking to subject
-      await userEvent.click(screen.getByTestId(ComposeDataTest.subjectField));
-      // Check that Cc field is still rendered
-      expect(screen.queryByTestId(ComposeDataTest.ccField)).toBeInTheDocument();
-    });
+    // Type in the test Cc email in the Cc input
+    const ccField = screen.getByTestId(ComposeDataTest.ccField);
+    const ccInput = within(ccField).getByPlaceholderText(/Recipients/i);
+    await userEvent.type(ccInput, `${testCcEmail}{enter}`);
+    // Close the Cc field by clicking to subject
+    await userEvent.click(screen.getByTestId(ComposeDataTest.subjectField));
+    // Check that Cc field is still rendered
+    expect(screen.queryByTestId(ComposeDataTest.ccField)).toBeInTheDocument();
   });
 
   it('can add and persist Bcc addresses', async () => {
@@ -217,23 +215,21 @@ describe('Compose', () => {
         </MockedProvider>
       </Provider>
     );
-    await act(async () => {
-      // Open Bcc input field, hidden on default as we are composing a new
-      // message and there are no stored Bcc addresses
-      const bccButton = screen.getByTestId(ComposeDataTest.showBccButton);
-      await userEvent.click(bccButton);
+    // Open Bcc input field, hidden on default as we are composing a new
+    // message and there are no stored Bcc addresses
+    const bccButton = screen.getByTestId(ComposeDataTest.showBccButton);
+    await userEvent.click(bccButton);
 
-      // Type in the test Bcc email in the Bcc input
-      const bccField = screen.getByTestId(ComposeDataTest.bccField);
-      const bccInput = within(bccField).getByPlaceholderText(/Recipients/i);
-      await userEvent.type(bccInput, `${testBccEmail}{enter}`);
+    // Type in the test Bcc email in the Bcc input
+    const bccField = screen.getByTestId(ComposeDataTest.bccField);
+    const bccInput = within(bccField).getByPlaceholderText(/Recipients/i);
+    await userEvent.type(bccInput, `${testBccEmail}{enter}`);
 
-      // Close the Bcc field by clicking to subject
-      await userEvent.click(screen.getByTestId(ComposeDataTest.subjectField));
+    // Close the Bcc field by clicking to subject
+    await userEvent.click(screen.getByTestId(ComposeDataTest.subjectField));
 
-      // Check that Bcc field is still rendered
-      expect(screen.queryByTestId(ComposeDataTest.bccField)).toBeInTheDocument();
-    });
+    // Check that Bcc field is still rendered
+    expect(screen.queryByTestId(ComposeDataTest.bccField)).toBeInTheDocument();
   });
 
   it('can change draft To field', async () => {
@@ -264,16 +260,14 @@ describe('Compose', () => {
     const toField = screen.getByTestId(ComposeDataTest.toField);
     expect(within(toField).getByText(toName)).toBeInTheDocument();
     // Delete the existing To address
-    await act(async () => {
-      await userEvent.click(within(toField).getByTestId(CHIP_END_ICON_DATA_TEST));
-    });
+    await userEvent.click(within(toField).getByTestId(CHIP_END_ICON_DATA_TEST));
+
     expect(within(toField).queryByText(toName)).not.toBeInTheDocument();
     // Add a new To Address
     const toInput = within(toField).getByPlaceholderText(/Recipients/i);
     const newToAddress = 'newTest@skiff.com';
-    await act(async () => {
-      await userEvent.type(toInput, `${newToAddress}{enter}`);
-    });
+    await userEvent.type(toInput, `${newToAddress}{enter}`);
+
     await waitFor(() => expect(within(toField).getByText(newToAddress)).toBeInTheDocument());
   });
 
@@ -307,9 +301,8 @@ describe('Compose', () => {
     expect(subjectInput).toHaveAttribute('value', subject);
     // Append 'test' to the subject and check that the subject field has updated
     const subjectSuffix = ' test';
-    await act(async () => {
-      await userEvent.type(subjectInput, subjectSuffix);
-    });
+    await userEvent.type(subjectInput, subjectSuffix);
+
     await waitFor(() => expect(subjectInput).toHaveAttribute('value', `${subject}${subjectSuffix}`));
   });
 
@@ -334,21 +327,19 @@ describe('Compose', () => {
         </MockedProvider>
       </Provider>
     );
-    await act(async () => {
-      // Cc field should be empty
-      const ccButton = screen.getByTestId(ComposeDataTest.showCcButton);
-      await userEvent.click(ccButton);
-      const ccField = screen.getByTestId(ComposeDataTest.ccField);
-      const ccInput = within(ccField).getByPlaceholderText(/Recipients/i);
-      expect(ccInput).toHaveAttribute('value', '');
+    // Cc field should be empty
+    const ccButton = screen.getByTestId(ComposeDataTest.showCcButton);
+    await userEvent.click(ccButton);
+    const ccField = screen.getByTestId(ComposeDataTest.ccField);
+    const ccInput = within(ccField).getByPlaceholderText(/Recipients/i);
+    expect(ccInput).toHaveAttribute('value', '');
 
-      // Bcc field should be empty
-      const bccButton = screen.getByTestId(ComposeDataTest.showBccButton);
-      await userEvent.click(bccButton);
-      const bccField = screen.getByTestId(ComposeDataTest.bccField);
-      const bccInput = within(bccField).getByPlaceholderText(/Recipients/i);
-      expect(bccInput).toHaveAttribute('value', '');
-    });
+    // Bcc field should be empty
+    const bccButton = screen.getByTestId(ComposeDataTest.showBccButton);
+    await userEvent.click(bccButton);
+    const bccField = screen.getByTestId(ComposeDataTest.bccField);
+    const bccInput = within(bccField).getByPlaceholderText(/Recipients/i);
+    expect(bccInput).toHaveAttribute('value', '');
   });
 
   it('sends a message to hybrid list of skiff and non-skiff users', async () => {
@@ -437,9 +428,8 @@ describe('Compose', () => {
     );
 
     const sendButton = screen.getByTestId(ComposeDataTest.sendButton);
-    await act(async () => {
-      await userEvent.click(sendButton);
-    });
+    await userEvent.click(sendButton);
+
     await waitFor(() => expect(sendMessageMock.newData).toHaveBeenCalledTimes(1));
   });
 
@@ -468,9 +458,7 @@ describe('Compose', () => {
     const testFile = new File([new ArrayBuffer(100)], 'test.txt');
 
     const attachmentsInput = screen.getByTestId(ComposeDataTest.attachmentsInput);
-    await act(async () => {
-      await userEvent.upload(attachmentsInput, testFile);
-    });
+    await userEvent.upload(attachmentsInput, testFile);
 
     const attachmentsContainers = await screen.findAllByTestId(AttachmentsDataTest.attachmentContainer);
     await waitFor(() => {

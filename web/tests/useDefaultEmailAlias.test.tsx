@@ -2,7 +2,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { act } from '@testing-library/react';
-import { renderHook } from '@testing-library/react-hooks';
+import { renderHook } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { CurrentUserDefaultEmailAliasDocument, SetDefaultEmailAliasDocument } from 'skiff-front-graphql';
 import { saveCurrentUserData, getDefaultEmailAliasKey, useDefaultEmailAlias } from 'skiff-front-utils';
