@@ -305,10 +305,10 @@ fn labels_by_gmail(store: &Store) -> Result<HashMap<String, Label>> {
 /// until mail or labels change. The app's search indexer pages through everything, so this is hot.
 fn all_threads(app: &App) -> Result<Arc<Vec<ThreadView>>> {
     let generation = app.store.generation();
-    if let Some((cached_gen, threads)) = app.threads_cache.lock().unwrap_or_else(|p| p.into_inner()).as_ref() {
-        if *cached_gen == generation {
-            return Ok(threads.clone());
-        }
+    if let Some((cached_gen, threads)) = app.threads_cache.lock().unwrap_or_else(|p| p.into_inner()).as_ref()
+        && *cached_gen == generation
+    {
+        return Ok(threads.clone());
     }
     let labels = labels_by_gmail(&app.store)?;
     let mut groups: HashMap<String, Vec<EmailRow>> = HashMap::new();
@@ -830,12 +830,12 @@ async fn send(c: C, reply: bool) -> Result<Json> {
             };
         }
     }
-    if let Some(r) = &replied {
-        if !r.message_id_header.is_empty() {
-            builder = builder.in_reply_to(r.message_id_header.clone());
-            let references = format!("{} {}", r.references_header, r.message_id_header);
-            builder = builder.references(references.trim().to_string());
-        }
+    if let Some(r) = &replied
+        && !r.message_id_header.is_empty()
+    {
+        builder = builder.in_reply_to(r.message_id_header.clone());
+        let references = format!("{} {}", r.references_header, r.message_id_header);
+        builder = builder.references(references.trim().to_string());
     }
 
     let text_part = SinglePart::plain(if text.is_empty() { String::from(" ") } else { text });
@@ -876,10 +876,10 @@ async fn send(c: C, reply: bool) -> Result<Json> {
     let thread_id = thread_id.or_else(|| replied.map(|r| r.thread_id)).unwrap_or_else(|| email_id.clone());
     let app2 = c.state.clone();
     tokio::spawn(async move {
-        if let (Some(gm), Ok(Some(u))) = (app2.gmail.as_ref(), app2.store.user_by_id(&user.user_id)) {
-            if let Err(e) = gm.sync(&app2.store, &app2.recipient(&u)).await {
-                tracing::warn!("post-send sync failed: {e:#}");
-            }
+        if let (Some(gm), Ok(Some(u))) = (app2.gmail.as_ref(), app2.store.user_by_id(&user.user_id))
+            && let Err(e) = gm.sync(&app2.store, &app2.recipient(&u)).await
+        {
+            tracing::warn!("post-send sync failed: {e:#}");
         }
     });
     Ok(json!({ "messageID": email_id, "threadID": thread_id }))

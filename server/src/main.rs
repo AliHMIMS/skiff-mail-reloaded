@@ -466,7 +466,7 @@ async fn main() -> Result<()> {
             let path = args.get(1).context("usage: import-eml <file.eml> [label...]")?;
             let app = config.open_app()?;
             let user = app.store.first_user()?.context("create a user first")?;
-            let id = u64::from_str_radix(&hex::encode(&crypto::random_bytes::<6>()), 16)?;
+            let id = u64::from_str_radix(&hex::encode(crypto::random_bytes::<6>()), 16)?;
             let mut labels: Vec<String> = args[2..].to_vec();
             if labels.is_empty() {
                 labels.push("\\Inbox".into());

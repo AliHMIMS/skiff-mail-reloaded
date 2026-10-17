@@ -186,10 +186,10 @@ impl Google {
     /// A valid access token (refreshed when needed), or an error if Google was never connected.
     pub async fn access_token(&self, store: &Store) -> Result<String> {
         let mut cached = self.access_token.lock().await;
-        if let Some((token, expires)) = cached.as_ref() {
-            if *expires > Instant::now() + Duration::from_secs(60) {
-                return Ok(token.clone());
-            }
+        if let Some((token, expires)) = cached.as_ref()
+            && *expires > Instant::now() + Duration::from_secs(60)
+        {
+            return Ok(token.clone());
         }
         let refresh = store.kv_get(REFRESH_TOKEN_KEY)?.ok_or_else(|| anyhow!("Google is not connected"))?;
         let tokens = self.token_request(&[("grant_type", "refresh_token"), ("refresh_token", &refresh)]).await?;
