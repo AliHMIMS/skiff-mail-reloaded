@@ -275,12 +275,14 @@ export const MailboxHeader = ({
         name: undefined
       };
 
-  const numUnreadRenderedThreads = threads.filter((thread) => !thread.attributes.read);
+  const numUnreadRenderedThreads = threads.filter((thread) => !thread.attributes.read).length;
+  const renderedThreadIDs = threads.map((thread) => thread.threadID).join();
 
   // Make sure any changes to visible threads will trigger update of num unread
+  // (keyed on values: callers pass a fresh threads array on every render, which would refetch on every render)
   useEffect(() => {
     void updateNumUnread();
-  }, [threads, numUnreadRenderedThreads, updateNumUnread]);
+  }, [renderedThreadIDs, numUnreadRenderedThreads, updateNumUnread]);
 
   const numUnread = data?.unread ?? 0;
   const user = useRequiredCurrentUserData();
