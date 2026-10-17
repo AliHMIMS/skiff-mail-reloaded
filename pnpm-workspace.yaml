@@ -12,6 +12,8 @@ packages:
 
 # Single copies of the editor stack (two ProseMirror instances crash the composer)
 overrides:
+  # Vite minifies with Oxc; never install its optional Terser peer
+  'terser': '-'
   '@keplr-wallet/types': '0.11.49'
   '@tiptap/pm': '2.0.3'
   '@types/react': '^17.0.44'
