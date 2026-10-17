@@ -1,3 +1,3 @@
-# Skiff-graphql
+# skiff-graphql
 
-This library only typescript types for the global GraphQL API and custom error types that are shared between front and back projects.
+TypeScript types for the GraphQL API and the custom error types shared by the client and server.

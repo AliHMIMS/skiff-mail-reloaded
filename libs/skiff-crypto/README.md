@@ -2,11 +2,9 @@
 
 # skiff-crypto
 
-Welcome! `skiff-crypto` is a versatile, open-source JavaScript cryptography library specifically designed to provide strong and efficient cryptographic functions for use in NodeJS or in the browser. This package powers cryptography inside Skiff's end-to-end encrypted, privacy-first product suite, including Mail, Pages, Drive, and Calendar applications. For more on Skiff, visit [skiff.com](https://skiff.com).
+Welcome! `skiff-crypto` is a versatile, open-source JavaScript cryptography library specifically designed to provide strong and efficient cryptographic functions for use in NodeJS or in the browser. This package powers cryptography inside Skiff's end-to-end encrypted, privacy-first product suite, including Mail, Pages, Drive, and Calendar applications.
 
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE.txt)
-[![npm latest package](https://img.shields.io/npm/v/@skiff-org/skiff-crypto/latest.svg)](https://www.npmjs.com/package/@skiff-org/skiff-crypto)
-[![Follow on Twitter](https://img.shields.io/twitter/follow/Skiff_hq.svg?label=follow+Skiff)](https://twitter.com/skiffprivacy)
 
 ## Features
 
@@ -18,31 +16,12 @@ skiff-crypto brings together a host of cryptographic functionalities:
 - **Integrity**: Support for checksum and data integrity verification.
 - **Utilities**: A collection of useful utilities for working with cryptographic data, such as utf8 and string conversion.
 
-## Getting Started
+## Usage
 
-### Prerequisites
+A workspace package: depend on `"skiff-crypto": "workspace:*"` and import it.
 
-- Node.js 12.0.0 or later, or a modern browser.
-
-### Installation
-
-Using npm:
-
-```bash
-npm install @skiff-org/skiff-crypto
-```
-
-Using Yarn:
-
-```bash
-yarn add @skiff-org/skiff-crypto
-```
-
-### Usage
-
-```javascript
-const skiffCrypto = require('@skiff-org/skiff-crypto');
-// or, `import * as skiffCrypto from '@skiff-org/skiff-crypto';`
+```ts
+import * as skiffCrypto from 'skiff-crypto';
 
 // Asymmetric encryption example
 const plaintext = 'Hello, skiff-crypto!';
@@ -73,24 +52,10 @@ console.log('SHA-512 hash example', skiffCrypto.generateHash('Hello, skiff-crypt
 
 Detailed usage instructions and more examples are available in the [API documentation](https://skiff.com/skiff-crypto).
 
-## Documentation
-
-Comprehensive documentation is available in the [documentation site](https://skiff.com/skiff-crypto) for the repository.
-
-## Contributing
-
-Contributions to skiff-crypto are very much appreciated! Please see our [Contributing Guidelines](https://github.com/skiff-org/skiff-apps/blob/main/libs/skiff-crypto/CONTRIBUTING.md) for details on how you can contribute.
-
 ## Security
 
-Cryptography is a sensitive domain. While skiff-crypto has been audited and built using widely-used, audited libraries, we urge you to use this library responsibly. Please have a sound understanding of the underlying principles of cryptography before implementation. Security issues or questions can be sent to [security@skiff.org](mailto:security@skiff.org).
+Cryptography is a sensitive domain. While skiff-crypto has been audited and built using widely-used, audited libraries, we urge you to use this library responsibly. Please have a sound understanding of the underlying principles of cryptography before implementation.
 
 ## License
 
-skiff-crypto is [MIT licensed](https://github.com/skiff-org/skiff-apps/blob/main/libs/skiff-crypto/LICENSE.txt). You're encouraged to use and adapt the code for your projects, given that you respect the original copyright and abide by the license terms.
-
-## Contact
-
-For questions, suggestions, or a friendly chat, feel free to contact us at [hello@skiff.org](mailto:hello@skiff-crypto.org). For bug reports or issues, please use our [Github Issues page](https://github.com/skiff-org/skiff-apps/issues).
-
-Enjoy secure coding!
+skiff-crypto is [MIT licensed](./LICENSE.txt). You're encouraged to use and adapt the code for your projects, given that you respect the original copyright and abide by the license terms.
