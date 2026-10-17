@@ -1,4 +1,3 @@
-// NOTE: Duplicated in skiff-prosemirror
 
 /** Prevents the `beforeinput` event, so that the `input` doesn't happen. */
 const preventTheEvent = (event: InputEvent): void => {
