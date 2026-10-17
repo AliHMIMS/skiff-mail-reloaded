@@ -10,8 +10,6 @@
   "sortPackageJson": false,
   "ignorePatterns": [
     "server/**",
-    "libs/skiff-ics/**",
-    "libs/skiff-prosemirror/**",
     "libs/skiff-front-graphql/generated/**",
     "libs/skiff-graphql/src/types.ts",
     "libs/skiff-graphql/src/completeSchema.graphql",

@@ -53,8 +53,6 @@
     "**/dist-next/**",
     ".tools/**",
     "server/**",
-    "libs/skiff-ics/**",
-    "libs/skiff-prosemirror/**",
     "libs/skiff-front-graphql/generated/**",
     "libs/skiff-graphql/src/types.ts",
     "**/generated/protos/**"
