@@ -1,4 +1,6 @@
-import { ApolloClient, ApolloError, NormalizedCacheObject } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
+import { getGraphQLErrors } from '../../../apollo/errorUtils';
+import { ApolloClient } from '@apollo/client';
 import { Dropdown, DropdownItem, DropdownItemColor, Icon, IconText } from 'nightwatch-ui';
 import React, { useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -17,7 +19,7 @@ interface EmailAliasOptionsProps {
   includeDeleteOption: boolean;
   userID: string;
   deleteAlias: () => void;
-  client?: ApolloClient<NormalizedCacheObject>;
+  client?: ApolloClient;
   onSetDefaultAlias?: (newValue: string) => void;
   openSettings?: (page: SettingsPage) => void;
   setSelectedAddress?: (address: string | undefined) => void;
@@ -105,9 +107,7 @@ const EmailAliasOptions: React.FC<EmailAliasOptionsProps> = ({
         body: `${alias} is now the catch-all address for ${currentAliasDomain}.`
       });
     } catch (e) {
-      // Typescript won't allow us to annotate `e` as ApolloError above, so
-      // we cast it below
-      const code = (e as ApolloError)?.graphQLErrors?.[0]?.extensions?.code as PaywallErrorCode;
+      const code = getGraphQLErrors(e)[0]?.extensions?.code as PaywallErrorCode;
       if (isPaywallErrorCode(code)) {
         setPaywallErrorCode(code);
         return;

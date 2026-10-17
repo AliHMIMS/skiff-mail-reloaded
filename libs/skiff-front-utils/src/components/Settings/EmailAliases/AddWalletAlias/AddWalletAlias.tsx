@@ -1,4 +1,5 @@
-import { ApolloClient, ApolloError, NormalizedCacheObject } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { Keplr } from '@keplr-wallet/types/build/wallet/keplr';
 import {
   Button,
@@ -95,7 +96,7 @@ interface AddWalletAliasProps {
   requestHcaptchaToken: () => Promise<string>;
   includeDeleteOption: boolean;
   walletAliasesWithName: WalletAliasWithName[];
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   setSelectedAddress: (selectedAddress: string | undefined) => void;
   selectedAddress?: string;
 }
@@ -137,7 +138,7 @@ export const AddWalletAlias = ({
 
   const [isAddingWallet, setIsAddingWallet] = useState(initialIsAddingWallet);
 
-  const handleAddWalletError = (error: ApolloError) => {
+  const handleAddWalletError = (error: ErrorLike) => {
     console.error(error.message);
     enqueueToast({
       title: 'Failed to add wallet',
@@ -170,7 +171,7 @@ export const AddWalletAlias = ({
     if (walletURL) window.open(walletURL, '_blank');
   };
 
-  const addWallet = async (providerName: WalletProvider, client: ApolloClient<NormalizedCacheObject>) => {
+  const addWallet = async (providerName: WalletProvider, client: ApolloClient) => {
     const isEth = isEthProvider(providerName);
     const isSol = isSolProvider(providerName);
     const isCosmos = isCosmosProvider(providerName);
@@ -239,7 +240,7 @@ export const AddWalletAlias = ({
         }
       });
     } catch (e: any) {
-      handleAddWalletError(e as ApolloError);
+      handleAddWalletError(e as ErrorLike);
     }
     setIsAddingWallet((prev) => ({ ...prev, [providerName]: false }));
   };

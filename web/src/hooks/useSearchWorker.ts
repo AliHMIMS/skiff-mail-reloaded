@@ -181,7 +181,7 @@ const indexSkemails = async (currentUserID: string, indexOnThreadContentUpdatedA
         },
         fetchPolicy: 'no-cache'
       });
-      if (!data.mailbox?.threads) {
+      if (!data?.mailbox?.threads) {
         break;
       }
       const { threads, pageInfo } = data.mailbox;

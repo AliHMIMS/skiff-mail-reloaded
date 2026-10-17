@@ -1,4 +1,5 @@
-import { ApolloError } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
+import type { ErrorLike } from '@apollo/client';
 import { motion, useAnimation } from 'framer-motion';
 import {
   ButtonGroup,
@@ -384,12 +385,12 @@ const ManageCustomDomainRow: React.FC<ManageCustomDomainRowProps> = ({
     } catch (e) {
       setShowDeleteDomain(false);
       if (
-        e instanceof ApolloError &&
-        (isApolloLogicErrorType(e.graphQLErrors[0], CustomDomainIsDefaultAliasError) ||
-          isApolloLogicErrorType(e.graphQLErrors[0], CustomDomainIsInAllAliasesError))
+        CombinedGraphQLErrors.is(e) &&
+        (isApolloLogicErrorType(e.errors[0], CustomDomainIsDefaultAliasError) ||
+          isApolloLogicErrorType(e.errors[0], CustomDomainIsInAllAliasesError))
       ) {
         const failureDescription = `Failed to delete because${
-          isApolloLogicErrorType(e.graphQLErrors[0], CustomDomainIsDefaultAliasError)
+          isApolloLogicErrorType(e.errors[0], CustomDomainIsDefaultAliasError)
             ? ' an organization member has this domain in their default alias. Change the default alias and then try again.'
             : ' an organization member has all of their aliases on this domain. Provision a new alias for them and try again.'
         }`;
@@ -439,7 +440,7 @@ const ManageCustomDomainRow: React.FC<ManageCustomDomainRowProps> = ({
       await addCustomDomainAlias(newAlias, customDomain.domain);
       closeAliasModal();
     } catch (e: any) {
-      const { message } = e as ApolloError;
+      const { message } = e as ErrorLike;
       setError(message);
     }
   };
@@ -537,8 +538,8 @@ const ManageCustomDomainRow: React.FC<ManageCustomDomainRowProps> = ({
       await setCatchallAddress({ variables: { request: { domainID, emailAlias } } });
       void refetch();
     } catch (e) {
-      if (e instanceof ApolloError) {
-        const paywallErrorCode = getPaywallErrorCode(e.graphQLErrors);
+      if (CombinedGraphQLErrors.is(e)) {
+        const paywallErrorCode = getPaywallErrorCode(e.errors);
         if (paywallErrorCode) {
           openPaywallModal(paywallErrorCode);
           return;

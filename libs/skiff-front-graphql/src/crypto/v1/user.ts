@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloQueryResult, FetchResult, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { Signed } from '@spliterati/threshold';
 import { encode as encodeBase64 } from '@stablelib/base64';
 // eslint-disable-next-line max-classes-per-file
@@ -356,12 +356,12 @@ export function decryptPrivateDocumentData(encryptedDocumentData: string, privat
  * @returns {Promise<string>} Encrypted user recovery data.
  */
 export async function getRecoveryDataFromUsername(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   username: string,
   emailPasscode?: string,
   isNotLoggedIn?: boolean
 ): Promise<string | undefined> {
-  const response: ApolloQueryResult<GetRecoveryDataQuery> = await client.query({
+  const response = await client.query<GetRecoveryDataQuery>({
     query: GetRecoveryDataDocument,
     variables: {
       request: {
@@ -390,7 +390,7 @@ export function encryptPrivateDocumentData(userData: User) {
  * Upload a user's private encrypted document data.
  * @param {User} userData - User object.
  */
-export async function uploadDocumentData(userData: User, client: ApolloClient<NormalizedCacheObject>) {
+export async function uploadDocumentData(userData: User, client: ApolloClient) {
   const encryptedDocumentData: string = encryptPrivateDocumentData(userData);
   // Get signature
   const signature: string = createDetachedSignatureAsymmetric(
@@ -399,7 +399,7 @@ export async function uploadDocumentData(userData: User, client: ApolloClient<No
     SignatureContext.DocumentData
   );
   // Send request to server
-  const docDataResponse: FetchResult<UpdateDocumentDataMutation> = await client.mutate({
+  const docDataResponse = await client.mutate<UpdateDocumentDataMutation>({
     mutation: UpdateDocumentDataDocument,
     variables: {
       request: {
@@ -433,7 +433,7 @@ function formatShare(share: Uint8Array): string {
  */
 export async function uploadRecoveryData(
   userData: User,
-  client: ApolloClient<NormalizedCacheObject>
+  client: ApolloClient
 ): Promise<{
   recoveryPaperShare: string;
   recoveryBrowserShare: string;
@@ -556,7 +556,7 @@ export async function uploadRecoveryData(
  * @param {User} userID - UserID for checking enabled/disabled.
  * @returns {boolean | string} Returns false if disabled; otherwise returns _encrypted_ MFA secret.
  */
-export async function checkMFAEnabled(client: ApolloClient<NormalizedCacheObject>, userID: UserID) {
+export async function checkMFAEnabled(client: ApolloClient, userID: UserID) {
   const response = await client.query<GetUserMfaQuery, GetUserMfaQueryVariables>({
     query: GetUserMfaDocument,
     variables: {
@@ -571,7 +571,7 @@ export async function checkMFAEnabled(client: ApolloClient<NormalizedCacheObject
 }
 
 interface DisableMfaRequestVariables {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   loginSrpRequest: LoginSrpRequest;
   disableTotp: boolean;
   credentialID?: string;
@@ -609,7 +609,7 @@ export async function disableMfa(request: DisableMfaRequestVariables) {
  * @returns {{ status, backupCodes }} Status from enrollment and backup MFA codes received from server
  */
 export async function enrollMfa(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   userData: User,
   dataMFA: string,
   loginSrpRequest: LoginSrpRequest
@@ -646,7 +646,7 @@ export async function enrollMfa(
  * @returns {{ status, backupCodes }} Request status and backup MFA codes received from server
  */
 export async function regenerateMfaBackupCodes(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   userData: User,
   loginSrpRequest: LoginSrpRequest
 ): Promise<{ status: RequestStatus; backupCodes: string[] } | undefined> {

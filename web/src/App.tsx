@@ -1,4 +1,4 @@
-import { ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client/react';
 import isPropValid from '@emotion/is-prop-valid';
 import { FloatingDelayGroup } from '@floating-ui/react-dom-interactions';
 import { withLDProvider } from 'launchdarkly-react-client-sdk';

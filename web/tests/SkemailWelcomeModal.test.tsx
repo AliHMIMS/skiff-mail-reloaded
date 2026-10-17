@@ -1,5 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
-import { MockedProvider } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -67,7 +68,7 @@ describe('SkemailWelcomeModal', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (window as any).ethereum = {};
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <Provider store={createStore()}>
           <SkemailWelcomeModal />
         </Provider>
@@ -82,7 +83,7 @@ describe('SkemailWelcomeModal', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (window as any).ethereum = {};
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <Provider store={createStore()}>
           <SkemailWelcomeModal />
         </Provider>
@@ -99,7 +100,7 @@ describe('SkemailWelcomeModal', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     (window as any).ethereum = {};
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <Provider store={createStore()}>
           <SkemailWelcomeModal />
         </Provider>

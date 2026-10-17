@@ -60,8 +60,8 @@ export default function useDefaultEmailAlias(
       },
       errorPolicy: 'all'
     });
-    if (res.errors) {
-      console.error('Failed to set default alias', res.errors);
+    if (res.error) {
+      console.error('Failed to set default alias', res.error);
       return;
     }
     await refetch();

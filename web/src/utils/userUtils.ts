@@ -14,6 +14,7 @@ import {
   StoreWorkspaceEventMutationVariables,
   USER_NOT_FOUND,
   UpdateDisplayNameDocument,
+  UpdateDisplayNameMutation,
   UserID,
   models,
   useGetSubscriptionInfoQuery
@@ -134,7 +135,7 @@ export async function fetchUserProfileDataFromIDs(userIDs: Array<string>) {
     }
   });
 
-  const { users } = profileDataResponse.data;
+  const users = profileDataResponse.data?.users;
 
   if (!users) {
     console.error('FetchUsersPublicData: Request failed.');
@@ -152,7 +153,7 @@ export async function fetchUserProfileDataFromIDs(userIDs: Array<string>) {
  * @returns {RequestStatus} - gql mutation status
  */
 export async function setDisplayName(userID: UserID, displayName: string): Promise<RequestStatus> {
-  const updateResponse = await client.mutate({
+  const updateResponse = await client.mutate<UpdateDisplayNameMutation>({
     mutation: UpdateDisplayNameDocument,
     variables: {
       request: {
@@ -165,11 +166,10 @@ export async function setDisplayName(userID: UserID, displayName: string): Promi
     refetchQueries: [{ query: GetUsersProfileDataDocument, variables: { request: { userIDs: [userID] } } }]
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  const { status } = updateResponse.data.updateDisplayName;
+  const status = updateResponse.data?.updateDisplayName.status;
   if (status !== RequestStatus.Success) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return status;
+    return status ?? RequestStatus.Failed;
   }
 
   // trigger local state update
@@ -232,8 +232,8 @@ export const getSubscriptionPlan = async () => {
 
   const tierName = res.data?.currentUser?.subscriptionInfo.subscriptionPlan;
   const isCryptoSubscription = res.data?.currentUser?.subscriptionInfo.isCryptoSubscription;
-  const isAppleSubscription = res.data.currentUser?.subscriptionInfo.isAppleSubscription;
-  const isGoogleSubscription = res.data.currentUser?.subscriptionInfo.isGoogleSubscription;
+  const isAppleSubscription = res.data?.currentUser?.subscriptionInfo.isAppleSubscription;
+  const isGoogleSubscription = res.data?.currentUser?.subscriptionInfo.isGoogleSubscription;
   const activeSubscription = tierName
     ? SubscriptionPlan[tierName as keyof typeof SubscriptionPlan]
     : SubscriptionPlan.Free;

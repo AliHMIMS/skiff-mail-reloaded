@@ -1,3 +1,4 @@
+import { useQueryCallbacks } from 'skiff-front-utils';
 import { FilledVariant, IconText, ThemeMode, TypographyWeight } from 'nightwatch-ui';
 import { SnackbarKey } from 'notistack';
 import React, { useCallback, useEffect } from 'react';
@@ -28,12 +29,16 @@ export const ImportAndSuggestionsCompleteToast: React.FC = () => {
 
   const [, setHideImportComplete] = useLocalSetting(StorageTypes.HIDE_IMPORT_COMPLETE);
 
-  const { data: silenceSenderSuggestionsData, loading } = useGetSilenceSenderSuggestionsQuery({
-    fetchPolicy: 'no-cache', // get the most up to date suggestions
-    onCompleted: (result) => {
-      client.cache.updateQuery({ query: GetSilenceSenderSuggestionsDocument }, () => result);
+  const { data: silenceSenderSuggestionsData, loading } = useQueryCallbacks(
+    useGetSilenceSenderSuggestionsQuery({
+      fetchPolicy: 'no-cache' // get the most up to date suggestions
+    }),
+    {
+      onCompleted: (result) => {
+        client.cache.updateQuery({ query: GetSilenceSenderSuggestionsDocument }, () => result);
+      }
     }
-  });
+  );
   const { silenceSenderDomains, silenceSenderIndividuals } = silenceSenderSuggestionsData?.silenceSenderSuggestions || {
     silenceSenderDomains: [],
     silenceSenderIndividuals: []

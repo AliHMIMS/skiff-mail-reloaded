@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { requestNotificationPermissions } from 'skiff-utils';
 
 import { NotificationPermissions, registerNotificationServiceWorker } from '../utils';
@@ -7,7 +7,7 @@ import { NotificationPermissions, registerNotificationServiceWorker } from '../u
  * Register the service worker and subscribe a user to push notifications for Mail.
  */
 interface UseEnableMailPushNotificationsOptions {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
 }
 export default function useEnableMailPushNotifications({ client }: UseEnableMailPushNotificationsOptions) {
   const enableNotifications = async () => {

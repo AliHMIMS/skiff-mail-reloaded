@@ -1,3 +1,5 @@
+import { getResultErrors } from '../../../apollo/errorUtils';
+import { useQueryCallbacks } from '../../../hooks/useQueryCallbacks';
 import dayjs from 'dayjs';
 import isEqual from 'lodash/isEqual';
 import { Icon, IconText, InputField } from 'nightwatch-ui';
@@ -139,7 +141,7 @@ const ContactsTable = (props: ContactsTableProps) => {
     loading,
     error,
     refetch
-  } = useGetAllCurrentUserContactsQuery({
+  } = useQueryCallbacks(useGetAllCurrentUserContactsQuery(), {
     onError: (err) => {
       console.error('Failed to load contacts', err);
     }
@@ -449,13 +451,14 @@ const ContactsTable = (props: ContactsTableProps) => {
 
     setIsBulkDeleting(true);
 
-    const { errors } = await deleteContactsMutation({
+    const { error } = await deleteContactsMutation({
       variables: {
         request: {
           contactIDs: selectedContactsIDs
         }
       }
     });
+    const errors = getResultErrors(error);
 
     if (errors) {
       console.error('Failed to delete contacts', errors);

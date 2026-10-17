@@ -1,3 +1,4 @@
+import { getResultErrors } from 'skiff-front-utils';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   useCreateUploadAvatarLinkMutation,
@@ -85,7 +86,8 @@ function EditProfileSettings() {
   };
 
   const createUploadAvatarLink = async (): Promise<CreateUploadAvatarLinkResponse | undefined> => {
-    const { data: avatarLink, errors } = await createUploadAvatarLinkMutation();
+    const { data: avatarLink, error } = await createUploadAvatarLinkMutation();
+    const errors = getResultErrors(error);
 
     if (errors || !avatarLink?.createUploadAvatarLink) {
       console.error('Error creating upload avatar link', errors);

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   GetUserIdDocument,
   GetUserIdQuery,
@@ -26,7 +26,7 @@ export interface InviteReturn {
   error: InviteErrorMessage | PaywallErrorCode | null;
 }
 
-const useShareDocument = (client: ApolloClient<NormalizedCacheObject>, docID: string) => {
+const useShareDocument = (client: ApolloClient, docID: string) => {
   const userData = useRequiredCurrentUserData();
   const { username: currentUsername, userID: currentUserID } = userData;
 
@@ -99,14 +99,14 @@ const useShareDocument = (client: ApolloClient<NormalizedCacheObject>, docID: st
         fetchPolicy: 'network-only'
       });
 
-      if (!userIDData.user?.userID) {
+      if (!userIDData?.user?.userID) {
         // need to find the user to continue
         console.error('Failed to update user permissions: userID not found');
         showErrorToast();
         return;
       }
 
-      userID = userIDData.user?.userID;
+      userID = userIDData?.user?.userID;
     }
 
     // Note: Using this rather than shareDocWithUsers

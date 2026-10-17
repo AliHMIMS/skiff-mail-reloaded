@@ -1,4 +1,5 @@
-import { ApolloClient, makeVar, NormalizedCacheObject, useReactiveVar } from '@apollo/client';
+import { ApolloClient, makeVar } from '@apollo/client';
+import { useReactiveVar } from '@apollo/client/react';
 import debounce from 'lodash-es/debounce';
 import omit from 'lodash-es/omit';
 import { models, uploadDocumentData } from 'skiff-front-graphql';
@@ -62,7 +63,7 @@ export const useRequiredCurrentUserData = () => {
  * Upload user private document data with a 200ms debounce delay
  */
 const debouncedUploadCurrentUserPrivateDocumentData = debounce(
-  (client: ApolloClient<NormalizedCacheObject>) => {
+  (client: ApolloClient) => {
     const userData = getCurrentUserData();
     if (!userData) {
       return;
@@ -80,11 +81,7 @@ const debouncedUploadCurrentUserPrivateDocumentData = debounce(
  * @param {UserID} userID user id
  * @param {string} publicKey user public key
  */
-export const saveVerifiedUserPublicKey = (
-  userID: string,
-  publicKey: string,
-  client: ApolloClient<NormalizedCacheObject>
-) => {
+export const saveVerifiedUserPublicKey = (userID: string, publicKey: string, client: ApolloClient) => {
   const userData = getCurrentUserData();
   if (!userData) {
     return;
@@ -110,7 +107,7 @@ export const saveVerifiedUserPublicKey = (
  * Revoke a user verified public key
  * @param {UserID} userID user id
  */
-export const purgeVerifiedUserPublicKey = (userID: string, client: ApolloClient<NormalizedCacheObject>) => {
+export const purgeVerifiedUserPublicKey = (userID: string, client: ApolloClient) => {
   const userData = getCurrentUserData();
   if (!userData) {
     return;
@@ -133,7 +130,7 @@ export const purgeVerifiedUserPublicKey = (userID: string, client: ApolloClient<
  * Used to identify the browser when trying to recover an account
  * @param {string} browserShare recovery browser share secret
  */
-export const setBrowserRecoveryShare = (browserShare: string, client: ApolloClient<NormalizedCacheObject>) => {
+export const setBrowserRecoveryShare = (browserShare: string, client: ApolloClient) => {
   const userData = requireCurrentUserData();
   saveCurrentUserData({
     ...userData,

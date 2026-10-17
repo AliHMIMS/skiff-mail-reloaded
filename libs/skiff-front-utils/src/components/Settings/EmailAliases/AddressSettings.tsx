@@ -2,7 +2,7 @@ import { Divider, Typography, TypographySize, TypographyWeight } from 'nightwatc
 import { useState } from 'react';
 import { isMobile } from 'react-device-detect';
 
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { useStoreWorkspaceEventMutation } from 'skiff-front-graphql';
 import { WorkspaceEventType } from 'skiff-graphql';
 import { PaywallErrorCode, StorageTypes, getCategorizedAliases } from 'skiff-utils';
@@ -51,7 +51,7 @@ const FullView = styled.div`
 `;
 
 interface AddressSettingsProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   openPaywallModal: (paywallErrorCode: PaywallErrorCode) => void;
   openSettings: (page: SettingsPage) => void;
 }

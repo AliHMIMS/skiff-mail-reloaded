@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
-import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { MockedResponse } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -169,7 +171,7 @@ describe('Compose', () => {
     };
     render(
       <Provider store={createStore(populateComposeContent)}>
-        <MockedProvider>
+        <MockedProvider localState={new LocalState()}>
           <DndProvider backend={HTML5Backend}>
             <Compose />
           </DndProvider>
@@ -208,7 +210,7 @@ describe('Compose', () => {
     };
     render(
       <Provider store={createStore(populateComposeContent)}>
-        <MockedProvider>
+        <MockedProvider localState={new LocalState()}>
           <DndProvider backend={HTML5Backend}>
             <Compose />
           </DndProvider>
@@ -248,7 +250,7 @@ describe('Compose', () => {
     };
     render(
       <Provider store={createStore(populateComposeContent)}>
-        <MockedProvider>
+        <MockedProvider localState={new LocalState()}>
           <DndProvider backend={HTML5Backend}>
             <Compose />
           </DndProvider>
@@ -287,7 +289,7 @@ describe('Compose', () => {
     };
     render(
       <Provider store={createStore(populateComposeContent)}>
-        <MockedProvider>
+        <MockedProvider localState={new LocalState()}>
           <DndProvider backend={HTML5Backend}>
             <Compose />
           </DndProvider>
@@ -320,7 +322,7 @@ describe('Compose', () => {
     };
     render(
       <Provider store={createStore(populateComposeContent)}>
-        <MockedProvider>
+        <MockedProvider localState={new LocalState()}>
           <DndProvider backend={HTML5Backend}>
             <Compose />
           </DndProvider>
@@ -389,7 +391,7 @@ describe('Compose', () => {
       },
       // Mock function to test that we called this mutation.
       // https://jkettmann.com/testing-apollo-how-to-test-if-a-mutation-was-called-with-mockedprovider
-      newData: vi.fn(() => ({ data: { sendMessage: {} } }))
+      result: vi.fn(() => ({ data: { sendMessage: {} } }))
     };
 
     const getCurrentUserEmailAliasesMock: MockedResponse = {
@@ -419,7 +421,10 @@ describe('Compose', () => {
 
     render(
       <Provider store={createStore(populateComposeContent)}>
-        <MockedProvider mocks={[sendMessageMock, getCurrentUserEmailAliasesMock, decryptionServicePublicKeyMock]}>
+        <MockedProvider
+          localState={new LocalState()}
+          mocks={[sendMessageMock, getCurrentUserEmailAliasesMock, decryptionServicePublicKeyMock]}
+        >
           <DndProvider backend={HTML5Backend}>
             <Compose />
           </DndProvider>
@@ -430,7 +435,7 @@ describe('Compose', () => {
     const sendButton = screen.getByTestId(ComposeDataTest.sendButton);
     await userEvent.click(sendButton);
 
-    await waitFor(() => expect(sendMessageMock.newData).toHaveBeenCalledTimes(1));
+    await waitFor(() => expect(sendMessageMock.result).toHaveBeenCalledTimes(1));
   });
 
   it('Can add attachment', async () => {
@@ -447,7 +452,7 @@ describe('Compose', () => {
     };
     render(
       <Provider store={createStore(populateComposeContent)}>
-        <MockedProvider>
+        <MockedProvider localState={new LocalState()}>
           <DndProvider backend={HTML5Backend}>
             <Compose />
           </DndProvider>

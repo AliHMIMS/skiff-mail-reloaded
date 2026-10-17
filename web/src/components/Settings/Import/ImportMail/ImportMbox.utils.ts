@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import axios from 'axios';
 import * as t from 'io-ts';
 import { ToastProps } from 'nightwatch-ui';
@@ -120,7 +120,7 @@ export const importFiles = async (
   dispatch: AppDispatch,
   enqueueToast: (toast: ToastProps) => void,
   onClose: () => void,
-  handleFileImportError: (err: ApolloError) => void
+  handleFileImportError: (err: CombinedGraphQLErrors) => void
 ) => {
   try {
     const fileIDs = uploadedFiles.map((uploadItem) => uploadItem.fileID).filter(filterExists);
@@ -146,7 +146,7 @@ export const importFiles = async (
     });
     onClose();
   } catch (err) {
-    if (err instanceof ApolloError) {
+    if (CombinedGraphQLErrors.is(err)) {
       handleFileImportError(err);
     }
   }

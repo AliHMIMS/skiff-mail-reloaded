@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import partition from 'lodash/partition';
 import { generateSymmetricKey, stringEncryptAsymmetric } from 'skiff-crypto';
 import { encryptDatagramV2 } from 'skiff-crypto';
@@ -91,7 +91,7 @@ const COMMON_CONSUMER_MAIL_DOMAINS = ['gmail.com', 'yahoo.com', 'hotmail.com', '
 
 const getPublicKeysFromEmailAliases = async (
   recipients: SendAddressRequest[],
-  client: ApolloClient<NormalizedCacheObject>
+  client: ApolloClient
 ): Promise<RecipientAndKey[]> => {
   const allAddresses = recipients.map((rec) => rec.address);
   // note - important to have the @, because someone could have an email like @myicloud.com
@@ -110,7 +110,7 @@ const getPublicKeysFromEmailAliases = async (
           fetchPolicy: 'no-cache'
         });
   const returnedData =
-    userFromEmailRes?.data.usersFromEmailAliasWithCatchall.map((user, i): RecipientAndKey => ({
+    userFromEmailRes?.data?.usersFromEmailAliasWithCatchall.map((user, i): RecipientAndKey => ({
       recipient: recipients[allAddresses.indexOf(emailAliases[i])],
       publicKey: user?.publicKey || null
     })) || [];
@@ -190,7 +190,7 @@ interface EncryptRecipientSessionKeysParams {
    */
   recipients: SendAddressRequest[];
   externalPublicKey: PublicKey;
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   isEncryptingToSelf?: boolean;
 }
 
@@ -269,7 +269,7 @@ export const encryptRecipientSessionKeys = async ({
  */
 export const encryptMessage = async (
   request: EncryptMessageRequest,
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   customAttachmentTransformer?: (data: string, i: number) => Blob | File
 ): Promise<EncryptedMessageData> => {
   const {

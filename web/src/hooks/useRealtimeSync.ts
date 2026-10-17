@@ -29,7 +29,8 @@ async function refreshThreads(threadIDs: string[]) {
     variables: { threadIDs },
     fetchPolicy: 'no-cache'
   });
-  const fresh = data?.userThreads ?? [];
+  if (!data) return;
+  const fresh = data.userThreads;
   const cache = client.cache;
 
   // All Mail is a virtual folder the label diff below doesn't know about: drop threads that left it.

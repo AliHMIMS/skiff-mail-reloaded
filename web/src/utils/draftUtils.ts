@@ -1,3 +1,4 @@
+import { getResultErrors } from 'skiff-front-utils';
 import {
   generateSymmetricKey,
   decryptSymmetric,
@@ -75,10 +76,11 @@ export const parseAndDecryptDraft = (rawEncryptedDraft: string, userData: models
 
 export const getUserDrafts = async (userData: models.User) => {
   const draftThreads: Array<DraftInfo> = [];
-  const { data, errors } = await client.query<GetAllDraftsQuery, GetAllDraftsQueryVariables>({
+  const { data, error } = await client.query<GetAllDraftsQuery, GetAllDraftsQueryVariables>({
     query: GetAllDraftsDocument,
     errorPolicy: 'all'
   });
+  const errors = getResultErrors(error);
 
   if (errors) {
     console.error('Error fetching drafts', errors);

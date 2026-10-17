@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   GetCheckoutSessionUrlOrStripeUpdateStatusDocument,
   GetCheckoutSessionUrlOrStripeUpdateStatusQuery,
@@ -13,7 +13,7 @@ import { CheckoutSession, RequestStatus, SubscriptionInterval, SubscriptionPlan 
  * @returns {CheckoutSession} CheckoutSession, including status and possibly url.
  */
 export const getCheckoutSessionOrUpdatePlan = async (
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   subscriptionPlan: SubscriptionPlan,
   subscriptionInterval: SubscriptionInterval,
   redirectURL: string

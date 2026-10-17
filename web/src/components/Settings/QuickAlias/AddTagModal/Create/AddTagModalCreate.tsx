@@ -13,7 +13,6 @@ import { GetUserQuickAliasDomainsDocument, useCreateQuickAliasDomainMutation } f
 import styled from 'styled-components';
 
 import { getRandomQuickAliasTag, useQuickAliasForUserDefaultDomain } from 'skiff-front-utils';
-import { ApolloError } from '@apollo/client';
 
 const TextSection = styled.div`
   display: flex;
@@ -164,7 +163,7 @@ export default function AddTagModalCreate(props: QuickAliasSplashProps) {
         setActivateLoading(false);
         onNext();
       } catch (e: any) {
-        setError((e as ApolloError).message || 'Domain is not available');
+        setError((e as Error).message || 'Domain is not available');
         setActivateLoading(false);
       }
     }

@@ -1,3 +1,4 @@
+import { useQueryCallbacks } from 'skiff-front-utils';
 import { NetworkStatus } from '@apollo/client';
 import { AnimatePresence } from 'framer-motion';
 import { useFlags } from 'launchdarkly-react-client-sdk';
@@ -283,15 +284,7 @@ export const Mailbox = () => {
   const { emailAliases: currentUserAliases, walletAliasesWithName, quickAliases } = useCurrentUserEmailAliases();
 
   // Fetch users referral credit info
-  const [fetchReferralCredits] = useGetCreditsLazyQuery({
-    variables: {
-      request: {
-        entityID: userID,
-        entityType: EntityType.User,
-        include: [CreditInfo.CreditsFromReferrals]
-      }
-    }
-  });
+  const [fetchReferralCredits] = useGetCreditsLazyQuery();
   const [getLastViewedReferralCredit] = useGetLastViewedReferralCreditLazyQuery();
   const [setLastViewedReferralCredit] = useSetLastViewedReferralCreditMutation();
 
@@ -328,31 +321,35 @@ export const Mailbox = () => {
   const threadIDsToFetch = uniq(
     resultThreadIds.slice(startingIndexToFetch, startingIndexToFetch + MAX_THREADS_TO_QUERY)
   );
-  const { refetch: refetchSearchThreads, networkStatus: searchThreadsNetworkStatus } = useGetThreadsFromIDsQuery({
-    variables: { threadIDs: threadIDsToFetch },
-    onCompleted: (data) => {
-      // Calculate the search results to render given the thread objects fetched from the server
-      const newResultsToRender =
-        resultEmailIds
-          .slice(startingIndexToFetch, startingIndexToFetch + MAX_THREADS_TO_QUERY)
-          .map((resultEmailId) => {
-            const threadID = searchResultEmails.find((result) => result.emailID === resultEmailId)?.threadID;
-            const thread = data?.userThreads?.find((t) => t?.threadID === threadID);
-            if (!thread) {
-              return undefined;
-            }
-            return { emailID: resultEmailId, thread };
-          })
-          .filter(filterExists) ?? [];
-      setResultsToRender((results) =>
-        results && startingIndexToFetch > 0
-          ? uniqBy([...results, ...newResultsToRender], (r) => r.emailID)
-          : newResultsToRender
-      );
-    },
-    skip: !resultThreadIds.length || !displayMobileSearchResults || !searchResultEmails,
-    notifyOnNetworkStatusChange: true
-  });
+  const { refetch: refetchSearchThreads, networkStatus: searchThreadsNetworkStatus } = useQueryCallbacks(
+    useGetThreadsFromIDsQuery({
+      variables: { threadIDs: threadIDsToFetch },
+      skip: !resultThreadIds.length || !displayMobileSearchResults || !searchResultEmails,
+      notifyOnNetworkStatusChange: true
+    }),
+    {
+      onCompleted: (data) => {
+        // Calculate the search results to render given the thread objects fetched from the server
+        const newResultsToRender =
+          resultEmailIds
+            .slice(startingIndexToFetch, startingIndexToFetch + MAX_THREADS_TO_QUERY)
+            .map((resultEmailId) => {
+              const threadID = searchResultEmails.find((result) => result.emailID === resultEmailId)?.threadID;
+              const thread = data?.userThreads?.find((t) => t?.threadID === threadID);
+              if (!thread) {
+                return undefined;
+              }
+              return { emailID: resultEmailId, thread };
+            })
+            .filter(filterExists) ?? [];
+        setResultsToRender((results) =>
+          results && startingIndexToFetch > 0
+            ? uniqBy([...results, ...newResultsToRender], (r) => r.emailID)
+            : newResultsToRender
+        );
+      }
+    }
+  );
 
   useEffect(() => {
     void refetchSearchThreads();
@@ -408,48 +405,53 @@ export const Mailbox = () => {
     refetch,
     networkStatus,
     error
-  } = useMailboxQuery({
-    variables: {
-      request: {
-        ...mailboxRequestBase,
-        polling: true
-      }
-    },
-    skip: !label,
-    pollInterval: getPollInterval(),
-    notifyOnNetworkStatusChange: true,
-    onCompleted: (loadedData) => {
-      // Only run frontend filtering logic on poll or refetch.
-      // Do not run if we are just paginating, as we are not fetching for newly received threads
-      const msSinceLastClientSideMailFiltersRun = Date.now() - lastTimestampRanClientSideFilters.current;
-      // For the Imports mailbox, only rerun FE filtering if we're not paginating and enough
-      // time has passed since the last run. Otherwise, we refetch too many times as new
-      // emails are constantly coming in during the import
-      const shouldRunClientSideMailFilters = isImports
-        ? !isPaginating.current && msSinceLastClientSideMailFiltersRun >= POLL_INTERVAL_IN_MS
-        : !isPaginating.current || msSinceLastClientSideMailFiltersRun >= POLL_INTERVAL_IN_MS * 2;
-      if (shouldRunClientSideMailFilters) {
-        void runClientSideMailFilters()?.then(async (numFiltered) => {
-          // Do not refetch if the import is in progress
-          if (numFiltered && numFiltered > 0) {
-            console.log(`Filtered ${numFiltered} emails, requerying`);
-            setIsRefreshing(true);
-            await refetchThreads();
-            setIsRefreshing(false);
-          }
-        });
-        lastTimestampRanClientSideFilters.current = Date.now();
-      }
+  } = useQueryCallbacks(
+    useMailboxQuery({
+      variables: {
+        request: {
+          ...mailboxRequestBase,
+          polling: true
+        }
+      },
+      skip: !label,
+      pollInterval: getPollInterval(),
+      notifyOnNetworkStatusChange: true
+    }),
+    {
+      onCompleted: (loadedData) => {
+        // Only run frontend filtering logic on poll or refetch.
+        // Do not run if we are just paginating, as we are not fetching for newly received threads
+        const msSinceLastClientSideMailFiltersRun = Date.now() - lastTimestampRanClientSideFilters.current;
+        // For the Imports mailbox, only rerun FE filtering if we're not paginating and enough
+        // time has passed since the last run. Otherwise, we refetch too many times as new
+        // emails are constantly coming in during the import
+        const shouldRunClientSideMailFilters = isImports
+          ? !isPaginating.current && msSinceLastClientSideMailFiltersRun >= POLL_INTERVAL_IN_MS
+          : !isPaginating.current || msSinceLastClientSideMailFiltersRun >= POLL_INTERVAL_IN_MS * 2;
+        if (shouldRunClientSideMailFilters) {
+          void runClientSideMailFilters()?.then(async (numFiltered) => {
+            // Do not refetch if the import is in progress
+            if (numFiltered && numFiltered > 0) {
+              console.log(`Filtered ${numFiltered} emails, requerying`);
+              setIsRefreshing(true);
+              await refetchThreads();
+              setIsRefreshing(false);
+            }
+          });
+          lastTimestampRanClientSideFilters.current = Date.now();
+        }
 
-      // Remove loaded emails from pending replies
-      const allEmailIDs = loadedData.mailbox?.threads.flatMap((thread) => thread.emails.map((email) => email.id)) ?? [];
-      const loadedPendingReplyEmailIDs = pendingReplies
-        .filter((pendingReply) => allEmailIDs.includes(pendingReply.email.id))
-        .map((pendingReply) => pendingReply.email.id);
-      if (loadedPendingReplyEmailIDs.length)
-        dispatch(skemailMailboxReducer.actions.removeFromPendingReplies({ emailIDs: loadedPendingReplyEmailIDs }));
+        // Remove loaded emails from pending replies
+        const allEmailIDs =
+          loadedData.mailbox?.threads.flatMap((thread) => thread.emails.map((email) => email.id)) ?? [];
+        const loadedPendingReplyEmailIDs = pendingReplies
+          .filter((pendingReply) => allEmailIDs.includes(pendingReply.email.id))
+          .map((pendingReply) => pendingReply.email.id);
+        if (loadedPendingReplyEmailIDs.length)
+          dispatch(skemailMailboxReducer.actions.removeFromPendingReplies({ emailIDs: loadedPendingReplyEmailIDs }));
+      }
     }
-  });
+  );
 
   if (error) {
     console.error(`Failed to load.`, error);
@@ -740,7 +742,11 @@ export const Mailbox = () => {
         dispatch(skemailModalReducer.actions.setOpenModal({ type: ModalType.SkemailWelcome }));
       } else {
         // Else check to see if available referral credits should be displayed.
-        const { data: referralCreditsQuery } = await fetchReferralCredits();
+        const { data: referralCreditsQuery } = await fetchReferralCredits({
+          variables: {
+            request: { entityID: userID, entityType: EntityType.User, include: [CreditInfo.CreditsFromReferrals] }
+          }
+        });
         const referralCreditAmount = referralCreditsQuery?.credits?.credits.find(
           (credit) => credit.info === CreditInfo.CreditsFromReferrals
         )?.amount ?? { cents: 0, skemailStorageBytes: '0', editorStorageBytes: '0' };

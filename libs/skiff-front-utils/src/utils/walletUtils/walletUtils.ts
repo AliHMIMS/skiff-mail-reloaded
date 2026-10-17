@@ -5,7 +5,7 @@ import { Icon } from 'nightwatch-ui';
 import { isENSName, isICNSName, isJunoAddress, isSolanaAddress } from 'skiff-utils';
 import isEthereumAddress from 'validator/lib/isEthereumAddress';
 
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   CreateWalletChallengeSkemailDocument,
   CreateWalletChallengeSkemailMutation,
@@ -66,7 +66,7 @@ export function isCosmosHubAddress(emailAlias: string | undefined): boolean {
  * @param {string} walletAddress - Address to verify.
  * @returns {string} Token to sign.
  */
-export async function getSkemailChallengeToken(walletAddress: string, client: ApolloClient<NormalizedCacheObject>) {
+export async function getSkemailChallengeToken(walletAddress: string, client: ApolloClient) {
   const response = await client.mutate<
     CreateWalletChallengeSkemailMutation,
     CreateWalletChallengeSkemailMutationVariables
@@ -87,7 +87,7 @@ export async function getSkemailChallengeToken(walletAddress: string, client: Ap
  * @param provider the Ethereum provider to connect to
  * @returns the challenge and challenge signature
  */
-export const connectEthWallet = async (provider: any, client: ApolloClient<NormalizedCacheObject>) => {
+export const connectEthWallet = async (provider: any, client: ApolloClient) => {
   // connect wallet
   const userAddr = await getEthAddr(provider);
   if (!userAddr) {
@@ -105,7 +105,7 @@ export const connectEthWallet = async (provider: any, client: ApolloClient<Norma
  * @param provider the Solana provider to connect to
  * @returns the challenge and challenge signature
  */
-export const connectSolWallet = async (provider: any, client: ApolloClient<NormalizedCacheObject>) => {
+export const connectSolWallet = async (provider: any, client: ApolloClient) => {
   // connect to wallet
   const response = await provider.connect();
   const publicKey: string = response.publicKey.toString();
@@ -121,7 +121,7 @@ export const connectSolWallet = async (provider: any, client: ApolloClient<Norma
   return { challenge, challengeSignature: base58.encode(signatureData.signature) };
 };
 
-export const connectCosmosWallet = async (provider: Keplr, client: ApolloClient<NormalizedCacheObject>) => {
+export const connectCosmosWallet = async (provider: Keplr, client: ApolloClient) => {
   const { bech32Address: userAddr } = await provider.getKey(COSMOS_CHAIN_ID);
   if (!userAddr) {
     throw new Error('Could not get cosmos address');

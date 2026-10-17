@@ -1,4 +1,5 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { getResultErrors } from '../../apollo/errorUtils';
+import { ApolloClient } from '@apollo/client';
 import {
   models,
   GetDocumentFullDocument,
@@ -76,7 +77,7 @@ export function convertLinkDataIntoURL(decryptedLinkKey: string, linkDocID: stri
  * @returns {Promise<boolean>} Success/failure status.
  */
 export async function shareDocWithSkiffUser(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   userData: models.User,
   docID: string,
   clientPermissionEntries: Array<ClientPermissionEntry>,
@@ -175,7 +176,7 @@ export const canShareUsers = (userPrivilege: PermissionLevel | undefined): boole
  * @param refetchDocID - Document ID to refetch after sharing.
  */
 async function shareDocWithNonSkiffUser(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   docID: string,
   email: string,
   permissionLevel: PermissionLevel,
@@ -191,7 +192,7 @@ async function shareDocWithNonSkiffUser(
     throw new Error('Could not create link');
   }
   const linkURL = convertLinkDataIntoURL(redownloadedDoc?.link.decryptedLinkKey, docID);
-  const { data, errors } = await client.mutate<AddPendingInviteMutation, AddPendingInviteMutationVariables>({
+  const { data, error } = await client.mutate<AddPendingInviteMutation, AddPendingInviteMutationVariables>({
     mutation: AddPendingInviteDocument,
     variables: {
       request: {
@@ -204,6 +205,7 @@ async function shareDocWithNonSkiffUser(
     errorPolicy: 'all',
     refetchQueries: [{ query: GetDocumentFullDocument, variables: { request: { docID: refetchDocID || docID } } }]
   });
+  const errors = getResultErrors(error);
   if (errors) {
     const paywallErrorCode = getPaywallErrorCode(errors);
     if (paywallErrorCode) throw errors[0];
@@ -217,7 +219,7 @@ async function shareDocWithNonSkiffUser(
 }
 
 export async function getUsersToShare(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   users: string[],
   activeDoc: ReturnType<typeof useDocumentWithoutContent>,
   activeOrg: ReturnType<typeof useCurrentOrganization>
@@ -261,7 +263,7 @@ export async function getUsersToShare(
         variables: { request: { username: usernameToCheck } },
         fetchPolicy: 'network-only'
       });
-      if (!data.user?.userID) {
+      if (!data?.user?.userID) {
         // need to find the user to continue
         continue;
       }
@@ -299,7 +301,7 @@ export async function getUsersToShare(
 }
 
 export async function shareDocWithUsers(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   shareDocRequests: ShareDocWithUsersRequest[],
   activeDoc: ReturnType<typeof useDocumentWithoutContent>,
   activeOrg: ReturnType<typeof useCurrentOrganization>,
@@ -395,7 +397,7 @@ export async function shareDocWithUsers(
  * @param {ExpireEntry} expireEntry - new expiration date settings (date, userID, and permission level)
  */
 export async function changeUserExpiry(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   userData: models.User,
   docID: string,
   expireEntry: ExpireEntry

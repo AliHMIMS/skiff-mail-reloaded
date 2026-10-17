@@ -1,5 +1,4 @@
 // TODO (EMAIL-1699): deduplicate utils
-import { NormalizedCacheObject } from '@apollo/client';
 import { ApolloClient } from '@apollo/client/core';
 import {
   CreateWalletChallengeSkemailDocument,
@@ -71,7 +70,7 @@ export async function getENSNameFromEthAddr(ethAddr: string) {
  */
 export async function getAndSignChallenge(
   ethAddr: string,
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   provider?: any
 ): Promise<{ token?: string; signedToken?: string }> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 
 import { SelectItemType } from './UpgradeModal.constants';
 
@@ -8,7 +8,7 @@ export interface ExceededItem {
 }
 
 export interface UpgradeModalProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   description: string;
   open: boolean;
   onClose: () => void;

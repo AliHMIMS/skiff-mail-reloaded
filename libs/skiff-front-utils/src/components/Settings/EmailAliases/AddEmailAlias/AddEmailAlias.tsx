@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { PaywallErrorCode } from 'skiff-utils';
 import { useRequiredCurrentUserData } from '../../../../apollo';
 import { useAllowAddCustomDomainAliases, useAvailableCustomDomains, useDeleteEmailAlias } from '../../../../hooks';
@@ -12,7 +12,7 @@ interface AddEmailAliasProps {
   requestHcaptchaToken: () => Promise<string>;
   includeDeleteOption: boolean;
   setSelectedAddress: (address: string | undefined) => void;
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   openSettings: (page: SettingsPage) => void;
   openPaywallModal: (paywallErrorCode: PaywallErrorCode) => void;
   selectedAddress: string | undefined;

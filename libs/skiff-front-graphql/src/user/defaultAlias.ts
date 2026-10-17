@@ -29,7 +29,7 @@ export const getAliasesForUser = async (routerURI: string, userID: string) => {
       fetchPolicy: 'network-only',
       errorPolicy: 'all'
     });
-    const aliases = res.data.currentUser?.emailAliases;
+    const aliases = res.data?.currentUser?.emailAliases;
     return aliases;
   } catch (error) {
     console.error(error);

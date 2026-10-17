@@ -1,4 +1,6 @@
-import { ApolloClient, ApolloError, NormalizedCacheObject } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
+import { getGraphQLErrors } from '../../../apollo/errorUtils';
+import { ApolloClient } from '@apollo/client';
 import { useState } from 'react';
 import { isPaywallErrorCode, PaywallErrorCode } from 'skiff-utils';
 import styled from 'styled-components';
@@ -17,7 +19,7 @@ const EmailAliasesContainer = styled.div`
 `;
 
 interface EmailAliasesProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   userEmailAliases: string[];
   userID: string;
   hcaptchaElement: JSX.Element;
@@ -81,11 +83,9 @@ const EmailAliases = ({
       onReset();
       return true;
     } catch (e) {
-      // Typescript won't allow us to annotate `e` as ApolloError above, so
-      // we cast it below
-      const code = (e as ApolloError)?.graphQLErrors?.[0]?.extensions?.code as PaywallErrorCode;
+      const code = getGraphQLErrors(e)[0]?.extensions?.code as PaywallErrorCode;
       if (isPaywallErrorCode(code)) openPaywallModal(code);
-      else setPostSubmitError((e as ApolloError).message);
+      else setPostSubmitError((e as Error).message);
       return false;
     }
   };

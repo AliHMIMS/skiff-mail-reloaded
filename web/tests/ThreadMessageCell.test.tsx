@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { MockedProvider } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import dayjs from 'dayjs';
@@ -49,7 +50,7 @@ describe('ThreadMessageCell', () => {
 
   const wrapper = ({ children }) => (
     <Provider store={configureStore({ reducer })}>
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <SnackbarProvider maxSnack={7}>
           <DndProvider backend={HTML5Backend}>{children}</DndProvider>
         </SnackbarProvider>

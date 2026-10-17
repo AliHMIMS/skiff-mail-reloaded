@@ -5,7 +5,7 @@ import { isMobile } from 'react-device-detect';
 import { useCreateOrUpdateContactMutation } from 'skiff-front-graphql';
 
 import { useRequiredCurrentUserData } from '../../../apollo';
-import { useToast, useWarnBeforeUnloading } from '../../../hooks';
+import { useQueryCallbacks, useToast, useWarnBeforeUnloading } from '../../../hooks';
 import useGetAllContactsWithOrgMembers from '../../../hooks/useGetAllContactsWithOrgMembers';
 import TitleActionSection from '../TitleActionSection';
 
@@ -17,7 +17,7 @@ const ContactsImport = () => {
   const [isImporting, setIsImporting] = React.useState(false);
 
   // Graphql
-  const { refetch } = useGetAllContactsWithOrgMembers({
+  const { refetch } = useQueryCallbacks(useGetAllContactsWithOrgMembers(), {
     onError: (err) => {
       console.error('Failed to load contacts', err);
     }

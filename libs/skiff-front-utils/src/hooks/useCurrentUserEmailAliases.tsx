@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
 import { useEffect, useState } from 'react';
@@ -81,12 +81,12 @@ export const generateWalletAliases = (
   return generatedAliases;
 };
 
-export const getAllAliasesForCurrentUser = async (client: ApolloClient<NormalizedCacheObject>) => {
+export const getAllAliasesForCurrentUser = async (client: ApolloClient) => {
   const emailAliasesData = await client.query<CurrentUserEmailAliasesQuery, CurrentUserEmailAliasesQueryVariables>({
     query: CurrentUserEmailAliasesDocument,
     fetchPolicy: 'network-only' // make sure we don't get old values from the cache
   });
-  const receivedEmailAliases = emailAliasesData.data.currentUser?.emailAliases || [];
+  const receivedEmailAliases = emailAliasesData.data?.currentUser?.emailAliases || [];
 
   const generatedAliases: string[] = [];
   await Promise.all(

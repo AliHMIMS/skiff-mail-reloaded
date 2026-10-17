@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { createDetachedSignatureAsymmetric } from 'skiff-crypto';
 import {
   DeleteAccountDocument,
@@ -16,6 +16,7 @@ import {
   GetUsersProfileDataQueryVariables,
   USER_NOT_FOUND,
   UpdateDisplayNameDocument,
+  UpdateDisplayNameMutation,
   UserID,
   UsersFromEmailAliasDocument,
   UsersFromEmailAliasQuery,
@@ -184,7 +185,7 @@ export const userMatchesSearchQuery = (user: Pick<User, 'username' | 'publicData
  * @returns Array of userIDs. If the array is empty, this means that the given usernames do not exist.
  */
 export async function fetchUserIdsFromUsernames(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   usernames: Array<string>,
   forceNetwork = false
 ): Promise<Array<string>> {
@@ -201,7 +202,7 @@ export async function fetchUserIdsFromUsernames(
         },
         fetchPolicy: forceNetwork ? 'network-only' : 'cache-first'
       });
-      return userDataResponse.data.user?.userID;
+      return userDataResponse.data?.user?.userID;
     })
   );
   return allUserIDs.filter(filterExists);
@@ -211,7 +212,7 @@ export async function fetchUserIdsFromUsernames(
  * Given a possible email alias, fetch a user's username and userID.
  * @returns {{ string, username }} returns object containing userID and username.
  */
-export async function getUserInfoFromMailAlias(client: ApolloClient<NormalizedCacheObject>, possibleAlias: string) {
+export async function getUserInfoFromMailAlias(client: ApolloClient, possibleAlias: string) {
   const emailAliasQueryRes = await client.query<UsersFromEmailAliasQuery, UsersFromEmailAliasQueryVariables>({
     query: UsersFromEmailAliasDocument,
     variables: {
@@ -219,13 +220,13 @@ export async function getUserInfoFromMailAlias(client: ApolloClient<NormalizedCa
     }
   });
   const userAliasRes = emailAliasQueryRes.data?.usersFromEmailAlias;
-  if (userAliasRes?.length > 0 && userAliasRes[0]) {
+  if (userAliasRes?.length && userAliasRes[0]) {
     return { userID: userAliasRes[0].userID, username: userAliasRes[0].username };
   }
   return undefined;
 }
 
-export async function lookupAliasInfoFromEmail(client: ApolloClient<NormalizedCacheObject>, email: string) {
+export async function lookupAliasInfoFromEmail(client: ApolloClient, email: string) {
   const userInfo = await getUserInfoFromMailAlias(client, email);
   return userInfo;
 }
@@ -233,7 +234,7 @@ export async function lookupAliasInfoFromEmail(client: ApolloClient<NormalizedCa
  * Reformat username as email address/alias.
  */
 export async function formatUsernameAndCheckExists(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   curUsername: string
 ): Promise<{ formattedUsername: string | undefined; error?: boolean }> {
   const lowerCaseUsername = curUsername.toLowerCase();
@@ -279,7 +280,7 @@ export async function deleteAccount(
   username: string,
   signingPrivateKey: string,
   loginSrpRequest: LoginSrpRequest,
-  client: ApolloClient<NormalizedCacheObject>
+  client: ApolloClient
 ): Promise<boolean> {
   // Create signature
   const signature = createDetachedSignatureAsymmetric(
@@ -328,11 +329,7 @@ export async function deleteAccount(
  * @param defaultEmail the email to base the display name off of
  * @param user the user to update the display name for
  */
-export const resolveAndSetENSDisplayName = async (
-  defaultEmail: string,
-  user: models.User,
-  client: ApolloClient<NormalizedCacheObject>
-) => {
+export const resolveAndSetENSDisplayName = async (defaultEmail: string, user: models.User, client: ApolloClient) => {
   const { publicData } = user;
 
   // Update the display name so that it is in sync with the default email alias
@@ -368,7 +365,7 @@ export const resolveENSName = async (defaultEmail: string, currDisplayName?: str
  * @param {any} dispatch - redux dispatch fn
  * @returns {Promise<User[]>} array of objects containing usernames and publicData blobs for each user
  */
-export async function fetchUserProfileDataFromIDs(userIDs: Array<string>, client: ApolloClient<NormalizedCacheObject>) {
+export async function fetchUserProfileDataFromIDs(userIDs: Array<string>, client: ApolloClient) {
   const profileDataResponse = await client.query<GetUsersProfileDataQuery, GetUsersProfileDataQueryVariables>({
     query: GetUsersProfileDataDocument,
     variables: {
@@ -378,7 +375,7 @@ export async function fetchUserProfileDataFromIDs(userIDs: Array<string>, client
     }
   });
 
-  const { users } = profileDataResponse.data;
+  const users = profileDataResponse.data?.users;
 
   if (!users) {
     console.error('FetchUsersPublicData: Request failed.');
@@ -398,9 +395,9 @@ export async function fetchUserProfileDataFromIDs(userIDs: Array<string>, client
 export async function setDisplayName(
   userID: UserID,
   displayName: string,
-  client: ApolloClient<NormalizedCacheObject>
+  client: ApolloClient
 ): Promise<RequestStatus> {
-  const updateResponse = await client.mutate({
+  const updateResponse = await client.mutate<UpdateDisplayNameMutation>({
     mutation: UpdateDisplayNameDocument,
     variables: {
       request: {
@@ -413,11 +410,10 @@ export async function setDisplayName(
     refetchQueries: [{ query: GetUsersProfileDataDocument, variables: { request: { userIDs: [userID] } } }]
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  const { status } = updateResponse.data.updateDisplayName;
+  const status = updateResponse.data?.updateDisplayName.status;
   if (status !== RequestStatus.Success) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-    return status;
+    return status ?? RequestStatus.Failed;
   }
 
   // trigger local state update

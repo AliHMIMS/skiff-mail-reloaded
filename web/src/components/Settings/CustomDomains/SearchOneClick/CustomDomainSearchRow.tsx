@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { getGraphQLErrors } from 'skiff-front-utils';
 import { motion } from 'framer-motion';
 import {
   colors,
@@ -130,7 +130,7 @@ const CustomDomainSearchRow: React.FC<CustomDomainSearchRowProps> = ({ domainRes
       window.location.href = checkoutSession.url;
     } catch (err: any) {
       setCheckoutQueryLoading(false);
-      const paywallErrorCode = getPaywallErrorCode((err as ApolloError).graphQLErrors);
+      const paywallErrorCode = getPaywallErrorCode(getGraphQLErrors(err));
       if (paywallErrorCode) {
         openPaywallModal(paywallErrorCode);
       } else {

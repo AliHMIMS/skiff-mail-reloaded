@@ -1,5 +1,5 @@
-import { QueryHookOptions } from '@apollo/client';
-import { ApolloError } from '@apollo/client/core';
+import type { ErrorLike } from '@apollo/client';
+import { QueryHookOptions } from '@apollo/client/react';
 import { Contact, Exact, GetAllCurrentUserContactsQuery, useGetAllCurrentUserContactsQuery } from 'skiff-front-graphql';
 
 import useCurrentOrganization from './useCurrentOrganization';
@@ -18,7 +18,7 @@ export const isOrgMemberContact = (contact: Contact | OrgMemberContact): contact
 interface UseGetAllContactsWithOrgMembersResponse {
   contactsWithOrgMembers: (Contact | OrgMemberContact)[];
   loading: boolean;
-  error: ApolloError | undefined;
+  error: ErrorLike | undefined;
   refetch: () => void;
 }
 

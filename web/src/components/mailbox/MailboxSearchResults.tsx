@@ -1,3 +1,4 @@
+import { useQueryCallbacks } from 'skiff-front-utils';
 import { AnimatePresence } from 'framer-motion';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
@@ -191,29 +192,33 @@ export const MailboxSearchResults = () => {
     resultThreadIds.slice(startingIndexToFetch, startingIndexToFetch + MAX_THREADS_TO_QUERY)
   );
 
-  const { loading: resultThreadsLoading } = useGetThreadsFromIDsQuery({
-    variables: { threadIDs: threadIDsToFetch },
-    onCompleted: (data) => {
-      // Calculate the search results to render given the thread objects fetched from the server
-      const newResultsToRender =
-        resultEmailIds
-          .slice(startingIndexToFetch, startingIndexToFetch + MAX_THREADS_TO_QUERY)
-          .map((resultEmailId) => {
-            const { threadID, match } = searchResultEmails.find((result) => result.emailID === resultEmailId) || {};
-            const thread = data?.userThreads?.find((t) => t?.threadID === threadID);
-            if (!thread || !match) {
-              return undefined;
-            }
-            return { emailID: resultEmailId, thread, match };
-          })
-          .filter(filterExists) ?? [];
-      setResultsToRender((results) =>
-        results && startingIndexToFetch > 0
-          ? uniqBy([...results.filter(filterExists), ...newResultsToRender], (r) => r.emailID)
-          : newResultsToRender
-      );
+  const { loading: resultThreadsLoading } = useQueryCallbacks(
+    useGetThreadsFromIDsQuery({
+      variables: { threadIDs: threadIDsToFetch }
+    }),
+    {
+      onCompleted: (data) => {
+        // Calculate the search results to render given the thread objects fetched from the server
+        const newResultsToRender =
+          resultEmailIds
+            .slice(startingIndexToFetch, startingIndexToFetch + MAX_THREADS_TO_QUERY)
+            .map((resultEmailId) => {
+              const { threadID, match } = searchResultEmails.find((result) => result.emailID === resultEmailId) || {};
+              const thread = data?.userThreads?.find((t) => t?.threadID === threadID);
+              if (!thread || !match) {
+                return undefined;
+              }
+              return { emailID: resultEmailId, thread, match };
+            })
+            .filter(filterExists) ?? [];
+        setResultsToRender((results) =>
+          results && startingIndexToFetch > 0
+            ? uniqBy([...results.filter(filterExists), ...newResultsToRender], (r) => r.emailID)
+            : newResultsToRender
+        );
+      }
     }
-  });
+  );
 
   const setActiveResult = useCallback(
     (activeThreadAndEmail: ThreadNavigationIDs | undefined) => {

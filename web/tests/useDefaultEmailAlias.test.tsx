@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { MockedProvider } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
 import { Provider } from 'react-redux';
@@ -30,45 +31,27 @@ vi.mock('../src/hooks/useSearchWorker', () => ({
 const wrapper: React.FC = ({ children }) => (
   <Provider store={store}>
     <MockedProvider
+      localState={new LocalState()}
       mocks={[
         {
           request: {
             query: CurrentUserDefaultEmailAliasDocument,
             variables: {}
           },
-          result: {
-            data: {
-              currentUser: {
-                userID: MOCK_USER.userID,
-                defaultEmailAlias: null
-                // no default
-              }
-            }
-          },
-          newData: vi.fn(() => {
-            return {
-              data: {
-                currentUser: {
-                  userID: MOCK_USER.userID,
-                  defaultEmailAlias: testAliasValue
-                }
-              }
-            };
-          })
+          // the first read has no default; after setting one, refetches return it
+          maxUsageCount: Number.POSITIVE_INFINITY,
+          result: vi
+            .fn()
+            .mockReturnValueOnce({ data: { currentUser: { userID: MOCK_USER.userID, defaultEmailAlias: null } } })
+            .mockReturnValue({ data: { currentUser: { userID: MOCK_USER.userID, defaultEmailAlias: testAliasValue } } })
         },
         {
           request: {
             query: SetDefaultEmailAliasDocument,
             variables: { request: { defaultAlias: testAliasValue } }
           },
-          result: {
-            data: {
-              user: {}
-            }
-          },
-          newData: vi.fn(() => {
-            return { data: { setDefaultEmailAlias: true } };
-          })
+          maxUsageCount: Number.POSITIVE_INFINITY,
+          result: { data: { setDefaultEmailAlias: true } }
         }
       ]}
     >

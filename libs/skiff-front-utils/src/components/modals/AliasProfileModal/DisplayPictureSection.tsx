@@ -1,3 +1,4 @@
+import { getResultErrors } from '../../../apollo/errorUtils';
 import React from 'react';
 import { useCreateUploadAliasAvatarLinkMutation } from 'skiff-front-graphql';
 import { CreateUploadAvatarLinkResponse } from 'skiff-graphql';
@@ -16,9 +17,10 @@ function DisplayPictureSection({
   const [createUploadAliasAvatarLinkMutation] = useCreateUploadAliasAvatarLinkMutation();
 
   const createUploadAliasAvatarLink = async (): Promise<CreateUploadAvatarLinkResponse | undefined> => {
-    const { data: avatarLink, errors } = await createUploadAliasAvatarLinkMutation({
+    const { data: avatarLink, error } = await createUploadAliasAvatarLinkMutation({
       variables: { emailAlias: alias }
     });
+    const errors = getResultErrors(error);
 
     if (errors || !avatarLink?.createUploadAliasAvatarLink) return;
 

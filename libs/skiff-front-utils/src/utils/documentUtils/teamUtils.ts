@@ -1,4 +1,4 @@
-import { ApolloClient, FetchResult, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   CreateTeamDocument,
   CreateTeamMutation,
@@ -42,7 +42,7 @@ export const decryptHierarchicalKey = (
  * Share a team with another team. Target doc will be "shared" with everyone having access to Source doc.
  */
 export async function shareTeamDocWithOtherTeam(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   userData: models.User,
   sourceTeamRootDocID: string,
   targetTeamRootDocID: string
@@ -101,7 +101,7 @@ export async function shareTeamDocWithOtherTeam(
  * Create a new team inside the current organization.
  */
 export async function createTeam(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   userData: models.User,
   activeProductApp: ProductApp,
   name: string,
@@ -109,7 +109,7 @@ export async function createTeam(
   organization: Omit<GetOrganizationQuery['organization'], 'teams'>,
   inviteOnly?: boolean,
   rootDecryptedPrivateHierarchicalKey?: string
-): Promise<FetchResult<CreateTeamMutation, Record<string, any>, Record<string, any>>> {
+): Promise<ApolloClient.MutateResult<CreateTeamMutation>> {
   const { everyoneTeam, orgID, rootDocID: orgRootDocID } = organization;
   assertExists(everyoneTeam.rootDocument);
 

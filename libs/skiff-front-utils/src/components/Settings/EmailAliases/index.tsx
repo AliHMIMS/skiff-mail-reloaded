@@ -1,6 +1,6 @@
 import { Icon } from 'nightwatch-ui';
 
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { PaywallErrorCode } from '../../../../../skiff-utils/src';
 import { SETTINGS_LABELS, Setting, SettingType, SettingValue, SettingsPage } from '../Settings.types';
 import AddressSettings from './AddressSettings';
@@ -10,7 +10,7 @@ export const useAliasesSettings = ({
   openPaywallModal,
   openSettings
 }: {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   openPaywallModal: (paywallErrorCode: PaywallErrorCode) => void;
   openSettings: (page: SettingsPage) => void;
 }): Setting[] => {

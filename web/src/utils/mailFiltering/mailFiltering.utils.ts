@@ -62,7 +62,7 @@ export const fetchUnfilteredThreads = async (cursor: MailboxCursor | null) =>
       },
       fetchPolicy: 'no-cache'
     })
-    .then((result) => result.data.mailbox);
+    .then((result) => result.data?.mailbox);
 
 /**
  * Get client side mail filters
@@ -76,7 +76,7 @@ export const fetchClientsideFilters = () => {
       },
       fetchPolicy: 'no-cache'
     })
-    .then((result) => result.data.mailFilters);
+    .then((result) => result.data?.mailFilters ?? []);
 };
 
 /**

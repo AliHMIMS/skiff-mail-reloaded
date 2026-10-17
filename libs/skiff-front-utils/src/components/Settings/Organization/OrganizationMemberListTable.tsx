@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { Divider, InputField, Skeleton } from 'nightwatch-ui';
 import React, { useState } from 'react';
 import { useSubscriptionPlan } from 'skiff-front-graphql';
@@ -19,7 +19,7 @@ import OrganizationMemberListRow from './OrganizationMemberListRow';
 import OrganizationName from './OrganizationName';
 
 interface OrganizationMemberListTableProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   setMember: (member?: DocumentCollaborator) => void;
   setUserIDtoConfirm: (userID: string | undefined) => void;
   openSettings: (page: SettingsPage) => void;

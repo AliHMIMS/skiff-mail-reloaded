@@ -9,11 +9,7 @@ import { MailboxFilters, Mailbox } from 'skiff-graphql';
 
 import { getSearchWorker } from '../../hooks/useSearchWorker';
 
-export function updateReadUnreadFilterThreads(
-  cache: ApolloCache<any>,
-  label: string,
-  mailboxFilter: MailboxFilters
-): void {
+export function updateReadUnreadFilterThreads(cache: ApolloCache, label: string, mailboxFilter: MailboxFilters): void {
   const mailboxQuery = cache.readQuery<MailboxQuery, MailboxQueryVariables>({
     query: MailboxDocument,
     variables: { request: { label, filters: mailboxFilter } }
@@ -44,7 +40,7 @@ export function updateReadUnreadFilterThreads(
 }
 
 export function addThreadsToMailboxQuery(
-  cache: ApolloCache<any>,
+  cache: ApolloCache,
   label: string,
   threadsToAdd: ThreadWithoutContentFragment[]
 ): void {
@@ -100,7 +96,7 @@ export function addThreadsToMailboxQuery(
 }
 
 export function removeThreadsFromMailboxQuery(
-  cache: ApolloCache<any>,
+  cache: ApolloCache,
   label: string,
   threadsToRemove: ThreadWithoutContentFragment[],
   removeThreadsFromSearchIndex?: boolean
@@ -166,7 +162,7 @@ export function removeThreadsFromMailboxQuery(
 /**
  * Updates all threads in the cache to be read
  */
-export function cacheMarkAllRead(cache: ApolloCache<any>, read: boolean) {
+export function cacheMarkAllRead(cache: ApolloCache, read: boolean) {
   cache.modify<Record<string, any>>({
     fields: {
       mailbox: (previous: Mailbox | undefined) => {

@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { Icon } from 'nightwatch-ui';
 import { useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -17,7 +17,7 @@ const MboxInput = styled.input`
 
 interface ImportMboxProps {
   handleMaxFileSizeExceeded: (maxSize: string) => void;
-  handleFileImportError: (error: ApolloError) => void;
+  handleFileImportError: (error: CombinedGraphQLErrors) => void;
   uploadFilesOpen: boolean;
   setUploadFilesOpen: (open: boolean) => void;
 }

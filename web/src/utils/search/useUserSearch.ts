@@ -1,3 +1,4 @@
+import { useQueryCallbacks } from 'skiff-front-utils';
 import { useGetAllCurrentUserContactsQuery } from 'skiff-front-graphql';
 import { contactToAddressObject } from 'skiff-front-utils';
 import { trimAndLowercase } from 'skiff-utils';
@@ -6,7 +7,7 @@ import { SearchItemType, UserSearchResult } from './searchTypes';
 
 // used for searching through contact list when the user selects the "USER" category
 export const useUserSearch = () => {
-  const { data: contactsData } = useGetAllCurrentUserContactsQuery({
+  const { data: contactsData } = useQueryCallbacks(useGetAllCurrentUserContactsQuery(), {
     onError: (error) => {
       console.error(`Failed to retrieve User's contact list`, JSON.stringify(error, null, 2));
     }

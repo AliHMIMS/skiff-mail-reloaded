@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
-import { MockedProvider } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
@@ -73,7 +74,7 @@ describe('Sidebar', () => {
       <SnackbarProvider maxSnack={7}>
         <DrawerProvider>
           <DndProvider backend={HTML5Backend}>
-            <MockedProvider>
+            <MockedProvider localState={new LocalState()}>
               <BrowserRouter>{children}</BrowserRouter>
             </MockedProvider>
           </DndProvider>

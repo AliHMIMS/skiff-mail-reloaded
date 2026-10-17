@@ -1,12 +1,11 @@
-import { ApolloClient, ApolloLink, InMemoryCache, NextLink, Operation, from, split } from '@apollo/client';
+import { ApolloClient, ApolloLink, InMemoryCache } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { RetryLink } from '@apollo/client/link/retry';
+import { LocalState } from '@apollo/client/local-state';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { createUploadLink } from 'apollo-upload-client';
-import fetch from 'cross-fetch';
+import UploadHttpLink from 'apollo-upload-client/UploadHttpLink.mjs';
 import {
   aliasTypePolicy,
-  cloudflareChallengeRedirectLink,
   contactTypePolicy,
   documentCollaboratorTypePolicy,
   documentTypePolicy,
@@ -86,7 +85,7 @@ const cache = new InMemoryCache({
 });
 
 // auth link to dynamically populate the needed userID header inside the network requests
-const authLink = new ApolloLink((operation: Operation, nextLink: NextLink) => {
+const authLink = new ApolloLink((operation, forward) => {
   const curUserID = getCurrentUserData()?.userID ?? getLatestUserID();
   const initialHeaders = curUserID
     ? {
@@ -100,26 +99,17 @@ const authLink = new ApolloLink((operation: Operation, nextLink: NextLink) => {
       ...initialHeaders
     }
   });
-  return nextLink(operation);
+  return forward(operation);
 });
 
-// Casted to unknown because `createUploadLink` types don't match.
-const link = createUploadLink({
-  uri,
-  fetch,
-  credentials: 'include'
-}) as unknown as ApolloLink;
+const link = new UploadHttpLink({ uri, credentials: 'include' });
 
 const retryLink = new RetryLink();
 
-const batchHttpLink = new BatchHttpLink({
-  uri,
-  credentials: 'include',
-  fetch
-});
+const batchHttpLink = new BatchHttpLink({ uri, credentials: 'include' });
 
 // split function routes requests to the appropriate link
-const splitLink = split(
+const splitLink = ApolloLink.split(
   // Split based on operation type - mutations should use the upload link, which supports file uploads
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -130,10 +120,11 @@ const splitLink = split(
 );
 
 const client = new ApolloClient({
-  link: from([authLink, retryLink, cloudflareChallengeRedirectLink, splitLink]),
+  link: ApolloLink.from([authLink, retryLink, splitLink]),
   cache,
-  name: 'skemail-web',
-  version: process.env.GIT_HASH
+  // queries select @client fields (decrypted values computed by type policies)
+  localState: new LocalState(),
+  clientAwareness: { name: 'skemail-web', version: process.env.GIT_HASH }
 });
 
 export default client;

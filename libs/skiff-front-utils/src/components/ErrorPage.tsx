@@ -10,7 +10,7 @@ import {
   TypographyWeight
 } from 'nightwatch-ui';
 
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { SnackbarProvider } from 'notistack';
 import { useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -97,7 +97,7 @@ const Link = styled.span`
 `;
 
 const sendFeedback = async (
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   origin: string,
   feedbackText: string,
   isUrgent: boolean,
@@ -130,7 +130,7 @@ const sendFeedback = async (
 };
 
 interface ErrorPageProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   origin: string;
   isDbError?: boolean;
 }

@@ -2,8 +2,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react/display-name */
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { MockedProvider } from '@apollo/client/testing';
+import { ApolloClient } from '@apollo/client';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { SnackbarProvider } from 'notistack';
@@ -46,7 +47,7 @@ const collaborators: DocumentCollaboratorInfoFragment[] = [
 const mockQuery = vi.fn();
 const mockClient = vi.fn(() => ({
   query: mockQuery
-})) as unknown as ApolloClient<NormalizedCacheObject>;
+})) as unknown as ApolloClient;
 
 const mockOpenSettings = vi.fn();
 
@@ -105,7 +106,7 @@ describe('OrganizationMemberList', () => {
   it('renders all members of the organization', async () => {
     render(
       <MockedProvider
-        addTypename={false}
+        localState={new LocalState()}
         defaultOptions={{ query: { fetchPolicy: 'no-cache' }, watchQuery: { fetchPolicy: 'no-cache' } }}
         mocks={[
           {
@@ -143,7 +144,7 @@ describe('OrganizationMemberList', () => {
   it('shows pending members of the organization', async () => {
     render(
       <MockedProvider
-        addTypename={false}
+        localState={new LocalState()}
         defaultOptions={{ query: { fetchPolicy: 'no-cache' }, watchQuery: { fetchPolicy: 'no-cache' } }}
         mocks={[
           {
@@ -190,6 +191,7 @@ describe('OrganizationMemberList', () => {
 
     render(
       <MockedProvider
+        localState={new LocalState()}
         defaultOptions={{ query: { fetchPolicy: 'no-cache' }, watchQuery: { fetchPolicy: 'no-cache' } }}
         mocks={[
           {
@@ -253,6 +255,7 @@ describe('OrganizationMemberList', () => {
   it("doesn't allow the user to edit the org name if they do not have access to the org root doc", async () => {
     render(
       <MockedProvider
+        localState={new LocalState()}
         defaultOptions={{ query: { fetchPolicy: 'no-cache' }, watchQuery: { fetchPolicy: 'no-cache' } }}
         mocks={[
           {
@@ -293,6 +296,7 @@ describe('OrganizationMemberList', () => {
   it('allows users to invite other people to the organization', async () => {
     render(
       <MockedProvider
+        localState={new LocalState()}
         defaultOptions={{ query: { fetchPolicy: 'no-cache' }, watchQuery: { fetchPolicy: 'no-cache' } }}
         mocks={[
           {

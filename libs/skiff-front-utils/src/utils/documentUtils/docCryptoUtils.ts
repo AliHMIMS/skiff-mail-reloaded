@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   createDetachedSignatureAsymmetric,
   createJSONWrapperDatagram,
@@ -322,7 +322,7 @@ export function validatePublicKey(
  * usernames argument, or undefined if some user's public key cannot be fetched.
  */
 export async function fetchPublicKeysFromUserIDs(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   userIDs: Array<string>,
   verifiedKeys: Record<string, string> | undefined
 ) {
@@ -338,7 +338,7 @@ export async function fetchPublicKeysFromUserIDs(
     }
   });
 
-  const { users } = userDataResponse.data;
+  const users = userDataResponse.data?.users;
 
   // Return null if a public key could not be found for any user
   if (!users) {

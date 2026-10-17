@@ -1,5 +1,7 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
-import { MockedProvider, MockedResponse } from '@apollo/client/testing';
+import { MockedResponse } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Suspense } from 'react';
@@ -312,7 +314,7 @@ describe('Layout', () => {
     render(
       <Suspense fallback={null}>
         <Provider store={store}>
-          <MockedProvider mocks={mocks}>
+          <MockedProvider localState={new LocalState()} mocks={mocks}>
             <DndProvider backend={HTML5Backend}>
               <BrowserRouter>
                 <Layout>
@@ -365,7 +367,7 @@ describe('Layout', () => {
       render(
         <Suspense fallback={null}>
           <Provider store={store}>
-            <MockedProvider mocks={mocks}>
+            <MockedProvider localState={new LocalState()} mocks={mocks}>
               <DndProvider backend={HTML5Backend}>
                 <BrowserRouter>
                   <Layout>

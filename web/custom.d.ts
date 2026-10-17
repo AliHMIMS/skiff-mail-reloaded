@@ -18,3 +18,12 @@ declare namespace google.accounts.oauth2 {
   export function initTokenClient(tokenClientConfig: TokenClientConfig): TokenClient;
   export function hasGrantedAllScopes(scope: string): boolean;
 }
+
+// apollo-upload-client documents its types in JSDoc only
+declare module 'apollo-upload-client/UploadHttpLink.mjs' {
+  import { ApolloLink } from '@apollo/client';
+
+  export default class UploadHttpLink extends ApolloLink {
+    constructor(options?: { uri?: string; credentials?: RequestCredentials; headers?: Record<string, string> });
+  }
+}

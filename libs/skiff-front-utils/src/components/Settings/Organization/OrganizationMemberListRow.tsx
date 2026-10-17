@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   CircularProgress,
   Dropdown,
@@ -47,7 +47,7 @@ const ForwardIconContainer = styled.div`
 `;
 
 interface OrganizationMemberListRowProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   dataTest: string;
   isLast: boolean;
   member: UserProfileDataFragment;

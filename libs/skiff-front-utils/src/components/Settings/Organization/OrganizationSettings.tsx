@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { Icon } from 'nightwatch-ui';
 
 import { SETTINGS_LABELS, Setting, SettingType, SettingValue, SettingsPage } from '../Settings.types';
@@ -6,7 +6,7 @@ import { SETTINGS_LABELS, Setting, SettingType, SettingValue, SettingsPage } fro
 import OrganizationMemberList from './OrganizationMemberList';
 
 interface OrganizationSettingsArgs {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   // Each app has it's own state to control the Settings modal
   openSettings: (page: SettingsPage) => void;
 }

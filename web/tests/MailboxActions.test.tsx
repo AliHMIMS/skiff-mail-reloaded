@@ -1,5 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { MockedProvider } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { act, render, screen } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
@@ -75,7 +76,7 @@ describe('MailboxActions', () => {
     const store = createStore();
     render(
       <Provider store={store}>
-        <MockedProvider mocks={mockedRequests}>
+        <MockedProvider localState={new LocalState()} mocks={mockedRequests}>
           <SnackbarProvider>
             <MailboxActions
               clearLastSelectedIndex={vi.fn()}
@@ -98,7 +99,7 @@ describe('MailboxActions', () => {
     const store = createStore();
     render(
       <Provider store={store}>
-        <MockedProvider mocks={mockedRequests}>
+        <MockedProvider localState={new LocalState()} mocks={mockedRequests}>
           <SnackbarProvider>
             <MailboxActions
               clearLastSelectedIndex={vi.fn()}

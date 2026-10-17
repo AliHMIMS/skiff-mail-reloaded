@@ -1,3 +1,4 @@
+import { useQueryCallbacks } from 'skiff-front-utils';
 import { useMemo } from 'react';
 import { useDispatch } from 'react-redux';
 import {
@@ -38,12 +39,16 @@ export const InviteUsersMailModal = () => {
   const { userID, username } = useRequiredCurrentUserData();
   const [defaultEmailAlias] = useDefaultEmailAlias(userID);
 
-  const { data: contactsData } = useGetAllCurrentUserContactsQuery({
-    fetchPolicy: 'cache-first',
-    onError: (error) => {
-      console.error(`Failed to retrieve User's contact list`, JSON.stringify(error, null, 2));
+  const { data: contactsData } = useQueryCallbacks(
+    useGetAllCurrentUserContactsQuery({
+      fetchPolicy: 'cache-first'
+    }),
+    {
+      onError: (error) => {
+        console.error(`Failed to retrieve User's contact list`, JSON.stringify(error, null, 2));
+      }
     }
-  });
+  );
 
   const contactList = contactsData?.allContacts?.map(contactToAddressObject) ?? [];
 

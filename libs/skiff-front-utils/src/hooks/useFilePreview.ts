@@ -1,4 +1,5 @@
-import { ApolloClient, ApolloError, NormalizedCacheObject } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { useEffect, useRef, useState } from 'react';
 import { DocumentBaseFragment } from 'skiff-front-graphql';
 import { DocumentDecryptedContents, NwContentType } from 'skiff-graphql';
@@ -46,7 +47,7 @@ type CachedOrFullDocument = DocumentBaseFragment & {
 
 interface FilePreviewRequest {
   docID: string;
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   // Include the data needed to render the preview image
   // IMPORTANT: This will make a fullDoc call, instead of using cached data
   includeFileData: boolean;
@@ -95,7 +96,7 @@ const decideShouldFetchFullDoc = (
 export function useFilePreview({ docID, client, includeFileData, getThumbnail = false }: FilePreviewRequest): {
   preview: PreviewObject;
   loading: boolean;
-  error: ApolloError | undefined;
+  error: ErrorLike | undefined;
   refetch: () => void;
 } {
   const [preview, setPreview] = useState<PreviewObject>(DEFAULT_PREVIEW);

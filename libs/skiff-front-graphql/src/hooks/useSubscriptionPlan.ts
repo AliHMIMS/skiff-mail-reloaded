@@ -1,4 +1,4 @@
-import { QueryHookOptions } from '@apollo/client';
+import { QueryHookOptions } from '@apollo/client/react';
 import { Exact, SubscriptionPlan } from 'skiff-graphql';
 import { TierName } from 'skiff-utils';
 

@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloError, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { CircularProgress, FilledVariant, Icon, IconButton, Icons } from 'nightwatch-ui';
 import React, { useEffect, useState } from 'react';
 import { UserProfileDataFragment, useOrgMemberEmailAliasesQuery } from 'skiff-front-graphql';
@@ -35,7 +35,7 @@ const AliasInputContainer = styled.div`
 
 interface OrganizationMemberProfileProps {
   // Needed for shareDoc
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   member: DocumentCollaborator;
   setMember: (member?: DocumentCollaborator) => void;
   setUserIDtoConfirm: (userID: string | undefined) => void;
@@ -107,7 +107,7 @@ const OrganizationMemberProfile: React.FC<OrganizationMemberProfileProps> = ({
         await addCustomDomainAlias(newAlias, customDomain, memberUserID, setMemberEmailAliases);
         setNewAlias('');
       } catch (e) {
-        setError((e as ApolloError).message);
+        setError((e as Error).message);
       }
     } else {
       console.error('Can only add custom domain alias.');

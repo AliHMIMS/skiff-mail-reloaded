@@ -1,4 +1,4 @@
-import { ApolloCache, ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloCache, ApolloClient } from '@apollo/client';
 import {
   ContactDataFragment,
   CurrentUserEmailAliasesDocument,
@@ -21,7 +21,7 @@ import { PermissionLevel } from 'skiff-graphql';
 /**
  * Updates the stored email aliases for the current user in the cache
  */
-export const updateEmailAliases = (cache: ApolloCache<any>, userID: string, emailAliases: string[]) => {
+export const updateEmailAliases = (cache: ApolloCache, userID: string, emailAliases: string[]) => {
   cache.updateQuery<CurrentUserEmailAliasesQuery>({ query: CurrentUserEmailAliasesDocument }, (existingCache) => {
     if (!existingCache || !existingCache.currentUser) {
       return {
@@ -42,10 +42,7 @@ export const updateEmailAliases = (cache: ApolloCache<any>, userID: string, emai
   });
 };
 
-export const getDocumentFromCache = (
-  docID: string,
-  client: ApolloClient<NormalizedCacheObject>
-): DocumentFullInfoFragment | null => {
+export const getDocumentFromCache = (docID: string, client: ApolloClient): DocumentFullInfoFragment | null => {
   if (!client.cache) {
     // this is hit during tests
     return null;
@@ -70,10 +67,7 @@ export const getDocumentFromCache = (
  * This can be used to avoid having to make an additional query to fetch a single document,
  * if it has already been fetched as part of a GetDocuments query
  */
-export const getDocumentBaseFromCache = (
-  docID: string,
-  client: ApolloClient<NormalizedCacheObject>
-): DocumentBaseFragment | null => {
+export const getDocumentBaseFromCache = (docID: string, client: ApolloClient): DocumentBaseFragment | null => {
   if (!client.cache) {
     // this is hit during tests
     return null;
@@ -98,10 +92,7 @@ export const getDocumentBaseFromCache = (
  * This can be used to avoid having to make an additional query to fetch a single contact,
  * if it has already been fetched as part of a GetAllContacts query
  */
-export const getContactDataFromCache = (
-  emailAddress: string,
-  client: ApolloClient<NormalizedCacheObject>
-): ContactDataFragment | null => {
+export const getContactDataFromCache = (emailAddress: string, client: ApolloClient): ContactDataFragment | null => {
   if (!client.cache) {
     // this is hit during tests
     return null;
@@ -126,7 +117,7 @@ export const getContactDataFromCache = (
  * @param {Partial<Document>} doc document to add in the document list
  */
 export const addDocumentInDocumentsList = (
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   doc: GetDocumentsBaseQuery['documents'][0],
   activeProductApp: ProductApp,
   request?: GetDocumentsRequest

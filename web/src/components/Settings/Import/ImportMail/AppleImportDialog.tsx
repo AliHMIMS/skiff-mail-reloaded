@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { Dialog, Typography } from 'nightwatch-ui';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -18,7 +18,7 @@ interface AppleImportDialogProps {
   open: boolean;
   onClose: () => void | Promise<void>;
   handleMaxFileSizeExceeded: (maxSize: string) => void;
-  handleFileImportError: (error: ApolloError) => void;
+  handleFileImportError: (error: CombinedGraphQLErrors) => void;
   uploadFilesOpen: boolean;
   setUploadFilesOpen: (open: boolean) => void;
 }

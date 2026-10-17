@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { getGraphQLErrors } from 'skiff-front-utils';
 import { FloatingDelayGroup } from '@floating-ui/react-dom-interactions';
 import { Editor } from '@tiptap/react';
 import dayjs from 'dayjs';
@@ -981,7 +981,7 @@ const Compose: React.FC = () => {
       if (replyEmailID) {
         undoOptimisticReply(newReplyEmailID);
       }
-      const paywallErrorCode = getPaywallErrorCode((err as ApolloError).graphQLErrors);
+      const paywallErrorCode = getPaywallErrorCode(getGraphQLErrors(err));
       if (paywallErrorCode) {
         openPaywallModal(paywallErrorCode);
       } else {

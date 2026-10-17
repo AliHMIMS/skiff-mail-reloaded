@@ -1,4 +1,5 @@
-import { ApolloError } from '@apollo/client';
+import { getGraphQLErrors } from 'skiff-front-utils';
+import type { ErrorLike } from '@apollo/client';
 import type { GraphQLFormattedError } from 'graphql';
 import isString from 'lodash/isString';
 import {
@@ -106,12 +107,13 @@ export const CreateOrEditLabelOrFolderModal = () => {
     }
   });
 
-  const handleErrors = (error: ApolloError) => {
-    const code = error.graphQLErrors[0]?.extensions?.code as PaywallErrorCode;
+  const handleErrors = (error: ErrorLike) => {
+    const graphQLErrors = getGraphQLErrors(error);
+    const code = graphQLErrors[0]?.extensions?.code as PaywallErrorCode;
     if (isPaywallErrorCode(code)) {
       setPaywallErrorCode(code);
     } else {
-      setErrors(error.graphQLErrors);
+      setErrors(graphQLErrors);
     }
   };
 
@@ -142,7 +144,7 @@ export const CreateOrEditLabelOrFolderModal = () => {
           variant: folderModal ? UserLabelVariant.Folder : UserLabelVariant.Plain
         }
       },
-      onError: (error) => setErrors(error.graphQLErrors),
+      onError: (error) => setErrors(getGraphQLErrors(error)),
       update: (cache, response) => {
         updateUserLabelsOnCreateOrEdit(cache, response?.data?.editUserLabel, response?.errors);
       }

@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import type { ErrorLike } from '@apollo/client';
 import { Keplr } from '@keplr-wallet/types/build/wallet/keplr';
 import { Button, Dialog, DialogType, FilledVariant, Icon, IconButton, Icons, Type, Typography } from 'nightwatch-ui';
 import { FC, useState } from 'react';
@@ -72,7 +72,7 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = ({
   const { enqueueToast } = useToast();
   const user = useRequiredCurrentUserData();
 
-  const handleAddWalletError = (error: ApolloError) => {
+  const handleAddWalletError = (error: ErrorLike) => {
     console.error(error.message);
     setErrorMsg('Could not connect wallet.');
   };
@@ -178,7 +178,7 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = ({
         body: `${WALLET_PROVIDERS[providerName].walletName} connected to account.`
       });
     } catch (e: any) {
-      handleAddWalletError(e as ApolloError);
+      handleAddWalletError(e as ErrorLike);
     }
     setIsAddingWallet((prev) => ({ ...prev, [providerName]: false }));
   };

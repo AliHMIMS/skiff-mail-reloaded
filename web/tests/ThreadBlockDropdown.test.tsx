@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { MockedProvider } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import { SnackbarProvider } from 'notistack';
@@ -63,7 +64,7 @@ describe('ThreadBlockDropdown', () => {
   });
   it('renders Move to Trash option if thread is not currently in Trash', () => {
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <Provider store={createStore()}>
           <SnackbarProvider>
             <ThreadBlockDropdown
@@ -95,7 +96,7 @@ describe('ThreadBlockDropdown', () => {
 
   it('renders undo trash option if thread is currently in Trash', () => {
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <Provider store={createStore()}>
           <SnackbarProvider>
             <ThreadBlockDropdown

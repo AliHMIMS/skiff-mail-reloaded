@@ -1,5 +1,7 @@
 import type { FieldFunctionOptions, FieldReadFunction } from '@apollo/client';
-import type { SafeReadonly } from '@apollo/client/cache/core/types/common';
+
+// Apollo's (not exported from a public entry point)
+type SafeReadonly<T> = T extends object ? Readonly<T> : T;
 
 /**
  * Memoize a FieldReadFunction for Apollo. This separate the read logic in two functions, the first (which should be lightweight) to get the dependencies of

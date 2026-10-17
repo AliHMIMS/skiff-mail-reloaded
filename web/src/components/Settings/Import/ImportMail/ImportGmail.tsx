@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import type { GraphQLFormattedError } from 'graphql';
 import { Icon } from 'nightwatch-ui';
 import { useCallback, useEffect, useState } from 'react';
@@ -169,8 +169,8 @@ export const ImportGmail: React.FC = () => {
         });
       }
     } catch (err) {
-      if (err instanceof ApolloError) {
-        err.graphQLErrors?.some((graphError: GraphQLFormattedError) => {
+      if (CombinedGraphQLErrors.is(err)) {
+        err.errors?.some((graphError: GraphQLFormattedError) => {
           if (graphError.extensions?.code === 'IMPORT_ERROR') {
             handleImportError(graphError.message, handleGoogleAuth);
             return true;

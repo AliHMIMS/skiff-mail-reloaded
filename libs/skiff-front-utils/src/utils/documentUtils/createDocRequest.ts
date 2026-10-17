@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { createDetachedSignatureAsymmetric, generatePublicPrivateKeyPair } from 'skiff-crypto';
 import { DocumentDecryptedMetadata, NewDocRequest, models } from 'skiff-front-graphql';
 import { NwContentType, PermissionLevel, ProductApp, SignatureContext } from 'skiff-graphql';
@@ -24,7 +24,7 @@ import { downloadDocumentWithoutContent } from './downloadDocumentWithoutContent
 export const ROOT_FOLDER = 'Home';
 
 export async function createDocumentRequest(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   user: models.User,
   decryptedMetadata: Omit<DocumentDecryptedMetadata, '__typename'>,
   documentType: NwContentType,

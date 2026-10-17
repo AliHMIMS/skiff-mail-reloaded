@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   DocumentBaseFragment,
   GetDocumentBaseDocument,
@@ -18,7 +18,7 @@ import { getDocumentBaseFromCache, getDocumentFromCache } from '../utils/cacheUt
  * This hook will trigger a sync rerender on every document save; too many such
  * hooks will make block the main thread for a noticeable amount of time during saving.
  */
-export const useDocument = (docID: string | false | undefined | null, client: ApolloClient<NormalizedCacheObject>) => {
+export const useDocument = (docID: string | false | undefined | null, client: ApolloClient) => {
   const cachedDocumentInfo = docID ? getDocumentFromCache(docID, client) : null;
   // pass false to skip query
   const res = useGetDocumentFullQuery({
@@ -44,7 +44,7 @@ export const useDocument = (docID: string | false | undefined | null, client: Ap
  *  */
 export const getDocumentWithoutContent = async (
   docID: string | false | null | undefined,
-  client: ApolloClient<NormalizedCacheObject>
+  client: ApolloClient
 ): Promise<DocumentBaseFragment | undefined> => {
   if (!docID) {
     return undefined;
@@ -66,7 +66,7 @@ export const getDocumentWithoutContent = async (
     }
   });
 
-  return res.data.document;
+  return res.data?.document;
 };
 
 /**
@@ -74,10 +74,7 @@ export const getDocumentWithoutContent = async (
  *
  * TODO (eventually): Remove the hook since we're taking in client, and just use the function above
  */
-export const useDocumentWithoutContent = (
-  docID: string | false | null | undefined,
-  client: ApolloClient<NormalizedCacheObject>
-) => {
+export const useDocumentWithoutContent = (docID: string | false | null | undefined, client: ApolloClient) => {
   // First check to see if document has been cached
   const cachedDocumentInfo = docID ? getDocumentBaseFromCache(docID, client) : null;
 

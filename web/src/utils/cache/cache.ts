@@ -1,5 +1,5 @@
-import { ApolloCache, useApolloClient } from '@apollo/client';
-import { NormalizedCacheObject } from '@apollo/client/cache';
+import { ApolloCache } from '@apollo/client';
+import { useApolloClient } from '@apollo/client/react';
 import type { GraphQLFormattedError } from 'graphql';
 import difference from 'lodash/difference';
 import forEach from 'lodash/forEach';
@@ -31,10 +31,7 @@ import { addThreadsToMailboxQuery, removeThreadsFromMailboxQuery } from './mailb
  * @param cache cache to read and update
  * @param diffByLabelMap a map of label and unread diff (for this label's unread counter) pairs
  */
-export function updateLabelsNumUnreadCache(
-  cache: ApolloCache<NormalizedCacheObject>,
-  diffByLabelMap: Map<string, number>
-): void {
+export function updateLabelsNumUnreadCache(cache: ApolloCache, diffByLabelMap: Map<string, number>): void {
   diffByLabelMap.forEach((unreadDiff, label) => {
     cache.updateQuery(
       { id: cache.identify({ __typename: 'Query' }), query: GetNumUnreadDocument, variables: { label } },
@@ -54,10 +51,7 @@ export function updateLabelsNumUnreadCache(
  * @param cache cache to read and update
  * @param diffByLabelMap a map of label and unread diff (for this label's unread counter) pairs
  */
-export function updateNumUnreadAllLabelsCache(
-  cache: ApolloCache<NormalizedCacheObject>,
-  diffByLabelMap: Map<string, number>
-): void {
+export function updateNumUnreadAllLabelsCache(cache: ApolloCache, diffByLabelMap: Map<string, number>): void {
   // explicit entity type: otherwise Apollo infers it from the modifier and expects store references
   cache.modify<Record<string, any>>({
     id: cache.identify({ __typename: 'Query' }),
@@ -109,7 +103,7 @@ export function modifyLabelsOptimizedResponseHandler(
 
 // Remove permanently deleted threads from the cache.
 export function removeThreadsFromCache(params: {
-  cache: ApolloCache<NormalizedCacheObject>;
+  cache: ApolloCache;
   threadIDs: string[];
   label: SystemLabels;
   errors?: readonly GraphQLFormattedError[];
@@ -141,7 +135,7 @@ export function removeThreadsFromCache(params: {
 }
 
 export function updateThreadsWithModifiedLabels(params: {
-  cache: ApolloCache<NormalizedCacheObject>;
+  cache: ApolloCache;
   updatedThreads: UpdatedThreadLabels[] | null | undefined;
   errors?: readonly GraphQLFormattedError[];
 }) {
@@ -282,7 +276,7 @@ export function updateThreadsWithModifiedLabels(params: {
 }
 
 export function updateUserLabelsOnCreateOrEdit(
-  cache: ApolloCache<any>,
+  cache: ApolloCache,
   modifiedLabel: UserLabel | null | undefined,
   errors?: readonly GraphQLFormattedError[]
 ) {
@@ -342,7 +336,7 @@ export function updateUserLabelsOnCreateOrEdit(
   });
 }
 
-export function removeUserLabelFromCache(cache: ApolloCache<any>, labelID: string) {
+export function removeUserLabelFromCache(cache: ApolloCache, labelID: string) {
   if (!labelID) {
     console.error('No label ID to remove provided');
     return;

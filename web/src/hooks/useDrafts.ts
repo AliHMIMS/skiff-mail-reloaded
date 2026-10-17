@@ -1,3 +1,4 @@
+import { getResultErrors } from 'skiff-front-utils';
 import * as IDB from 'idb-keyval';
 import noop from 'lodash/noop';
 import { useMemo } from 'react';
@@ -84,13 +85,14 @@ export const useDrafts = (): UseDraftsReturn => {
         existingThread
       };
       const draftContent = getDraftSaveData(draftInfo, userData);
-      const { errors } = await upsertDraft({
+      const { error } = await upsertDraft({
         variables: {
           request: {
             ...draftContent
           }
         }
       });
+      const errors = getResultErrors(error);
       // there was a draft in IDB, delete it
       if (currentDraftRaw && !errors) {
         await IDB.del(getDraftIDBKey(userData.userID, draftID));

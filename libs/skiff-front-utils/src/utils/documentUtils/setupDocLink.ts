@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import srp from 'secure-remote-password/client';
 import { generateSymmetricKey } from 'skiff-crypto';
 import {
@@ -31,7 +31,7 @@ import { upgradeDocKey, wrapDocumentOperation } from './documentOperationUtils';
  * @param {PermissionLevel} permissionLevel - Permission level for linked document.
  */
 export async function setupLink(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   docID: string,
   permissionLevel: PermissionLevel,
   userObj?: models.User

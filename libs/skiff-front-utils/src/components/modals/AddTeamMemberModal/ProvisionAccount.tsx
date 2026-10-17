@@ -1,4 +1,5 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { getResultErrors } from '../../../apollo/errorUtils';
+import { ApolloClient } from '@apollo/client';
 import {
   ButtonGroup,
   ButtonGroupItem,
@@ -76,7 +77,7 @@ const HeaderInput = styled.div`
 // the score required for a password to be strong enough
 const PASSING_SCORE = 2;
 interface ProvisionAccountProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   showConfirmProvision: boolean;
   onCancel: () => void;
   onBack: () => void;
@@ -187,7 +188,7 @@ const ProvisionAccount: FC<ProvisionAccountProps> = ({
         );
         setLoadingConfirm(false);
 
-        const paywallErrorCode = getPaywallErrorCode(res.errors ?? []);
+        const paywallErrorCode = getPaywallErrorCode(getResultErrors(res.error) ?? []);
         if (paywallErrorCode) {
           enqueueToast({
             title: getPaywallTitle(paywallErrorCode),

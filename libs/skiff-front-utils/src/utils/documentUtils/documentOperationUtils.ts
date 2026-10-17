@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import FileResizer from 'react-image-file-resizer';
 import {
   createKeyFromSecret,
@@ -65,7 +65,7 @@ type DocumentWithHierarchicalKey = WithRequired<
 // Wrap a function operating on document to handle typical errors and automatically retry the operation
 // This will handle NeedNewHierarchicalKey, Conflict, NeedNewSessionKey and NewKeyNotNeeded errors
 export const wrapDocumentOperation = async <T>(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   docIDs: string[],
   handler: (docs: DocumentWithHierarchicalKey[]) => Promise<T>,
   forceNetwork = false,
@@ -118,11 +118,7 @@ export const wrapDocumentOperation = async <T>(
  * @param {string} docID - document id
  * @returns {Promise<boolean>} Boolean indicator for unshare success or failure.
  */
-export async function upgradeDocKey(
-  client: ApolloClient<NormalizedCacheObject>,
-  docID: string,
-  user?: models.User
-): Promise<null> {
+export async function upgradeDocKey(client: ApolloClient, docID: string, user?: models.User): Promise<null> {
   return wrapDocumentOperation(
     client,
     [],
@@ -137,7 +133,7 @@ export async function upgradeDocKey(
         },
         fetchPolicy: 'network-only'
       });
-      const document = res.data.document;
+      const document = res.data?.document;
       assertExists(document);
 
       if (!document.decryptedPrivateHierarchicalKey) {
@@ -208,7 +204,7 @@ export async function upgradeDocKey(
 
 // Upgrade the hierarchical key of the target document and every parent document that need a new hierarchical key. It also updates the keys claims that need re-encryption
 // look at pendingDocumentKeyUpgrades query and upgradeHierarchicalKeys mutation document on the server for more details
-export function upgradeHierarchicalKey(client: ApolloClient<NormalizedCacheObject>, docID: string, user?: models.User) {
+export function upgradeHierarchicalKey(client: ApolloClient, docID: string, user?: models.User) {
   console.log('upgradeHierarchicalKey', docID);
   return wrapDocumentOperation(
     client,
@@ -221,7 +217,8 @@ export function upgradeHierarchicalKey(client: ApolloClient<NormalizedCacheObjec
         variables: { request: { rootDocumentId: docID } },
         fetchPolicy: 'network-only'
       });
-      console.log('res', res.data.pendingDocumentKeyUpgrades);
+      console.log('res', res.data?.pendingDocumentKeyUpgrades);
+      assertExists(res.data);
       const { pendingDocumentKeyUpgrades } = res.data;
 
       // storing all newly generated key pairs to be used when update keys claim in second step
@@ -355,11 +352,7 @@ export function upgradeHierarchicalKey(client: ApolloClient<NormalizedCacheObjec
  * @param docID - document's ID
  * @param thumbnail - new thumbnail data string / null to remove
  */
-export const changeDocThumbnail = async (
-  client: ApolloClient<NormalizedCacheObject>,
-  docID: string,
-  thumbnail?: string | null
-) =>
+export const changeDocThumbnail = async (client: ApolloClient, docID: string, thumbnail?: string | null) =>
   wrapDocumentOperation(client, [docID], async ([document]) => {
     // ignore of team document
     if (document?.team?.rootDocument?.docID === document.docID || !thumbnail) {
@@ -439,12 +432,7 @@ function createRawThumbnailImage(source: string, mimeType: string) {
  * @param docId - document's id
  * @param mimeType - document's mime type
  */
-export async function createAndUpdateThumbnail(
-  source: string,
-  client: ApolloClient<NormalizedCacheObject>,
-  docId: string,
-  mimeType?: string
-) {
+export async function createAndUpdateThumbnail(source: string, client: ApolloClient, docId: string, mimeType?: string) {
   try {
     if (!mimeType) return;
     const thumbnailImage = createRawThumbnailImage(source, mimeType);

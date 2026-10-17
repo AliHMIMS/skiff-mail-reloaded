@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   FilledVariant,
   Icon,
@@ -203,7 +203,7 @@ const FileRowPreview = ({
 const FilePreviewMemoized = React.memo(FileRowPreview);
 
 export interface FileTableRowProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   title: string;
   onClick: (e: React.MouseEvent) => void;
   isSelected?: boolean;

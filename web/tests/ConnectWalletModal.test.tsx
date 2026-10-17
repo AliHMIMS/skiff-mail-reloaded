@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { MockedProvider } from '@apollo/client/testing';
+import { LocalState } from '@apollo/client/local-state';
+import { MockedProvider } from '@apollo/client/testing/react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { act } from 'react-dom/test-utils';
@@ -32,7 +33,7 @@ describe('ConnectWalletModal', () => {
 
   it('renders title and wallet buttons', () => {
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <ConnectWalletModal
           closeParentModal={vi.fn}
           onBack={vi.fn()}
@@ -56,7 +57,7 @@ describe('ConnectWalletModal', () => {
     const originalOpen = window.open;
     window.open = vi.fn();
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <ConnectWalletModal
           closeParentModal={vi.fn}
           onBack={vi.fn()}
@@ -88,7 +89,7 @@ describe('ConnectWalletModal', () => {
     });
 
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <ConnectWalletModal
           closeParentModal={vi.fn}
           onBack={vi.fn()}
@@ -111,7 +112,7 @@ describe('ConnectWalletModal', () => {
   it('clicking back button calls onBack', async () => {
     const onBack = vi.fn();
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <ConnectWalletModal
           closeParentModal={vi.fn}
           onBack={onBack}
@@ -131,7 +132,7 @@ describe('ConnectWalletModal', () => {
   it('clicking close button calls onClose', async () => {
     const onClose = vi.fn();
     render(
-      <MockedProvider>
+      <MockedProvider localState={new LocalState()}>
         <ConnectWalletModal
           closeParentModal={vi.fn}
           onBack={vi.fn()}

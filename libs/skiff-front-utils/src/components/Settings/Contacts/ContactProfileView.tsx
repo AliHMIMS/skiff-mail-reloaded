@@ -1,3 +1,4 @@
+import { getResultErrors } from '../../../apollo/errorUtils';
 import { Dropdown, InputField, ThemeMode } from 'nightwatch-ui';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -222,13 +223,14 @@ const ContactProfileView: React.FC<ContactProfileViewProps> = ({
     }
 
     // Upload file and return
-    const { data: contactAvatarLink, errors: contactErrors } = await createUploadContactAvatarLinkMutation({
+    const { data: contactAvatarLink, error: contactError } = await createUploadContactAvatarLinkMutation({
       variables: {
         request: {
           contactID: pendingContact.contactID
         }
       }
     });
+    const contactErrors = getResultErrors(contactError);
 
     if (contactErrors || !contactAvatarLink?.createUploadContactAvatarLink) {
       console.error('Error creating upload contact avatar link', contactErrors);

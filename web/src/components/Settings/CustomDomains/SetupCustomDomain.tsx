@@ -1,3 +1,4 @@
+import { getResultErrors } from 'skiff-front-utils';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import {
   Button,
@@ -237,7 +238,7 @@ const SetupCustomDomain: React.FC<SetupCustomDomainProps> = ({ existingCustomDom
 
     setLoading(true);
 
-    const { data, errors } = await generateCustomDomainRecords({
+    const { data, error } = await generateCustomDomainRecords({
       variables: {
         request: {
           domain: domainName
@@ -245,6 +246,7 @@ const SetupCustomDomain: React.FC<SetupCustomDomainProps> = ({ existingCustomDom
       },
       errorPolicy: 'all'
     });
+    const errors = getResultErrors(error);
 
     setLoading(false);
 
@@ -294,7 +296,7 @@ const SetupCustomDomain: React.FC<SetupCustomDomainProps> = ({ existingCustomDom
 
     setLoading(true);
 
-    const { errors } = await saveCustomDomainRecords({
+    const { error } = await saveCustomDomainRecords({
       variables: {
         request: {
           domain: domainName,
@@ -303,6 +305,7 @@ const SetupCustomDomain: React.FC<SetupCustomDomainProps> = ({ existingCustomDom
       },
       errorPolicy: 'all'
     });
+    const errors = getResultErrors(error);
 
     setLoading(false);
 

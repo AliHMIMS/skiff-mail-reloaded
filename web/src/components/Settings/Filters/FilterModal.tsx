@@ -1,4 +1,4 @@
-import { ApolloError, ApolloQueryResult } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import {
   Button,
   ButtonGroup,
@@ -48,7 +48,7 @@ const ButtonRow = styled.div<{ $flexEnd: boolean }>`
 `;
 
 interface FilterModalProps {
-  refetchFilters: () => Promise<ApolloQueryResult<GetMailFiltersQuery>>;
+  refetchFilters: () => Promise<unknown>;
   defaultConditions?: Condition[];
   defaultSelectedMoveToOption?: MoveToType;
   defaultSelectedLabels?: UserLabelPlain[];
@@ -142,8 +142,8 @@ export const FilterModal: React.FC<FilterModalProps> = ({
       await refetchFilters();
       closeModal();
     } catch (e) {
-      if (e instanceof ApolloError) {
-        const paywallErrorCode = getPaywallErrorCode(e.graphQLErrors);
+      if (CombinedGraphQLErrors.is(e)) {
+        const paywallErrorCode = getPaywallErrorCode(e.errors);
         if (paywallErrorCode) {
           dispatch(
             skemailModalReducer.actions.setOpenModal({

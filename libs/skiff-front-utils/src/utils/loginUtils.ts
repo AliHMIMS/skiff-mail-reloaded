@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   CanDirectlyUpdateSrpDocument,
   CanDirectlyUpdateSrpQuery,
@@ -50,7 +50,7 @@ export function generateRandomPassword() {
   return passwordBytes.join('');
 }
 
-export async function canDirectlyUpdateSrp(client: ApolloClient<NormalizedCacheObject>): Promise<boolean> {
+export async function canDirectlyUpdateSrp(client: ApolloClient): Promise<boolean> {
   const res = await client.query<CanDirectlyUpdateSrpQuery, CanDirectlyUpdateSrpQueryVariables>({
     query: CanDirectlyUpdateSrpDocument,
     fetchPolicy: 'network-only'

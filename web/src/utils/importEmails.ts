@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   GetGoogleAuthUrlQuery,
   GetGoogleAuthUrlDocument,
@@ -53,14 +53,14 @@ export const getOutlookCodeInURL = (): OAuthCodes => {
   }
 };
 
-export const signIntoGoogle = async (client: ApolloClient<NormalizedCacheObject>, action: AuthAction) => {
+export const signIntoGoogle = async (client: ApolloClient, action: AuthAction) => {
   const loginUrl = await client.query<GetGoogleAuthUrlQuery>({
     query: GetGoogleAuthUrlDocument,
     variables: {
       action
     }
   });
-  if (!loginUrl.data.getGoogleAuthURL) return;
+  if (!loginUrl.data?.getGoogleAuthURL) return;
 
   window.location.replace(loginUrl.data.getGoogleAuthURL);
 };
@@ -72,7 +72,7 @@ export const signIntoOutlook = async (action: AuthAction) => {
       action
     }
   });
-  if (!loginUrl.data.getOutlookAuthUrl) return;
+  if (!loginUrl.data?.getOutlookAuthUrl) return;
   window.location.replace(loginUrl.data.getOutlookAuthUrl);
 };
 

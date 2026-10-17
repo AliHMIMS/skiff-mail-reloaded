@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   SubscribeNotificationDocument,
   SubscribeNotificationMutation,
@@ -95,7 +95,7 @@ export async function cleanupLegacyNotificationServiceWorker() {
   }
 }
 
-async function saveSubscription(client: ApolloClient<NormalizedCacheObject>, subscription: PushSubscription) {
+async function saveSubscription(client: ApolloClient, subscription: PushSubscription) {
   const auth = subscription.getKey('auth');
   const p256dh = subscription.getKey('p256dh');
 
@@ -114,7 +114,7 @@ async function saveSubscription(client: ApolloClient<NormalizedCacheObject>, sub
   });
 }
 
-async function registerValidSW(client: ApolloClient<NormalizedCacheObject>) {
+async function registerValidSW(client: ApolloClient) {
   await cleanupLegacyNotificationServiceWorker();
   let reg = await navigator.serviceWorker.getRegistration(PUSH_SW_FILE_NAME);
   if (!reg) {
@@ -142,7 +142,7 @@ async function registerValidSW(client: ApolloClient<NormalizedCacheObject>) {
   }
 }
 
-export async function registerNotificationServiceWorker(client: ApolloClient<NormalizedCacheObject>) {
+export async function registerNotificationServiceWorker(client: ApolloClient) {
   if ('serviceWorker' in navigator) {
     await registerValidSW(client);
   } else {

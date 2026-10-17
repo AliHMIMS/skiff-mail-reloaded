@@ -159,7 +159,7 @@ const RecipientField: FC<RecipientFieldProps> = ({
                 domains: domain
               }
             });
-            skiffInternalAddressMap.set(emailAddress, isSkiffCustomDomainResponse.data.isCustomDomain);
+            skiffInternalAddressMap.set(emailAddress, !!isSkiffCustomDomainResponse.data?.isCustomDomain);
           }
         })
       );

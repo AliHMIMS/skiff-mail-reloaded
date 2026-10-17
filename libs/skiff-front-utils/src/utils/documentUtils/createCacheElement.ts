@@ -1,4 +1,5 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { getResultErrors } from '../../apollo/errorUtils';
+import { ApolloClient } from '@apollo/client';
 import axios, { AxiosRequestConfig } from 'axios';
 import { generateSymmetricKey, rawEncryptSymmetric } from 'skiff-crypto';
 import {
@@ -25,7 +26,7 @@ export const BLOCK_UPLOAD_TIMEOUT_MS = 1000 * 60 * 5; // 5 minutes
  * @returns {string} Stringified cache data object, which is of type InlineCacheElemData.
  */
 export async function createCacheElement(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   docID: string,
   cacheData: ArrayBuffer,
   type: string,
@@ -47,7 +48,8 @@ export async function createCacheElement(
     },
     errorPolicy: 'all'
   });
-  const { data, errors } = response;
+  const { data } = response;
+  const errors = getResultErrors(response.error);
   if (!data?.createCacheElement || (errors && !!errors.length)) {
     if (errors && !!errors.length) {
       const paywallErrorCode = getPaywallErrorCode(errors);
@@ -88,7 +90,7 @@ export async function createCacheElement(
       },
       errorPolicy: 'all'
     });
-    if (confirmResponse.errors && confirmResponse.errors.length > 0) {
+    if (confirmResponse.error) {
       throw new Error('Cache confirm request failed');
     }
     assertExists(confirmResponse.data, 'confirmResponse data not found');

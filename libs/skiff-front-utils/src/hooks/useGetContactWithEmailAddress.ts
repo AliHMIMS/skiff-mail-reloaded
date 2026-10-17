@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { useGetContactsQuery } from 'skiff-front-graphql';
 import { Contact } from 'skiff-graphql';
 
@@ -6,7 +6,7 @@ import { getContactDataFromCache } from '../utils/cacheUtils';
 
 interface ContactWithEmailAddressProps {
   emailAddress: string | undefined;
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
 }
 
 const useGetContactWithEmailAddress = ({ emailAddress, client }: ContactWithEmailAddressProps): Contact | undefined => {

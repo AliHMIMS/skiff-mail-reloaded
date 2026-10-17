@@ -1,3 +1,4 @@
+import { useQueryCallbacks } from '../../../hooks/useQueryCallbacks';
 import { debounce } from 'lodash';
 import {
   Button,
@@ -188,7 +189,7 @@ const ContactUserListTable: React.FC<ContactUserListTableProps> = ({
   const [createOrUpdateContact] = useCreateOrUpdateContactMutation();
 
   // Graphql
-  const { refetch } = useGetAllCurrentUserContactsQuery({
+  const { refetch } = useQueryCallbacks(useGetAllCurrentUserContactsQuery(), {
     onError: (err) => {
       console.error('Failed to load contacts', err);
     }

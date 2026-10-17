@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import { Icon } from 'nightwatch-ui';
 import { ChangeEvent, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -18,7 +18,7 @@ const EmlInput = styled.input`
 
 interface ImportEmlProps {
   handleMaxFileSizeExceeded: (maxSizeInBytes: string) => void;
-  handleFileImportError: (error: ApolloError) => void;
+  handleFileImportError: (error: CombinedGraphQLErrors) => void;
   uploadFilesOpen: boolean;
   setUploadFilesOpen: (open: boolean) => void;
 }
@@ -114,7 +114,7 @@ export const ImportEml: React.FC<ImportEmlProps> = ({
       });
       onClose();
     } catch (err) {
-      if (err instanceof ApolloError) {
+      if (CombinedGraphQLErrors.is(err)) {
         handleFileImportError(err);
       }
     }
@@ -128,7 +128,7 @@ export const ImportEml: React.FC<ImportEmlProps> = ({
       try {
         uploadFiles(Array.from(files));
       } catch (err) {
-        if (err instanceof ApolloError) {
+        if (CombinedGraphQLErrors.is(err)) {
           handleFileImportError(err);
         }
       }

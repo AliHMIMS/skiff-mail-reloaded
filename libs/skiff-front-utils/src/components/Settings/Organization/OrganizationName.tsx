@@ -1,3 +1,4 @@
+import { getResultErrors } from '../../../apollo/errorUtils';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   DisplayPictureData,
@@ -93,7 +94,8 @@ const OrganizationName: React.FC = () => {
       return;
     }
 
-    const { data: avatarLink, errors } = await createOrgUploadAvatarLinkMutation();
+    const { data: avatarLink, error } = await createOrgUploadAvatarLinkMutation();
+    const errors = getResultErrors(error);
 
     if (errors || !avatarLink?.createOrgUploadAvatarLink) {
       console.error('Error creating upload avatar link', errors);

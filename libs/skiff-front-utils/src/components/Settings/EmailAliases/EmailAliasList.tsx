@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { AccentColor, Avatar, Size, Skeleton, Typography, TypographySize } from 'nightwatch-ui';
 import React from 'react';
 import { isMobile } from 'react-device-detect';
@@ -76,7 +76,7 @@ const NameContainer = styled.div`
 
 interface EmailAliasListProps {
   allAliases: string[];
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   includeDeleteOption: boolean;
   userID: string;
   deleteAlias: (alias: string) => Promise<void>;

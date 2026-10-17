@@ -18,8 +18,6 @@ import { GetUserQuickAliasDomainsDocument, useCreateQuickAliasDomainMutation } f
 import { NameMarquee, getRandomQuickAliasTag, useQuickAliasForUserDefaultDomain, useToast } from 'skiff-front-utils';
 import styled from 'styled-components';
 
-import { ApolloError } from '@apollo/client';
-
 const Title = styled.div`
   display: flex;
   flex-direction: column;
@@ -283,7 +281,7 @@ export default function QuickAliasCreateSubdomain(props: QuickAliasCreateSubdoma
         setActivateLoading(false);
         setActiveState(QuickAliasCreateSubdomainState.ACTIVATED);
       } catch (e: any) {
-        setError((e as ApolloError).message || 'Domain is not available');
+        setError((e as Error).message || 'Domain is not available');
         setActivateLoading(false);
       }
     }

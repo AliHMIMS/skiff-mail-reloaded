@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { decryptSymmetric } from 'skiff-crypto';
 import {
   models,
@@ -7,7 +7,7 @@ import {
   GetDocumentFullQuery,
   GetDocumentFullQueryVariables
 } from 'skiff-front-graphql';
-import { insertIf } from 'skiff-utils';
+import { assertExists, insertIf } from 'skiff-utils';
 
 import { decryptHierarchicalPermissionsChain } from '../../apollo/typePolicyHelpers';
 
@@ -18,7 +18,7 @@ import { decryptHierarchicalPermissionsChain } from '../../apollo/typePolicyHelp
  * @returns {Promise<Document>} The document
  */
 export async function downloadDocument(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   docID: string,
   forceNetwork = false,
   userObj?: models.User
@@ -62,5 +62,7 @@ export async function downloadDocument(
       }
     }
   }
-  return response?.data?.document;
+  const document = response?.data?.document;
+  assertExists(document, 'downloadDocument: no document returned');
+  return document;
 }

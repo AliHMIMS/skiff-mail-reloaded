@@ -1,4 +1,4 @@
-import { ApolloCache, NormalizedCacheObject } from '@apollo/client';
+import { ApolloCache } from '@apollo/client';
 import pluralize from 'pluralize';
 import {
   GetSilenceSenderSuggestionsDocument,
@@ -40,7 +40,7 @@ export const ConfirmUpdateNotificationsForSenderModal: React.FC<ConfirmUpdateNot
 
   const turnNotificationsOff = state === NotificationsForSenderState.OFF;
 
-  const updateNotificationsMutedStateInCache = (cache: ApolloCache<NormalizedCacheObject>, updatedState: boolean) => {
+  const updateNotificationsMutedStateInCache = (cache: ApolloCache, updatedState: boolean) => {
     if (!threadID) return;
     const cacheID = cache.identify({ __typename: 'UserThread', threadID });
     cache.updateFragment<ThreadWithoutContentFragment>(
@@ -67,7 +67,7 @@ export const ConfirmUpdateNotificationsForSenderModal: React.FC<ConfirmUpdateNot
           }
         },
         refetchQueries: [{ query: GetSilenceSenderSuggestionsDocument }, { query: GetSilencedSendersDocument }],
-        update: (cache: ApolloCache<NormalizedCacheObject>) => {
+        update: (cache: ApolloCache) => {
           updateNotificationsMutedStateInCache(cache, true);
         }
       });
@@ -93,7 +93,7 @@ export const ConfirmUpdateNotificationsForSenderModal: React.FC<ConfirmUpdateNot
             emailAddresses: sendersToMute
           }
         },
-        update: (cache: ApolloCache<NormalizedCacheObject>) => {
+        update: (cache: ApolloCache) => {
           updateNotificationsMutedStateInCache(cache, false);
         }
       });

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { Dialog } from 'nightwatch-ui';
 import React, { useState } from 'react';
 import { isMobile } from 'react-device-detect';
@@ -20,7 +20,7 @@ enum ModalStep {
 }
 
 interface AddTeamMemberModalProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   open: boolean;
   everyoneTeamDocID: string;
   onClose: () => void;

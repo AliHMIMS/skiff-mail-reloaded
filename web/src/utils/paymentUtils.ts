@@ -1,3 +1,4 @@
+import { getResultErrors } from 'skiff-front-utils';
 import type { GraphQLFormattedError } from 'graphql';
 import {
   GetCheckoutSessionUrlOrStripeUpdateStatusDocument,
@@ -63,8 +64,9 @@ export const getCustomDomainCheckoutSession = async (
     errorPolicy: 'all',
     fetchPolicy: 'no-cache'
   });
-  if (response.errors?.length) {
-    return { errors: response.errors };
+  const errors = getResultErrors(response.error);
+  if (errors?.length) {
+    return { errors };
   }
   if (!response.data || response.data.customDomainCheckoutPortal.status === RequestStatus.Failed) {
     console.error('getCustomDomainCheckoutSession: Request failed.');

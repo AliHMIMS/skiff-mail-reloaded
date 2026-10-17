@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { ThemeMode } from 'nightwatch-ui';
 import { Dispatch, SetStateAction } from 'react';
 import { DisplayPictureData } from 'skiff-graphql';
@@ -8,7 +8,7 @@ import { NewEmailAliasInputProps } from '../../NewEmailAliasInput';
 export interface AliasProfileModalProps extends Partial<Omit<NewEmailAliasInputProps, 'newAlias' | 'addAlias'>> {
   /** Email alias being edited/created */
   alias: string;
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   /** Opened/closed state of the current modal */
   isOpen: boolean;
   /** Changes the opened/closed state of the current modal */

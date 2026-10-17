@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import {
   ButtonGroup,
   ButtonGroupItem,
@@ -78,7 +78,7 @@ const StyledInputFieldContainer = styled.div`
 const StyledAddInviteButton = styled.div``;
 
 interface InviteByEmailProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   everyoneTeamDocID: string;
   onCancel: () => void;
   onClose: () => void;

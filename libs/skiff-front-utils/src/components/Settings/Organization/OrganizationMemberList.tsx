@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import React, { useState } from 'react';
 import { GetOrganizationMembersDocument, useDeleteUserOrganizationMembershipMutation } from 'skiff-front-graphql';
 import { DocumentCollaborator } from 'skiff-graphql';
@@ -11,7 +11,7 @@ import OrganizationMemberListTable from './OrganizationMemberListTable';
 import OrganizationMemberProfile from './OrganizationMemberProfile';
 
 interface OrganizationMemberListProps {
-  client: ApolloClient<NormalizedCacheObject>;
+  client: ApolloClient;
   // Each app has it's own state to control the Settings modal
   openSettings: (page: SettingsPage) => void;
 }

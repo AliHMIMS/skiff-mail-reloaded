@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import srp from 'secure-remote-password/client';
 import { createKeyFromSecret, createSRPKey } from 'skiff-crypto';
 import {
@@ -24,7 +24,7 @@ import { upgradeDocKey } from './documentOperationUtils';
 import { downloadDocument } from './downloadDocument';
 
 export async function provisionNewUser(
-  client: ApolloClient<NormalizedCacheObject>,
+  client: ApolloClient,
   captchaToken: string,
   newUserAlias: string,
   newPassword: string,

@@ -1,8 +1,9 @@
-import { FieldPolicy } from '@apollo/client';
-import { ReadFieldFunction } from '@apollo/client/cache/core/types/common';
+import { FieldFunctionOptions, FieldPolicy } from '@apollo/client';
 import last from 'lodash/last';
 import uniqBy from 'lodash/uniqBy';
 import { Mailbox, MailboxPageInfo, MailboxRequest, SystemLabels, UserThread } from 'skiff-graphql';
+
+type ReadFieldFunction = FieldFunctionOptions['readField'];
 
 const getUpdatedAtField = (label?: string) => {
   if (label === SystemLabels.Sent) {

@@ -1,4 +1,4 @@
-import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 import { GetDocumentBaseDocument, GetDocumentBaseQuery, GetDocumentBaseQueryVariables } from 'skiff-front-graphql';
 
 /**
@@ -8,11 +8,7 @@ import { GetDocumentBaseDocument, GetDocumentBaseQuery, GetDocumentBaseQueryVari
  * @returns {Promise<Document>} The document, which also stored locally via
  * EditorActions.
  */
-export async function downloadDocumentWithoutContent(
-  client: ApolloClient<NormalizedCacheObject>,
-  docID: string,
-  forceNetwork = false
-) {
+export async function downloadDocumentWithoutContent(client: ApolloClient, docID: string, forceNetwork = false) {
   const response = await client.query<GetDocumentBaseQuery, GetDocumentBaseQueryVariables>({
     query: GetDocumentBaseDocument,
     variables: {
@@ -22,5 +18,5 @@ export async function downloadDocumentWithoutContent(
     },
     fetchPolicy: forceNetwork ? 'network-only' : 'cache-first'
   });
-  return response?.data?.document;
+  return response?.data?.document ?? null;
 }

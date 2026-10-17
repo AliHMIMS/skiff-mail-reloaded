@@ -20,7 +20,7 @@ export const fetchAndDecryptAttachments = async (
     query: GetAttachmentsDocument,
     variables: { ids: attachmentsToFetch?.map((attach) => attach.attachmentID) ?? [] }
   });
-  if (!getAttachmentsData.attachments || getAttachmentsData.attachments.length === 0) return [];
+  if (!getAttachmentsData?.attachments || getAttachmentsData.attachments.length === 0) return [];
 
   const { default: axios } = await import('axios');
   const decryptedAttachmentsArray = await Promise.all(

@@ -1,4 +1,4 @@
-import { ApolloError } from '@apollo/client';
+import { CombinedGraphQLErrors } from '@apollo/client/errors';
 import {
   CurrentUserEmailAliasesDocument,
   CurrentUserEmailAliasesQuery,
@@ -45,7 +45,7 @@ const setDefaultEmailAlias = async () => {
     variables: {},
     fetchPolicy: 'network-only'
   });
-  const emailAliases = emailAliasesData.currentUser?.emailAliases || [];
+  const emailAliases = emailAliasesData?.currentUser?.emailAliases || [];
   const user = requireCurrentUserData();
   initializeDefaultEmailAlias(user.userID, emailAliases);
 };
@@ -69,15 +69,16 @@ export const tryCachedLogin = async (): Promise<boolean> => {
     const res = await client.query<GetSessionCacheQuery, GetSessionCacheQueryVariables>({
       query: GetSessionCacheDocument
     });
+    if (!res.data) throw new Error('No session cache');
     cacheKey = res.data.sessionCache.cacheKey;
     alternativeCacheKeys = res.data.sessionCache.alternativeCacheKeys;
     userDataToRefresh = res.data.currentUser;
   } catch (e) {
     if (
-      e instanceof ApolloError &&
-      (isApolloLogicErrorType(e.graphQLErrors[0], NotFound) ||
-        isApolloLogicErrorType(e.graphQLErrors[0], BadRequest) ||
-        isApolloLogicErrorType(e.graphQLErrors[0], NotAuthorized))
+      CombinedGraphQLErrors.is(e) &&
+      (isApolloLogicErrorType(e.errors[0], NotFound) ||
+        isApolloLogicErrorType(e.errors[0], BadRequest) ||
+        isApolloLogicErrorType(e.errors[0], NotAuthorized))
     ) {
       // session cache is invalid, cleaning it
       console.log('Server-side session cache is invalid, cleaning local state');
