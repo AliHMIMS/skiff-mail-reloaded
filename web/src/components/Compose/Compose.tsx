@@ -422,8 +422,7 @@ const Compose: React.FC = () => {
   // If the user tries to close the window while the email is sending, warn the user
   useWarnBeforeUnloading(isSending);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-  const editorContentSize: number = editor?.storage.messageSizeExtension.messageSize || 0;
+  const editorContentSize = editor?.storage.messageSizeExtension.messageSize || 0;
   const messageSizeExceeded = editorContentSize + attachmentsSize > MESSAGE_MAX_SIZE_IN_BYTES;
 
   const composeIsDirty = isEditorDirty || mailFormDirty.current;
@@ -530,7 +529,8 @@ const Compose: React.FC = () => {
       if (!createdEditor.isFocused && initialFocus === EmailFieldTypes.BODY) {
         setTimeout(() => {
           // Timeout is important for iOS, otherwise the keyboard open before compose completely showed and it case issue with app header
-          createdEditor.commands.focus();
+          // tiptap 3 throws on a destroyed editor (it can be replaced before the timeout fires)
+          if (!createdEditor.isDestroyed) createdEditor.commands.focus();
         }, 100);
         setFocusedField(initialFocus);
       }
@@ -1051,11 +1051,9 @@ const Compose: React.FC = () => {
   useEffect(() => {
     if (!editor) return;
     if (isEditorDirty) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      editor.extensionStorage[Placeholder.name].changed = true;
+      editor.extensionStorage.placeholder.changed = true;
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      editor.extensionStorage[Placeholder.name].changed = false;
+      editor.extensionStorage.placeholder.changed = false;
     }
   }, [editor, isEditorDirty]);
 

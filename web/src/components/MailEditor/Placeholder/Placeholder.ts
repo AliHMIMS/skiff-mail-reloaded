@@ -2,6 +2,12 @@ import Placeholder from '@tiptap/extension-placeholder';
 
 import { Paragraph } from '../Extensions/EditorNodes';
 
+declare module '@tiptap/core' {
+  interface Storage {
+    placeholder: { changed: boolean; placeholderContent?: string };
+  }
+}
+
 export default Placeholder.extend({
   addStorage() {
     return {
@@ -13,10 +19,8 @@ export default Placeholder.extend({
   includeChildren: true,
   placeholder: ({ node, pos, editor }) => {
     // Show only on the first paragraph when user is not editing body
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (node.type.name === Paragraph.name && pos === 0 && !editor.extensionStorage[Placeholder.name].changed)
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
-      return editor.extensionStorage[Placeholder.name].placeholderContent ?? `Write message`;
+    if (node.type.name === Paragraph.name && pos === 0 && !editor.extensionStorage.placeholder.changed)
+      return editor.extensionStorage.placeholder.placeholderContent ?? `Write message`;
     return '';
   }
 });

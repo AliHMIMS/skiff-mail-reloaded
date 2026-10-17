@@ -27,12 +27,14 @@ export default Blockquote.extend({
   },
   addOptions() {
     return {
+      HTMLAttributes: {},
       ...this.parent?.(),
       /**
        * if true disables the toggling option of the mail quotes,
        * they are always open when true
        */
-      disableToggle: false
+      disableToggle: false,
+      threadSenders: []
     };
   },
   parseHTML() {

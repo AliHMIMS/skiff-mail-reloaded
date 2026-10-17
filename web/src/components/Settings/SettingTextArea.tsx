@@ -83,6 +83,8 @@ export const SettingTextArea = ({
 
   const editor = useEditor({
     editable: true,
+    // tiptap 3 no longer re-renders on every transaction by default; the toolbar's active states rely on it
+    shouldRerenderOnTransaction: true,
     content: value,
     extensions: buildEditorExtensions(settingEditorExtensions),
     onUpdate: ({ editor: updatedEditor }) => {
@@ -229,8 +231,7 @@ export const SettingTextArea = ({
 
   useEffect(() => {
     if (editor) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      editor.extensionStorage[Placeholder.name].placeholderContent = placeholder;
+      editor.extensionStorage.placeholder.placeholderContent = placeholder;
     }
   }, [editor?.extensionStorage, placeholder]);
 

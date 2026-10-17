@@ -27,3 +27,10 @@ declare module 'apollo-upload-client/UploadHttpLink.mjs' {
     constructor(options?: { uri?: string; credentials?: RequestCredentials; headers?: Record<string, string> });
   }
 }
+
+// prosemirror-dev-tools 4 ships without type declarations
+declare module 'prosemirror-dev-tools' {
+  import type { EditorView } from 'prosemirror-view';
+
+  export default function applyDevTools(view: EditorView): void;
+}

@@ -1,6 +1,5 @@
 import Placeholder from '@tiptap/extension-placeholder';
 import { Content, Editor, EditorContent, useEditor } from '@tiptap/react';
-import applyProsemirrorDevtools from 'prosemirror-dev-tools';
 import {
   Dispatch,
   FC,
@@ -166,6 +165,8 @@ const MailEditor: FC<MailEditorProps> = ({
 
   const editor = useEditor({
     editable: true,
+    // tiptap 3 no longer re-renders on every transaction by default; the toolbar's active states rely on it
+    shouldRerenderOnTransaction: true,
     extensions: buildEditorExtensions(extensionsOptions),
     onTransaction: ({ transaction }) => {
       if (transaction.docChanged && !transaction.getMeta('preventUpdate')) {
@@ -180,7 +181,9 @@ const MailEditor: FC<MailEditorProps> = ({
     onFocus,
     onCreate({ editor: createdEditor }) {
       setIsEditorReady(true);
-      if (process.env.PM_DEVTOOLS) applyProsemirrorDevtools(createdEditor.view);
+      if (process.env.PM_DEVTOOLS) {
+        void import('prosemirror-dev-tools').then(({ default: applyDevTools }) => applyDevTools(createdEditor.view));
+      }
       onCreate?.(createdEditor as Editor);
       onChange?.(createdEditor as Editor);
     },
@@ -281,8 +284,7 @@ const MailEditor: FC<MailEditorProps> = ({
 
   useEffect(() => {
     if (editor) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      editor.extensionStorage[Placeholder.name].placeholderContent = 'Write message';
+      editor.extensionStorage.placeholder.placeholderContent = 'Write message';
     }
   }, [editor?.extensionStorage]);
 

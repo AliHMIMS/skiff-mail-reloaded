@@ -30,6 +30,12 @@ const getEditorContentSize = (editor: Editor) => {
   return textContentSize + inlineAttachmentsSize;
 };
 
+declare module '@tiptap/core' {
+  interface Storage {
+    messageSizeExtension: { messageSize: number };
+  }
+}
+
 export const MessageSizeExtension = Extension.create({
   name: 'messageSizeExtension',
   addStorage() {
@@ -38,7 +44,6 @@ export const MessageSizeExtension = Extension.create({
     };
   },
   onUpdate() {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     this.storage.messageSize = getEditorContentSize(this.editor);
   }
 });
