@@ -12,17 +12,17 @@
   ],
   "private": true,
   "devDependencies": {
-    "@types/lodash": "^4",
-    "@types/node": "^22",
+    "@types/lodash": "^4.17.26",
+    "@types/node": "^22.20.5",
     "@types/validator": "13.7.1"
   },
   "dependencies": {
     "@cosmjs/encoding": "^0.28.13",
-    "@keplr-wallet/cosmos": "^0.10.19",
-    "dayjs": "^1.10.7",
-    "lodash": "^4.17.21",
-    "long": "^5.2.0",
-    "protobufjs": "^7.2.4",
-    "validator": "^13.7.0"
+    "@keplr-wallet/cosmos": "^0.10.24",
+    "dayjs": "^1.11.23",
+    "lodash": "^4.18.1",
+    "long": "^5.3.2",
+    "protobufjs": "^7.6.6",
+    "validator": "^13.15.35"
   }
 }

@@ -15,21 +15,21 @@
   "dependencies": {
     "@stablelib/base64": "^1.0.1",
     "@stablelib/chacha20poly1305": "^1.0.1",
-    "openpgp": "^5.11.0",
-    "protobufjs": "^7.2.4",
-    "semver": "^7.3.5",
+    "openpgp": "^5.11.3",
+    "protobufjs": "^7.6.6",
+    "semver": "^7.8.5",
     "skiff-crypto": "workspace:*",
     "skiff-graphql": "workspace:*",
     "skiff-utils": "workspace:*",
-    "validator": "^13.7.0",
+    "validator": "^13.15.35",
     "varint": "^6.0.0",
-    "zbase32": "^2.0.3"
+    "zbase32": "^2.0.6"
   },
   "devDependencies": {
     "@openpgp/web-stream-tools": "^0.0.14",
-    "@types/node": "^22",
-    "@types/semver": "^7",
+    "@types/node": "^22.20.5",
+    "@types/semver": "^7.8.0",
     "@types/validator": "13.7.3",
-    "@types/varint": "^6.0.0"
+    "@types/varint": "^6.0.3"
   }
 }

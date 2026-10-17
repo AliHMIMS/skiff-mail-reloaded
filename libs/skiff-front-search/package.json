@@ -10,22 +10,22 @@
   "sideEffects": false,
   "private": true,
   "devDependencies": {
-    "@types/lodash": "^4",
-    "@types/semver": "^7",
+    "@types/lodash": "^4.17.26",
+    "@types/semver": "^7.8.0",
     "@types/validator": "13.7.1"
   },
   "dependencies": {
-    "comlink": "^4.3.1",
-    "dayjs": "^1.10.7",
+    "comlink": "^4.4.2",
+    "dayjs": "^1.11.23",
     "graphql": "16.8.1",
-    "idb-keyval": "^6.1.0",
-    "lodash": "^4.17.21",
-    "minisearch": "^6.0.1",
-    "semver": "^7.3.7",
+    "idb-keyval": "^6.3.0",
+    "lodash": "^4.18.1",
+    "minisearch": "^6.3.0",
+    "semver": "^7.8.5",
     "skiff-crypto": "workspace:*",
     "skiff-graphql": "workspace:*",
     "skiff-utils": "workspace:*",
     "stemmer": "^2.0.1",
-    "validator": "^13.7.0"
+    "validator": "^13.15.35"
   }
 }
