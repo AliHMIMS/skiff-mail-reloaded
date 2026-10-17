@@ -282,20 +282,14 @@ export const LABEL_TO_SYSTEM_LABEL: { [key in SystemLabels]: SystemLabel } = SYS
   [key in SystemLabels]: SystemLabel;
 }>(
   (acc, label) => {
-    acc[label.value] = label;
+    acc[label.value as SystemLabels] = label;
     return acc;
   },
   {} as { [key in SystemLabels]: SystemLabel }
 );
 
-export const LABEL_TO_HIDDEN_LABEL: { [key in SystemLabels]: HiddenLabel } = HIDDEN_LABELS.reduce<{
-  [key in SystemLabels]: HiddenLabel;
-}>(
-  (acc, label) => {
-    acc[label.value] = label;
-    return acc;
-  },
-  {} as { [key in SystemLabels]: HiddenLabel }
+export const LABEL_TO_HIDDEN_LABEL: Record<string, HiddenLabel> = Object.fromEntries(
+  HIDDEN_LABELS.map((label) => [label.value, label])
 );
 
 export function getHiddenLabelFromPathParams(label: string): string | undefined {

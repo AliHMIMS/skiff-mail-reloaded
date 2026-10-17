@@ -689,7 +689,7 @@ function Thread({
 const ThreadMemo = React.memo(Thread, (prev, next) => {
   // Compare previous props with next to determine if to render or not
   // If any props are large we should remove from this function and find a better way to compare
-  for (const key of Object.keys(prev)) {
+  for (const key of Object.keys(prev) as (keyof ThreadProps)[]) {
     if (!isEqual(prev[key], next[key])) {
       return false; // should re-render component
     }

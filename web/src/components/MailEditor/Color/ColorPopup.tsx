@@ -1,6 +1,7 @@
 import { Editor } from '@tiptap/react';
 import {
   ACCENT_COLOR_VALUES,
+  type AccentColor,
   accentColorToPrimaryColor,
   DROPDOWN_CALLER_CLASSNAME,
   getThemedColor,
@@ -183,7 +184,7 @@ const ColorPopup: FC<ColorPopupProps> = ({ editor, editorContainerRef }) => {
               <ColorSelector
                 colorToStyling={accentColorToPrimaryColor}
                 handleChange={(selectedColor) => {
-                  editor.commands.setColor(ACCENT_COLOR_VALUES[selectedColor][0]);
+                  editor.commands.setColor(ACCENT_COLOR_VALUES[selectedColor as AccentColor][0]);
                 }}
                 handlePickerChange={(color: string) => {
                   editor.chain().focus().setColor(color).run();
@@ -218,7 +219,7 @@ const ColorPopup: FC<ColorPopupProps> = ({ editor, editorContainerRef }) => {
               <ColorSelector
                 colorToStyling={accentColorToPrimaryColor}
                 handleChange={(selectedColor) => {
-                  editor.commands.setHighlight({ color: ACCENT_COLOR_VALUES[selectedColor][1] });
+                  editor.commands.setHighlight({ color: ACCENT_COLOR_VALUES[selectedColor as AccentColor][1] });
                 }}
                 handlePickerChange={(highlightColorValue: string) => {
                   editor.chain().focus().setHighlight({ color: highlightColorValue }).run();

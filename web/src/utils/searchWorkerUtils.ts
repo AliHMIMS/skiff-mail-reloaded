@@ -341,7 +341,7 @@ export const getIconFromFilter = (
   }
 };
 
-const excludedFiltersByFilterType: Record<UserFacingFilterByChipType, SearchFilterType[]> = {
+const excludedFiltersByFilterType: Partial<Record<SearchFilterType, SearchFilterType[]>> = {
   [SearchFilterType.FromMe]: [SearchFilterType.FromAddress],
   [SearchFilterType.FromAddress]: [SearchFilterType.FromMe]
 };
@@ -352,8 +352,7 @@ const excludedFiltersByFilterType: Record<UserFacingFilterByChipType, SearchFilt
 export function getFilterTypesToHide(filters: SearchFilter[]) {
   const filterTypesToHide: SearchFilterType[] = filters.map((filter) => filter.filter.filterType);
   filters.forEach((filter) => {
-    const conflictingFiltersOfFilter =
-      (excludedFiltersByFilterType[filter.filter.filterType] as SearchFilterType[]) ?? [];
+    const conflictingFiltersOfFilter = excludedFiltersByFilterType[filter.filter.filterType] ?? [];
     filterTypesToHide.push(...conflictingFiltersOfFilter);
   });
   return filterTypesToHide;

@@ -209,8 +209,7 @@ const MailEditor: FC<MailEditorProps> = ({
             if (emojiCode && typeof emojiCode === 'string' && emojiCode.length > MAX_EMOJI_CODE_LEN) {
               return;
             }
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-            const emoji = emojiMap[emojiCode];
+            const emoji = emojiMap[emojiCode as keyof typeof emojiMap];
             if (!emoji) {
               return;
             }

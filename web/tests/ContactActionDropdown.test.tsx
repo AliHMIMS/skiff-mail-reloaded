@@ -3,7 +3,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
 
@@ -57,7 +57,7 @@ export const createStore = () =>
 
 describe('ContactActionDropdown', () => {
   // TODO: Move wrapper setup to util file https://redux.js.org/usage/writing-tests
-  const wrapper = ({ children }) => (
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <Provider store={createStore()}>
       <BrowserRouter>{children}</BrowserRouter>
     </Provider>

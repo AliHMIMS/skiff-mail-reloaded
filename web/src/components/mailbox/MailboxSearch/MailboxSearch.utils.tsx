@@ -1,4 +1,4 @@
-import { ACCENT_COLOR_VALUES, Icon, Icons, Size, ThemeMode, getThemedColor } from 'nightwatch-ui';
+import { ACCENT_COLOR_VALUES, type AccentColor, Icon, Icons, Size, ThemeMode, getThemedColor } from 'nightwatch-ui';
 import pluralize from 'pluralize';
 import { DateRangeFilter, getDateRangeFromDaysAgo } from 'skiff-front-search';
 import { upperCaseFirstLetter } from 'skiff-utils';
@@ -34,7 +34,7 @@ export const getIconForFilterChip = (chip: MailboxSearchFilterChip, forceTheme?:
       const userLabel = chip.value;
       if (!userLabel) return;
       const color = userLabel.color
-        ? (ACCENT_COLOR_VALUES[userLabel.color] as Array<string>)?.[1] || 'var(--bg-overlay-tertiary)'
+        ? ACCENT_COLOR_VALUES[userLabel.color as AccentColor]?.[1] || 'var(--bg-overlay-tertiary)'
         : 'var(--bg-overlay-tertiary)';
       return (
         <UserLabelIconColorContainer $color={forceTheme ? getThemedColor(color, forceTheme) : color}>

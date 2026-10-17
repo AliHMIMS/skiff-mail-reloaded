@@ -20,13 +20,16 @@ const TOGGLE_CONTAINER_MEDIUM_CSS = css`
 export const TOGGLE_CONTAINER_SIZE_CSS = ({ $size }: { $size: ToggleSize }) =>
   $size === Size.SMALL ? TOGGLE_CONTAINER_SMALL_CSS : TOGGLE_CONTAINER_MEDIUM_CSS;
 
-const TOGGLE_CONTAINER_CHECKED_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
+const TOGGLE_CONTAINER_CHECKED_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css<{ $forceTheme?: ThemeMode }>`
   background: ${getThemedColor('var(--accent-green-primary)', $forceTheme)};
 `;
 
-const TOGGLE_CONTAINER_UNCHECKED_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
-  background: ${getThemedColor('var(--bg-overlay-secondary)', $forceTheme)};
-`;
+const TOGGLE_CONTAINER_UNCHECKED_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) =>
+  css<{
+    $forceTheme?: ThemeMode;
+  }>`
+    background: ${getThemedColor('var(--bg-overlay-secondary)', $forceTheme)};
+  `;
 
 export const TOGGLE_CONTAINER_STATE_CSS = ({ $checked }: { $checked: boolean }) =>
   $checked ? TOGGLE_CONTAINER_CHECKED_CSS : TOGGLE_CONTAINER_UNCHECKED_CSS;

@@ -33,7 +33,7 @@ export interface ImportConfig {
   labelText?: string;
 }
 
-export const IMPORT_CONFIGS: Record<ImportClients.Gmail | ImportClients.Outlook, ImportConfig> = {
+export const IMPORT_CONFIGS: Partial<Record<ImportClients, ImportConfig>> = {
   [ImportClients.Gmail]: {
     steps: gmailImportSteps
   },

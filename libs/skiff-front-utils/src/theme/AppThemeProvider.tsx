@@ -38,7 +38,7 @@ const GlobalStyles = createGlobalStyle`
     font-smoothing: antialiased;
   }
 `;
-export const AppThemeProvider: React.FC = ({ children }) => {
+export const AppThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [themeName, setThemeName] = useState<ThemeMode>(ThemeMode.DARK);
   const [storedThemeState, setStoredThemeState] = useState<LocalStorageThemeMode>(StorageOnlyThemeMode.SYSTEM);
 

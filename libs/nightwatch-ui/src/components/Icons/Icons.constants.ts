@@ -1,3 +1,4 @@
+import type { ComponentType, SVGProps } from 'react';
 import { Size } from '../../types';
 
 import {
@@ -337,7 +338,7 @@ export const ICON_COLOR: Record<IconColor, string> = {
   source: ''
 };
 
-export const ICON_SVG: Record<Icon, string> = {
+export const ICON_SVG: Record<Icon, ComponentType<SVGProps<SVGSVGElement>>> = {
   archive: ARCHIVE_SVG,
   at: AT_SVG,
   apple: APPLE_SVG,

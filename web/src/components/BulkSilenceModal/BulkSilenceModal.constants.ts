@@ -35,5 +35,5 @@ export const transformArrayToRecord = (data: SuggestedBulkSilenceSender[], key: 
     }
     if (itemValue) acc[itemValue] = item;
     return acc;
-  }, {});
+  }, {} as BulkSilenceData);
 };

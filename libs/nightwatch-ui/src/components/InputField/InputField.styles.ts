@@ -28,7 +28,7 @@ export const INPUT_FIELD_CONTAINER_CSS = css`
   position: relative;
 `;
 
-export const START_ICON_CSS = ({ $ghost }: { $ghost: boolean }) => css`
+export const START_ICON_CSS = ({ $ghost }: { $ghost: boolean }) => css<{ $ghost: boolean }>`
   height: 100%;
   position: absolute;
   left: 0;
@@ -130,74 +130,88 @@ export const INPUT_FIELD_CSS = ({
   $readOnly?: boolean;
   $dynamicHeight?: boolean;
   $typographySize?: TypographySize;
-}) => css`
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 12px;
+}) =>
+  css<{
+    $active: boolean;
+    $error: boolean;
+    $variant: InputFieldVariant;
+    $weight: TypographyWeight;
+    $caretColor?: IconColor;
+    $forceTheme?: ThemeMode;
+    $readOnly?: boolean;
+    $dynamicHeight?: boolean;
+    $typographySize?: TypographySize;
+    $size: InputFieldSize;
+    $startIconExists: boolean;
+    $paddingRight?: number;
+  }>`
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
 
-  outline: none;
-  border: none;
-  resize: none;
+    outline: none;
+    border: none;
+    resize: none;
 
-  box-sizing: border-box;
+    box-sizing: border-box;
 
-  font-weight: ${$weight};
-  font-family: 'Skiff Sans Text', sans-serif;
-  -webkit-font-smoothing: antialiased;
+    font-weight: ${$weight};
+    font-family: 'Skiff Sans Text', sans-serif;
+    -webkit-font-smoothing: antialiased;
 
-  caret-color: ${$caretColor ? getThemedColor(ICON_COLOR[$caretColor], $forceTheme) : 'var(--icon-link)'};
-  color: ${getThemedColor('var(--text-secondary)', $forceTheme)};
+    caret-color: ${$caretColor ? getThemedColor(ICON_COLOR[$caretColor], $forceTheme) : 'var(--icon-link)'};
+    color: ${getThemedColor('var(--text-secondary)', $forceTheme)};
 
-  &:focus {
-    color: ${getThemedColor('var(--text-primary)', $forceTheme)};
-  }
+    &:focus {
+      color: ${getThemedColor('var(--text-primary)', $forceTheme)};
+    }
 
-  ${($active || $error) && `color: ${getThemedColor('var(--text-primary)', $forceTheme)};`}
+    ${($active || $error) && `color: ${getThemedColor('var(--text-primary)', $forceTheme)};`}
 
-  &::placeholder {
-    color: ${getThemedColor('var(--text-disabled)', $forceTheme)};
-  }
+    &::placeholder {
+      color: ${getThemedColor('var(--text-disabled)', $forceTheme)};
+    }
 
-  ${
-    !$dynamicHeight &&
-    ` &::-webkit-scrollbar {
+    ${
+      !$dynamicHeight &&
+      ` &::-webkit-scrollbar {
     width: 16px;
     color: ${getThemedColor('var(--scrollbar-gray)', $forceTheme)};
   }`
-  }
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background-clip: content-box;
-    border: 4px solid transparent;
-    border-radius: 8px;
-    box-shadow: inset 0 0 0 10px;
-  }
+    &::-webkit-scrollbar-thumb {
+      background-clip: content-box;
+      border: 4px solid transparent;
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 10px;
+    }
 
-  &::-webkit-scrollbar-button {
-    width: 0;
-    height: 0;
-    display: none;
-  }
+    &::-webkit-scrollbar-button {
+      width: 0;
+      height: 0;
+      display: none;
+    }
 
-  &::-webkit-scrollbar-corner {
-    background: transparent;
-  }
+    &::-webkit-scrollbar-corner {
+      background: transparent;
+    }
 
-  ${
-    $readOnly &&
-    `
+    ${
+      $readOnly &&
+      `
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   `
-  }
+    }
 
-  ${$typographySize === TypographySize.SMALL && TYPOGRAPHY_SMALL_CSS}
-  ${$typographySize === TypographySize.MEDIUM && TYPOGRAPHY_MEDIUM_CSS}
-  ${$typographySize === TypographySize.LARGE && TYPOGRAPHY_LARGE_CSS}
-  ${$variant === InputFieldVariant.DEFAULT && DEFAULT_CSS}
-  ${$variant === InputFieldVariant.GHOST && GHOST_CSS}
-  ${$variant === InputFieldVariant.SEARCH && SEARCH_CSS}
-`;
+    ${$typographySize === TypographySize.SMALL && TYPOGRAPHY_SMALL_CSS}
+    ${$typographySize === TypographySize.MEDIUM && TYPOGRAPHY_MEDIUM_CSS}
+    ${$typographySize === TypographySize.LARGE && TYPOGRAPHY_LARGE_CSS}
+    ${$variant === InputFieldVariant.DEFAULT && DEFAULT_CSS}
+    ${$variant === InputFieldVariant.GHOST && GHOST_CSS}
+    ${$variant === InputFieldVariant.SEARCH && SEARCH_CSS}
+  `;

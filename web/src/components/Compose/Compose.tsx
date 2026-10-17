@@ -597,7 +597,7 @@ const Compose: React.FC = () => {
   // Get the public key for the decryption service, which is used when sending emails to external users.
   const decryptionServicePublicKey = useDecryptionServicePublicKeyQuery();
 
-  const getAddressSetterForFieldType = {
+  const getAddressSetterForFieldType: Partial<Record<EmailFieldTypes, Dispatch<SetStateAction<AddressObject[]>>>> = {
     [EmailFieldTypes.TO]: setToAddresses,
     [EmailFieldTypes.CC]: setCcAddresses,
     [EmailFieldTypes.BCC]: setBccAddresses
@@ -610,8 +610,9 @@ const Compose: React.FC = () => {
   ) => {
     if (!draggedAddressChip || toFieldType === fromFieldType) return;
 
-    const addressToSetter = getAddressSetterForFieldType[toFieldType] as Dispatch<SetStateAction<AddressObject[]>>;
-    const addressFromSetter = getAddressSetterForFieldType[fromFieldType] as Dispatch<SetStateAction<AddressObject[]>>;
+    const addressToSetter = getAddressSetterForFieldType[toFieldType];
+    const addressFromSetter = getAddressSetterForFieldType[fromFieldType];
+    if (!addressToSetter || !addressFromSetter) return;
 
     addressToSetter((prevAddr: AddressObject[]) => {
       if (!prevAddr.some((addr) => addr.address === draggedAddressChip.address))

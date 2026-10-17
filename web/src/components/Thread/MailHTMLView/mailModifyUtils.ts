@@ -38,7 +38,7 @@ const getQuotes = (dom: Document): HTMLElement | null => {
   return dom.querySelector(selectors.join(', '));
 };
 
-export const addQuotesContainer = (dom: Document, onClick, showQuotes = false) => {
+export const addQuotesContainer = (dom: Document, onClick: (event: MouseEvent) => void, showQuotes = false) => {
   const quote = getQuotes(dom);
   if (!quote) return;
 

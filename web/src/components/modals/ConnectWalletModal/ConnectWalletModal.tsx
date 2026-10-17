@@ -62,11 +62,7 @@ export const ConnectWalletModal: FC<ConnectWalletModalProps> = ({
   setUserPublicKey
 }) => {
   // isAddingWallet is a dict keeps track of if the user is currently adding any of the wallet options
-  const initialIsAddingWallet = {};
-  Object.values(EthProvider).forEach((provider) => ({ ...initialIsAddingWallet, [provider]: false }));
-  Object.values(SolanaProvider).forEach((provider) => ({ ...initialIsAddingWallet, [provider]: false }));
-
-  const [isAddingWallet, setIsAddingWallet] = useState(initialIsAddingWallet);
+  const [isAddingWallet, setIsAddingWallet] = useState<Partial<Record<WalletProvider, boolean>>>({});
   const [errorMsg, setErrorMsg] = useState('');
   const [verifyCreate] = useVerifyWalletAddressCreateAliasMutation();
   const { enqueueToast } = useToast();

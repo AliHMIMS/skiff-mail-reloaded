@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, type PropsWithChildren } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';
 
@@ -16,7 +16,7 @@ const InnerContainerStyle = styled.div`
   }
 `;
 
-export const InnerContainer: FC = ({ children }) => (
+export const InnerContainer: FC<PropsWithChildren> = ({ children }) => (
   <InnerContainerStyle
     onClick={(e) => {
       e.stopPropagation();
@@ -34,7 +34,7 @@ const ToolbarContainerStyle = styled.div`
   width: 100%;
 `;
 
-export const ToolbarContainer: FC = ({ children }) => (
+export const ToolbarContainer: FC<PropsWithChildren> = ({ children }) => (
   <ToolbarContainerStyle
     onClick={(e) => {
       e.stopPropagation();

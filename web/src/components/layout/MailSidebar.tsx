@@ -133,7 +133,7 @@ export const MailSidebar: React.FC = () => {
   const unreadCountsObj: UnreadCountsObj = unreadCounts.reduce((acc, { label, count }) => {
     acc[label] = count;
     return acc;
-  }, {});
+  }, {} as UnreadCountsObj);
 
   const showMailAppFooterButton = useGetFF<boolean>('showMailAppFooterButton');
 

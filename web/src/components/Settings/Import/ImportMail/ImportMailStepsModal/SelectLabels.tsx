@@ -90,7 +90,7 @@ export const SelectLabels: React.FC<SelectLabelsProps> = ({
             <IconColorContainer
               $color={
                 iconColor
-                  ? (ACCENT_COLOR_VALUES[iconColor] as Array<string>)?.[1] || 'var(--bg-overlay-tertiary)'
+                  ? ACCENT_COLOR_VALUES[iconColor as AccentColor]?.[1] || 'var(--bg-overlay-tertiary)'
                   : 'var(--bg-overlay-tertiary)'
               }
             >
@@ -112,7 +112,7 @@ export const SelectLabels: React.FC<SelectLabelsProps> = ({
     <SelectItems
       defaultSelectAll={defaultSelectAll}
       importClient={importClient}
-      itemToImport={(IMPORT_CONFIGS[importClient] as ImportConfig).labelText || 'labels'}
+      itemToImport={IMPORT_CONFIGS[importClient]?.labelText || 'labels'}
       items={externalLabelToSkiffLabelPairs ?? []}
       loading={loading}
       maxAllowedCustomItems={maxAllowedCustomLabels}

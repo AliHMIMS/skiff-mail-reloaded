@@ -61,7 +61,7 @@ const DropdownItemHeader = styled.div`
   flex: 1;
 `;
 
-const IconTextContainer = styled.div`
+const IconTextContainer = styled.div<{ $hovering: boolean }>`
   min-width: 0px;
   ${DROPDOWN_ITEM_ICON_CSS}
 `;
@@ -77,7 +77,7 @@ const Label = styled.div<{ $hovering: boolean }>`
   opacity: ${(props) => (props.$hovering ? 1 : 0.9)};
 `;
 
-const IconContainer = styled.div`
+const IconContainer = styled.div<{ $hovering: boolean }>`
   ${DROPDOWN_ITEM_ICON_CSS}
 `;
 

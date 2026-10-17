@@ -36,7 +36,7 @@ export const FROM_RELATED_FIELDS = ['fromAddress', 'from'];
 export const TO_RELATED_FIELDS = ['toAddresses', 'to', 'ccAddresses', 'cc', 'bccAddresses', 'bcc'];
 export const CONTENT_RELATED_FIELDS = ['subject', 'content'];
 
-const SEARCH_FIELDS_BY_FILTER_TYPE: Record<FieldNarrowingSearchFilter, string[]> = {
+const SEARCH_FIELDS_BY_FILTER_TYPE: Partial<Record<MailboxSearchFilterType, string[]>> = {
   [MailboxSearchFilterType.FROM]: FROM_RELATED_FIELDS,
   [MailboxSearchFilterType.TO]: TO_RELATED_FIELDS,
   [MailboxSearchFilterType.SUBJECT]: ['subject'],

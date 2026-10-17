@@ -22,7 +22,7 @@ const InputFieldContainer = styled.div`
   ${INPUT_FIELD_CONTAINER_CSS}
 `;
 
-const StartIcon = styled.div`
+const StartIcon = styled.div<{ $ghost: boolean }>`
   ${START_ICON_CSS}
   justify-content: center;
 `;

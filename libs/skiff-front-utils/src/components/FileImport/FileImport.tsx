@@ -63,6 +63,7 @@ const selectVariantContainerStyle = {
 };
 
 type FileImportProps = {
+  children?: React.ReactNode;
   /**
    * A box allows for file drag-n-drop and import on click.
    * A button opens the browser's file importer on click.

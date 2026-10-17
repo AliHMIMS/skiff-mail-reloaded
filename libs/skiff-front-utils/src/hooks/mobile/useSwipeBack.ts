@@ -37,14 +37,15 @@ export const useSwipeBack = (
       !activeScreenRef.current.isConnected ||
       !previousScreenRef.current.isConnected
     ) {
-      activeScreenRef.current = document.getElementById(screenId) as HTMLDivElement;
-      previousScreenRef.current = document.getElementById(previousScreenId) as HTMLDivElement;
+      activeScreenRef.current = screenId ? (document.getElementById(screenId) as HTMLDivElement | null) : null;
+      previousScreenRef.current = document.getElementById(previousScreenId) as HTMLDivElement | null;
     }
     return [activeScreenRef.current, previousScreenRef.current];
   };
 
   const changeProgress = (threadProgress: string, transition?: string) => {
     const [activeScreen, previousScreen] = getScreensFromCache();
+    if (!activeScreen || !previousScreen) return;
     let ignoreDefault = false;
 
     if (onProgressChange) {

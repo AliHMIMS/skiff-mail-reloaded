@@ -37,7 +37,7 @@ const NODE_SHIMS: Record<string, string> = {
 };
 
 // Like webpack's ProvidePlugin: modules that use these free variables get an import instead.
-const NODE_GLOBALS = { Buffer: ['buffer', 'Buffer'], process: 'process' } as const;
+const NODE_GLOBALS: Record<string, string | [string, string]> = { Buffer: ['buffer', 'Buffer'], process: 'process' };
 
 /** `<svg>` root attributes as React props: class -> className, kebab-case / xmlns:xlink -> camelCase, style -> object. */
 function svgRootProps(attributes: string): Record<string, unknown> {

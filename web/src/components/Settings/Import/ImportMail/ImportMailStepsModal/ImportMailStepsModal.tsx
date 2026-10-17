@@ -77,10 +77,7 @@ export const ImportMailStepsModal: React.FC<ImportMailStepsModalProps> = ({
     numCustomFolders: undefined
   });
 
-  const allSteps = useMemo(
-    () => (importClient && (IMPORT_CONFIGS[importClient] as ImportConfig).steps) || [],
-    [importClient]
-  );
+  const allSteps = useMemo(() => (importClient && IMPORT_CONFIGS[importClient]?.steps) || [], [importClient]);
   const [step, setStep] = useState<ImportMailStep>();
   const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
 
@@ -90,7 +87,7 @@ export const ImportMailStepsModal: React.FC<ImportMailStepsModalProps> = ({
   const maxAllowedCustomFolders = Math.max(maxAllowed - currFolders.length, 0);
   const getExceededItems = () => {
     const { numCustomLabels, numCustomFolders } = numCustomSelected;
-    const items: { [key in keyof SelectItemType]?: ExceededItem } = {};
+    const items: Partial<Record<SelectItemType, ExceededItem>> = {};
     if (numCustomLabels && numCustomLabels > maxAllowedCustomLabels) {
       items[SelectItemType.LABEL] = {
         maxAllowed,

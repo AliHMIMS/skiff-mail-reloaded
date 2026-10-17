@@ -43,7 +43,7 @@ const InnerDot = styled.div<{ $dotColor: string }>`
   background: ${({ $dotColor }) => $dotColor};
 `;
 
-const CROSS_CSS = ({ $dotColor }: { $dotColor: string }) => css`
+const CROSS_CSS = ({ $dotColor }: { $dotColor: string }) => css<{ $dotColor: string }>`
   content: '';
   height: 60%;
   border-left: 1px solid ${$dotColor};

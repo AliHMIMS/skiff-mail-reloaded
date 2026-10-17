@@ -12,8 +12,6 @@ export interface UpgradeModalProps {
   description: string;
   open: boolean;
   onClose: () => void;
-  exceededItems?: {
-    [key in keyof SelectItemType]?: ExceededItem;
-  };
+  exceededItems?: Partial<Record<SelectItemType, ExceededItem>>;
   title?: string;
 }

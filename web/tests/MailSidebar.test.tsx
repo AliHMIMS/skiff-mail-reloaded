@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
+import type { ReactNode } from 'react';
 import { LocalState } from '@apollo/client/local-state';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
@@ -69,7 +70,7 @@ describe('Sidebar', () => {
   // TODO: Move wrapper setup to util file https://redux.js.org/usage/writing-tests
   const store = configureStore({ reducer });
 
-  const wrapper = ({ children }) => (
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <Provider store={store}>
       <SnackbarProvider maxSnack={7}>
         <DrawerProvider>

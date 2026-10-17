@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
+import type { ReactNode } from 'react';
 import { LocalState } from '@apollo/client/local-state';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
@@ -48,7 +49,7 @@ describe('ThreadMessageCell', () => {
     saveCurrentUserData(MOCK_USER);
   });
 
-  const wrapper = ({ children }) => (
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <Provider store={configureStore({ reducer })}>
       <MockedProvider localState={new LocalState()}>
         <SnackbarProvider maxSnack={7}>

@@ -50,7 +50,7 @@ interface CommandListProps {
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const StyledVariableSizeList = styled(VariableSizeList)`
+const StyledVariableSizeList = styled(VariableSizeList)<{ forceTheme?: ThemeMode }>`
   ${DISPLAY_SCROLLBAR_CSS}
 
   margin: 0 ${CMD_LIST_MARGIN}px;

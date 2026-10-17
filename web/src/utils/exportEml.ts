@@ -75,8 +75,7 @@ export const createExportableEML = async (
   );
 
   return new Promise((resolve, reject) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    void emlFormat.build(
+    emlFormat.build(
       {
         from: email.from.address,
         to: email.to.map((toElem) => ({
@@ -126,8 +125,7 @@ export const createPgpMIME = async (message: string, attachments: ClientLocalAtt
   const { default: emlFormat } = await import('eml-format');
 
   return new Promise((resolve, reject) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    void emlFormat.build(
+    emlFormat.build(
       {
         to: {
           name: '',

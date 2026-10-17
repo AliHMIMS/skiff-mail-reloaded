@@ -3,7 +3,7 @@ import { LocalState } from '@apollo/client/local-state';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
 import { abbreviateWalletAddress } from 'skiff-front-utils';
@@ -62,7 +62,7 @@ export const createStore = () =>
 
 describe('ThreadBlockHeader', () => {
   // TODO: Move wrapper setup to util file https://redux.js.org/usage/writing-tests
-  const wrapper = ({ children }) => (
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <Provider store={createStore()}>
       <MockedProvider localState={new LocalState()}>
         <BrowserRouter>{children}</BrowserRouter>

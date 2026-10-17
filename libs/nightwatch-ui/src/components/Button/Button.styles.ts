@@ -4,7 +4,7 @@ import { ThemeMode, Type } from '../../types';
 import { getThemedColor } from '../../utils/colorUtils';
 
 /** Type.PRIMARY CSS */
-export const PRIMARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
+export const PRIMARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css<{ $forceTheme?: ThemeMode }>`
   border: 1px solid transparent;
   background: ${getThemedColor('var(--cta-primary-default)', $forceTheme)};
   box-shadow: ${getThemedColor('var(--shadow-l1)', $forceTheme)};
@@ -23,7 +23,7 @@ export const PRIMARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode })
 `;
 
 /** Type.SECONDARY CSS */
-export const SECONDARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
+export const SECONDARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css<{ $forceTheme?: ThemeMode }>`
   border: 1px solid ${getThemedColor('var(--border-secondary)', $forceTheme)};
   background: ${getThemedColor(`var(--cta-secondary-default)`, $forceTheme)};
 
@@ -40,7 +40,7 @@ export const SECONDARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode 
 `;
 
 /** Type.TERTIARY CSS */
-export const TERTIARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
+export const TERTIARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css<{ $forceTheme?: ThemeMode }>`
   border: 1px solid transparent;
   background: ${getThemedColor(`var(--cta-tertiary-default)`, $forceTheme)};
 
@@ -57,21 +57,24 @@ export const TERTIARY_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }
 `;
 
 /** Type.DESTRUCTIVE CSS */
-export const DESTRUCTIVE_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
-  border: 1px solid ${getThemedColor('var(--border-destructive)', $forceTheme)};
-  background: ${getThemedColor(`var(--cta-destructive-default)`, $forceTheme)};
+export const DESTRUCTIVE_BUTTON_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) =>
+  css<{
+    $forceTheme?: ThemeMode;
+  }>`
+    border: 1px solid ${getThemedColor('var(--border-destructive)', $forceTheme)};
+    background: ${getThemedColor(`var(--cta-destructive-default)`, $forceTheme)};
 
-  &:active,
-  &.active {
-    background: ${getThemedColor(`var(--cta-destructive-active)`, $forceTheme)};
-  }
-  &:hover {
-    background: ${getThemedColor(`var(--cta-destructive-hover)`, $forceTheme)};
-  }
-  &.disabled {
-    background: ${getThemedColor(`var(--cta-destructive-disabled)`, $forceTheme)};
-  }
-`;
+    &:active,
+    &.active {
+      background: ${getThemedColor(`var(--cta-destructive-active)`, $forceTheme)};
+    }
+    &:hover {
+      background: ${getThemedColor(`var(--cta-destructive-hover)`, $forceTheme)};
+    }
+    &.disabled {
+      background: ${getThemedColor(`var(--cta-destructive-disabled)`, $forceTheme)};
+    }
+  `;
 
 /** Type-specific button styles */
 export const BUTTON_TYPE_CONTAINER_CSS = ({ $type }: { $type: Type; $forceTheme?: ThemeMode }) => {

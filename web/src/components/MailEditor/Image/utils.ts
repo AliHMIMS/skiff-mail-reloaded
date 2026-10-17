@@ -88,17 +88,15 @@ export async function createImagesFromFiles(
     const { state, dispatch } = view;
     const tr = state.tr;
 
-    tr.replaceSelectionWith(
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      state.schema.nodes[Image.name].createAndFill({
-        src,
-        title: file.name,
-        alt: file.name,
-        contentType: file.type,
-        size: file.size
-      }),
-      false
-    );
+    const imageNode = state.schema.nodes[Image.name]?.createAndFill({
+      src,
+      title: file.name,
+      alt: file.name,
+      contentType: file.type,
+      size: file.size
+    });
+    if (!imageNode) return { success: false, errorType: null };
+    tr.replaceSelectionWith(imageNode, false);
 
     dispatch(tr);
     return { success: true, errorType: null };

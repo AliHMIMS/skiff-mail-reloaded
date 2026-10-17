@@ -14,7 +14,7 @@ import { CalendarDateFieldType } from './types';
 const HOUR_PICKER_ITEM_HEIGHT = 48;
 const HOUR_PICKER_MINUTE_INTERVAL = 5;
 
-const InputFieldWrapper = styled.div`
+const InputFieldWrapper = styled.div<{ $unfilled?: boolean }>`
   ${TimeDateInputFieldWrapper}
 `;
 

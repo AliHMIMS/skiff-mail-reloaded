@@ -17,7 +17,7 @@ declare module '@tiptap/core' {
   }
 }
 
-const shouldAddPeriod = (node?: ProsemirrorNode<any> | null | undefined) => {
+const shouldAddPeriod = (node?: ProsemirrorNode | null | undefined) => {
   if (!node || !node.isText || !node.text) return false;
   const text = node.text;
   const lastChar = text.charAt(text.length - 2);

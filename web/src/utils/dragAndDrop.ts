@@ -1,9 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 export enum DNDItemTypes {
@@ -16,14 +10,14 @@ export type MessageCellDragObject = {
   currRouteLabel: string;
 };
 
-function shouldIgnoreDragTarget(domNode) {
-  return domNode.closest('.ProseMirror');
+function shouldIgnoreDragTarget(domNode: EventTarget | null) {
+  return domNode instanceof Element && !!domNode.closest('.ProseMirror');
 }
 
 /**
  * return the HTML5Backend, ignores all drag events in .ProseMirror
  */
-export const CustomHTML5Backend = (manager, globalContext?: any, configuration?: any) => {
+export const CustomHTML5Backend: typeof HTML5Backend = (manager, globalContext, configuration) => {
   const html5Backend = HTML5Backend(manager, globalContext, configuration);
 
   const listeners = [
@@ -40,8 +34,11 @@ export const CustomHTML5Backend = (manager, globalContext?: any, configuration?:
   ];
 
   listeners.forEach((name) => {
-    const originalMethod = html5Backend[name];
-    html5Backend[name] = (e, ...extraArgs) => {
+    // the listener methods aren't part of the public Backend type
+    const backend = html5Backend as unknown as Record<string, (e: Event, ...extraArgs: unknown[]) => void>;
+    const originalMethod = backend[name];
+    if (!originalMethod) return;
+    backend[name] = (e, ...extraArgs) => {
       if (!shouldIgnoreDragTarget(e.target)) {
         originalMethod(e, ...extraArgs);
       }

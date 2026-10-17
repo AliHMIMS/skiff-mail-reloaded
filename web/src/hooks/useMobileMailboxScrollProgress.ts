@@ -55,13 +55,12 @@ export const useMobileMailboxScrollProgress = () => {
       }
     };
 
-    const scroll = (e) => {
+    const scroll = (e: Event) => {
       if (!currentRef) {
         return;
       }
       touchLeadsToScroll = true;
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-      const scrollTop = e.target!.scrollTop;
+      const scrollTop = (e.target as HTMLElement).scrollTop;
       const distance = lastScrollPos.current - scrollTop;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       lastScrollPos.current = scrollTop;
@@ -82,7 +81,7 @@ export const useMobileMailboxScrollProgress = () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     window.touchesCb = window.touchesCb || {};
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    window.touchesCb.mailBoxScrollProgress = (event) => {
+    window.touchesCb.mailBoxScrollProgress = (event: string) => {
       // We are using the "native" onTouchStart/end beacouse on iOS when user start touch while scroll those event not called
       if (event === 'start') {
         touchstart();

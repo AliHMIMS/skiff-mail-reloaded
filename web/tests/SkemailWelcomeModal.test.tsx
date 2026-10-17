@@ -8,7 +8,11 @@ import { Provider } from 'react-redux';
 
 import { ConnectWalletModalDataTest } from '../src/components/modals/ConnectWalletModal/ConnectWalletModal';
 import SkemailWelcomeModal from '../src/components/modals/SkemailWelcomeModal';
-import { initialSkemailDialogState, skemailModalReducer } from '../src/redux/reducers/modalReducer';
+import {
+  initialSkemailDialogState,
+  skemailModalReducer,
+  type SkemailModalReducerState
+} from '../src/redux/reducers/modalReducer';
 import { ModalType } from '../src/redux/reducers/modalTypes';
 
 vi.mock('../src/hooks/useSearchWorker', () => ({
@@ -49,7 +53,7 @@ export const createStore = () =>
       modal: skemailModalReducer.reducer
     },
     preloadedState: {
-      modal: { ...initialSkemailDialogState, openModal: { type: ModalType.SkemailWelcome } }
+      modal: { ...initialSkemailDialogState, openModal: { type: ModalType.SkemailWelcome } } as SkemailModalReducerState
     }
   });
 

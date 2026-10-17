@@ -12,7 +12,7 @@ interface DragContainerProps {
   offset: XYCoord | null;
 }
 
-const DragContainer = styled.div.attrs((props: DragContainerProps) => ({
+const DragContainer = styled.div.attrs<DragContainerProps>((props) => ({
   style: {
     transform: `translate(${(props.offset?.x ?? 20) - 20}px, ${(props.offset?.y ?? 20) - 20}px)`
   }

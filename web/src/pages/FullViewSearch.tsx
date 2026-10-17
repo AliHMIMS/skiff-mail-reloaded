@@ -8,7 +8,7 @@ const MailboxSearchResults = React.lazy(() => import('../components/mailbox/Mail
 
 const FullViewSearch = () => {
   const { label: currentLabel } = useCurrentLabel();
-  const systemLabel = LABEL_TO_HIDDEN_LABEL[currentLabel ?? HiddenLabels.Search] as HiddenLabel;
+  const systemLabel = LABEL_TO_HIDDEN_LABEL[currentLabel ?? HiddenLabels.Search];
 
   return (
     <RouterLabelContext.Provider value={systemLabel}>

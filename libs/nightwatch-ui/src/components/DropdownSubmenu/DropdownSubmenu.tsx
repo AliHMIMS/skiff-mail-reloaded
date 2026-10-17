@@ -16,7 +16,7 @@ const SubmenuContainer = styled.div`
   z-index: 999;
 `;
 
-const IconContainer = styled.div`
+const IconContainer = styled.div<{ $hovering: boolean }>`
   ${DROPDOWN_ITEM_ICON_CSS}
 `;
 

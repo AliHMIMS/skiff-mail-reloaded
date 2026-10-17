@@ -33,7 +33,7 @@ const Handle = styled.div`
   }
 `;
 
-const ResizeHandle = (props) => {
+const ResizeHandle = (props: React.HTMLAttributes<HTMLDivElement>) => {
   return <Handle {...props} onClick={(e) => e.stopPropagation()} />;
 };
 
@@ -211,7 +211,7 @@ const MessageDetailsPanel: React.FC<MessageDetailsPanelProps> = ({ children, ope
   return renderResizablePanel(panelWidth, maxWidth, setPanelWidth, panelRef, children);
 };
 
-const getPanelWidth = (percentage) => {
+const getPanelWidth = (percentage: number) => {
   return (percentage / 100) * window.innerWidth;
 };
 
@@ -228,7 +228,7 @@ const renderResizablePanel = (
   maxWidth: number,
   setPanelWidth: (newWidth: number) => void,
   panelRef: React.RefObject<HTMLDivElement | null>,
-  children
+  children: React.ReactNode
 ) => {
   return (
     <Resizable

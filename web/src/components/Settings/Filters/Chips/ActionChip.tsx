@@ -1,4 +1,13 @@
-import { ACCENT_COLOR_VALUES, Icon, IconProps, Icons, Size, Typography, TypographyWeight } from 'nightwatch-ui';
+import {
+  ACCENT_COLOR_VALUES,
+  type AccentColor,
+  Icon,
+  IconProps,
+  Icons,
+  Size,
+  Typography,
+  TypographyWeight
+} from 'nightwatch-ui';
 import React from 'react';
 import { ActionType } from 'skiff-graphql';
 import { assertUnreachable } from 'skiff-utils';
@@ -11,7 +20,7 @@ import { Action } from '../Filters.types';
 
 import { ChipContainer, ChipTypography, labelStyling } from './Chips.styles';
 
-const TypeLabel = styled.div<{ $includeBorder: boolean }>`
+const TypeLabel = styled.div<{ $includeBorder: boolean; $canEdit?: boolean; $emphasize?: boolean }>`
   ${labelStyling}
   padding: 0
     ${({ $includeBorder }) =>
@@ -20,7 +29,7 @@ const TypeLabel = styled.div<{ $includeBorder: boolean }>`
   ${({ $includeBorder }) => $includeBorder && 'border-right: 1px var(--border-secondary) solid;'}
 `;
 
-const ValueLabel = styled.div`
+const ValueLabel = styled.div<{ $canEdit?: boolean; $emphasize?: boolean }>`
   ${labelStyling}
   min-width: 0;
   padding-right: ${FILTER_CONDITION_CHIP_EDGE_PADDING}px;
@@ -87,7 +96,7 @@ export const ActionChip: React.FC<ActionChipProps> = ({ action, labelsAndFolders
 
     const getLabelIconContainerColor = () => {
       if (labelColor === 'disabled') return 'var(--bg-overlay-tertiary)';
-      return (ACCENT_COLOR_VALUES[labelColor] as Array<string>)?.[1] || 'var(--bg-overlay-secondary)';
+      return ACCENT_COLOR_VALUES[labelColor as AccentColor]?.[1] || 'var(--bg-overlay-secondary)';
     };
 
     return (

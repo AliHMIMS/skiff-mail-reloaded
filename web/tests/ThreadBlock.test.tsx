@@ -1,4 +1,5 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import type { ReactNode } from 'react';
 import { LocalState } from '@apollo/client/local-state';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { configureStore } from '@reduxjs/toolkit';
@@ -69,7 +70,7 @@ export const createStore = () =>
 
 describe('ThreadBlock', () => {
   // TODO: Move wrapper setup to util file https://redux.js.org/usage/writing-tests
-  const wrapper = ({ children }) => (
+  const wrapper = ({ children }: { children: ReactNode }) => (
     <Provider store={createStore()}>
       <MockedProvider localState={new LocalState()}>
         <MemoryRouter>{children}</MemoryRouter>

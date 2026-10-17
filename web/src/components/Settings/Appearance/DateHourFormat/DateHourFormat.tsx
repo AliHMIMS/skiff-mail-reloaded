@@ -11,8 +11,8 @@ function DateHourFormat() {
   const [dateFormat, setDateFormat] = useUserPreference(StorageTypes.DATE_FORMAT);
   const [hourFormat, setHourFormat] = useUserPreference(StorageTypes.HOUR_FORMAT);
   useTimedRerender(60 * 1000); // rerender every minute to keep date preview up-to-date
-  const updateHour = (value) => setHourFormat(value as AllUserPreferences['hourFormat']);
-  const updateDate = (value) => setDateFormat(value as AllUserPreferences['dateFormat']);
+  const updateHour = (value: string) => setHourFormat(value as AllUserPreferences['hourFormat']);
+  const updateDate = (value: string) => setDateFormat(value as AllUserPreferences['dateFormat']);
 
   return (
     <>

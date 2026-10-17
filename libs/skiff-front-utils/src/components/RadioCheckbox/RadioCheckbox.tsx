@@ -11,8 +11,8 @@ interface RadioCheckboxProps {
   size?: number;
 }
 
-const BASE_ICON_CSS = css`
-  ${({ $size }: { $size?: number | string }) => `
+const BASE_ICON_CSS = css<{ $size?: number | string }>`
+  ${({ $size }) => `
     width: ${!!$size ? `${$size}px` : '20px'};
     height: ${!!$size ? `${$size}px` : '20px'};
   `}

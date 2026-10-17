@@ -101,7 +101,7 @@ interface AttachmentContainerProps {
   failed?: boolean;
 }
 
-const AttachmentContainer = styled.div`
+const AttachmentContainer = styled.div<AttachmentContainerProps>`
   display: flex;
   align-items: center;
   padding: 4px 8px;

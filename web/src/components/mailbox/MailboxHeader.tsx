@@ -140,22 +140,21 @@ export const MOBILE_HEADER_HEIGHT = 160;
 
 const FAVICON_URL = '/mail/assets/favicon.ico';
 
-let mailListHeaderElement;
+let mailListHeaderElement: HTMLElement | null = null;
 const setMailListElementCache = () => {
   mailListHeaderElement = document.getElementById(MAIL_LIST_HEADER_ID);
 };
 
 export const animateMailListHeader = (progress: string, transition?: string) => {
-  /* eslint-disable @typescript-eslint/no-unsafe-member-access */
   if (!mailListHeaderElement || !mailListHeaderElement.isConnected) {
     setMailListElementCache();
   }
+  if (!mailListHeaderElement) return;
   mailListHeaderElement.style.transform = `translateY(calc((1 - ${progress}) * -${MOBILE_HEADER_HEIGHT}px))`;
   mailListHeaderElement.style.opacity = progress;
   if (transition) {
     mailListHeaderElement.style.transition = `transform ${transition}, opacity ${transition}`;
   }
-  /* eslint-enable @typescript-eslint/no-unsafe-member-access */
 };
 
 const MobileHeaderContainer = styled.div<{ showSkeleton: boolean }>`
@@ -425,6 +424,7 @@ export const MailboxHeader = ({
     canvas.width = 48;
     canvas.height = 48;
     const ctx = canvas.getContext('2d');
+    if (!ctx) return;
     const image = new Image();
 
     image.onload = () => {
@@ -455,7 +455,7 @@ export const MailboxHeader = ({
       ctx.fillText(countUnread, textX, textY);
 
       // Update favicon
-      const favicon: HTMLLinkElement = document.querySelector('link[rel="icon"]');
+      const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
       if (favicon) {
         favicon.href = canvas.toDataURL('image/png');
       }
@@ -465,7 +465,7 @@ export const MailboxHeader = ({
   };
 
   const resetFavicon = () => {
-    const favicon: HTMLLinkElement = document.querySelector('link[rel="icon"]');
+    const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
     if (favicon) {
       favicon.href = FAVICON_URL;
     }

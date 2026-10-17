@@ -66,13 +66,13 @@ const TopBar: FC<TopBarProps> = ({ attachment, thread, email, onPrev, onNext, cl
   const { id: emailID, decryptedSubject } = email ?? {};
   const activeThreadQuery = { threadID: threadID ?? '', emailID: emailID ?? '' };
 
-  const PrimaryText: React.FC = ({ children }) => (
+  const PrimaryText: React.FC<React.PropsWithChildren> = ({ children }) => (
     <Typography forceTheme={ThemeMode.DARK} weight={TypographyWeight.MEDIUM}>
       {children}
     </Typography>
   );
 
-  const SecondaryText: React.FC = ({ children }) => (
+  const SecondaryText: React.FC<React.PropsWithChildren> = ({ children }) => (
     <Typography color='secondary' forceTheme={ThemeMode.DARK}>
       {children}
     </Typography>

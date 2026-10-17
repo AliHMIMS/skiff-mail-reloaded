@@ -30,7 +30,7 @@ import { ConfirmUpdateNotificationsForSenderModal, NotificationsForSenderState }
 
 interface ContactActionDropdownProps {
   show: boolean;
-  setShowActionDropdown: (boolean) => void;
+  setShowActionDropdown: (show: boolean) => void;
   buttonRef: React.RefObject<HTMLDivElement | null>;
   address: AddressObject;
   notificationsMuted?: boolean;

@@ -45,7 +45,7 @@ const useScheduleSend = (handleSendClick: (scheduleSendAt?: Date) => Promise<voi
   }, []);
 
   const open = popupStep === PopupStepType.Popup;
-  const setOpen = (open) => {
+  const setOpen = (open: boolean) => {
     if (!open) setStep({ type: PopupStepType.Closed });
   };
 

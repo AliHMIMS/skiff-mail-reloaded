@@ -43,7 +43,7 @@ const TODAY_CSS = css`
 `;
 
 /** Returns the CSS for days that are not Today */
-const NON_TODAY_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
+const NON_TODAY_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css<{ $forceTheme?: ThemeMode }>`
   &.Mui-selected {
     color: ${getThemedColor(TEXT_COLOR_VALUES.link, $forceTheme)} !important;
     ${ACTIVE_DAY_CSS(getThemedColor(ACCENT_COLOR_VALUES.orange[1], $forceTheme))}
@@ -58,15 +58,19 @@ const NON_TODAY_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
  * Returns the CSS for a day picker depending on its type - Today or not today
  * We separate Today from Not today because the Today day picker should retain its styling regardless of whether or not it's hovered or selected
  */
-export const DAY_TYPE_CSS = ({ $isToday }: { $isToday: boolean; $forceTheme?: ThemeMode }) => css`
-  &::after {
-    position: absolute;
-    content: '';
-    ${DAY_PICKER_BUTTON_CSS};
-  }
-  ${$isToday && TODAY_CSS}
-  ${!$isToday && NON_TODAY_CSS}
-`;
+export const DAY_TYPE_CSS = ({ $isToday }: { $isToday: boolean; $forceTheme?: ThemeMode }) =>
+  css<{
+    $isToday: boolean;
+    $forceTheme?: ThemeMode;
+  }>`
+    &::after {
+      position: absolute;
+      content: '';
+      ${DAY_PICKER_BUTTON_CSS};
+    }
+    ${$isToday && TODAY_CSS}
+    ${!$isToday && NON_TODAY_CSS}
+  `;
 
 const WEEK_START_DATE_CSS = css`
   &::before {

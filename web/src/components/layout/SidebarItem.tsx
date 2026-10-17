@@ -1,6 +1,7 @@
 import isString from 'lodash/isString';
 import {
   ACCENT_COLOR_VALUES,
+  type AccentColor,
   CircularProgress,
   Icon,
   Icons,
@@ -224,7 +225,7 @@ const LabelSidebarItem: React.FC<LabelSidebarItemProps> = ({
       <UserLabelIconColorContainer
         $color={
           label.color
-            ? (ACCENT_COLOR_VALUES[label.color] as Array<string>)?.[1] || 'var(--bg-overlay-tertiary)'
+            ? ACCENT_COLOR_VALUES[label.color as AccentColor]?.[1] || 'var(--bg-overlay-tertiary)'
             : 'var(--bg-overlay-tertiary)'
         }
       >

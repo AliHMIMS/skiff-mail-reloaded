@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import {
+  type AccentColor,
   CorrectedColorSelect,
   Divider,
   FilledVariant,
@@ -25,7 +26,7 @@ import {
   useGetContactWithEmailAddress,
   useToast
 } from 'skiff-front-utils';
-import { AccentColor, DisplayPictureData } from 'skiff-graphql';
+import { DisplayPictureData } from 'skiff-graphql';
 import styled from 'styled-components';
 import { v4 } from 'uuid';
 

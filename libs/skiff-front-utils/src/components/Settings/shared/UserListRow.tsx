@@ -1,5 +1,6 @@
 import { Color, Icon, Icons, Size, Typography, TypographySize, isValidIcon } from 'nightwatch-ui';
 import React from 'react';
+import type { ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 import { DisplayPictureData } from 'skiff-graphql';
 import styled, { css } from 'styled-components';
@@ -88,6 +89,7 @@ export const UserIconContainer = styled.div<{
 `;
 
 interface UserListRowProps {
+  children?: ReactNode;
   active: boolean;
   hover: boolean;
   displayName: string;

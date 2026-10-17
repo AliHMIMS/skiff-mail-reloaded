@@ -48,7 +48,7 @@ const GHOST_ICON_TEXT_CSS = () => css`
   padding: 4px;
 `;
 
-const FILLED_ICON_TEXT_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css`
+const FILLED_ICON_TEXT_CSS = ({ $forceTheme }: { $forceTheme?: ThemeMode }) => css<{ $forceTheme?: ThemeMode }>`
   padding: 4px 8px;
   height: 27px;
   background: ${getThemedColor('var(--cta-secondary-default)', $forceTheme)};

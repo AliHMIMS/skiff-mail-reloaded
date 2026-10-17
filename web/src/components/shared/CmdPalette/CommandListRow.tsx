@@ -85,7 +85,7 @@ interface CommandListRowProps {
   contentSearch: boolean;
   onSearchResultSelect: (index: number) => void;
   goToFullViewSearch: (activeResult?: SkemailResultIDs, currQuery?: string) => void;
-  setHighlightedRow: (number) => void;
+  setHighlightedRow: (row: number) => void;
 }
 
 export const CommandListRow = memo(function CommandListRow({

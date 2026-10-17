@@ -55,7 +55,7 @@ export interface ActivationPaneShortcutsProps {
 
 const ActivationPaneShortcuts: React.FC<ActivationPaneShortcutsProps> = ({ onBack }) => {
   // Renders the header of a section
-  const renderSectionHeader = (header) => (
+  const renderSectionHeader = (header: string) => (
     <SectionHeader>
       <Typography forceTheme={ThemeMode.DARK} weight={TypographyWeight.MEDIUM}>
         {header}

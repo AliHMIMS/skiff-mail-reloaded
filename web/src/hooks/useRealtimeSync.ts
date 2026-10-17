@@ -52,7 +52,7 @@ async function refreshThreads(threadIDs: string[]) {
     cache,
     updatedThreads: fresh.map((thread) => ({
       threadID: thread.threadID,
-      systemLabels: thread.attributes.systemLabels,
+      systemLabels: thread.attributes.systemLabels as SystemLabels[],
       userLabels: thread.attributes.userLabels
     }))
   });

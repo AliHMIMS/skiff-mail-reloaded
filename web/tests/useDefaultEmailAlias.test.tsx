@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { LocalState } from '@apollo/client/local-state';
+import type { ReactNode } from 'react';
 import { MockedProvider } from '@apollo/client/testing/react';
 import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react';
@@ -28,7 +29,7 @@ vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
 
-const wrapper: React.FC = ({ children }) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
   <Provider store={store}>
     <MockedProvider
       localState={new LocalState()}

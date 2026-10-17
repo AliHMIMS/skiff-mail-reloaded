@@ -1,4 +1,4 @@
-import { BaseSyntheticEvent, Dispatch, FC, SetStateAction, useCallback } from 'react';
+import { BaseSyntheticEvent, Dispatch, FC, SetStateAction, useCallback, type ReactNode } from 'react';
 import { HotKeys } from 'react-hotkeys';
 import { HotKeyHandlers } from 'skiff-front-utils';
 import { AddressObject } from 'skiff-graphql';
@@ -8,6 +8,7 @@ import { EmailFieldTypes } from '../Compose.constants';
 import { ComposeKeyActions, singleCombinationKeyMap } from './HotKeys';
 
 export interface ComposeHotKeysProps {
+  children?: ReactNode;
   setFocusedField: Dispatch<SetStateAction<EmailFieldTypes | null>>;
   openAttachmentSelect: () => void;
   discardDraft: () => Promise<void>;

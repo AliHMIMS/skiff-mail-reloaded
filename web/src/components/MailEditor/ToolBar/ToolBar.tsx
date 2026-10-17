@@ -106,45 +106,42 @@ export const getToolbarCommands = (editor: Editor, showFormatBar?: boolean): Too
   ];
 };
 
+// typed keys and values of a color map
+const colorEntries = <K extends string>(colors: Record<K, string>) => Object.entries(colors) as [K, string][];
+const accentColorNameOf = (index: 0 | 1, value: string) =>
+  colorEntries(
+    Object.fromEntries(Object.entries(ACCENT_COLOR_VALUES).map(([name, values]) => [name, values[index]]))
+  ).find(([, colorValue]) => colorValue === value)?.[0];
+
 export const getColor = (editor: Editor) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const activeColors = Object.keys(TEXT_COLORS).filter((color) =>
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    editor.isActive('textStyle', { color: TEXT_COLORS?.[color] })
-  );
+  const activeColors = colorEntries(TEXT_COLORS).filter(([, value]) => editor.isActive('textStyle', { color: value }));
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const customColor = editor.getAttributes('textStyle').color as string;
   let color = customColor || 'var(--text-always-white)';
 
   if (activeColors.length === 1) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-assignment
-    color = TEXT_COLORS[activeColors[0] ?? ''] ?? 'var(--text-always-white)';
+    color = activeColors[0]?.[1] ?? 'var(--text-always-white)';
   }
 
   return {
     value: color,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    name: Object.keys(ACCENT_COLOR_VALUES).find((key) => ACCENT_COLOR_VALUES?.[key]?.[0] === color) || customColor || ''
+    name: accentColorNameOf(0, color) || customColor || ''
   };
 };
 
 export const getHighlightColor = (editor: Editor) => {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  const activeColors = Object.keys(HIGHLIGHT_COLORS).filter((color) =>
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
-    editor.isActive('highlight', { color: HIGHLIGHT_COLORS?.[color] })
+  const activeColors = colorEntries(HIGHLIGHT_COLORS).filter(([, value]) =>
+    editor.isActive('highlight', { color: value })
   );
   const customColor = editor.getAttributes('highlight').color as string;
   let color = customColor || 'transparent';
 
   if (activeColors.length === 1) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
-    color = HIGHLIGHT_COLORS[activeColors[0] ?? ''] ?? 'transparent';
+    color = activeColors[0]?.[1] ?? 'transparent';
   }
   return {
     value: color,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    name: Object.keys(ACCENT_COLOR_VALUES).find((key) => ACCENT_COLOR_VALUES?.[key]?.[1] === color) || customColor || ''
+    name: accentColorNameOf(1, color) || customColor || ''
   };
 };
 

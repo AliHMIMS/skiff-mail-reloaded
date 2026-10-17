@@ -20,7 +20,7 @@ export const paragraph: ToolBarCommand = {
   priority: 1
 };
 
-export const headings: ToolBarCommand[] = [1, 2, 3, 4].map((level) => ({
+export const headings: ToolBarCommand[] = ([1, 2, 3, 4] as const).map((level) => ({
   icon: `h${level}` as Icon,
   command: (editor) => {
     editor.chain().focus().setHeading({ level }).run();

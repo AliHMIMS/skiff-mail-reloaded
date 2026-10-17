@@ -12,7 +12,8 @@ export const DISPLAY_SCROLLBAR_CSS = css`
 
   /* This is the scrollbar thumb */
   ::-webkit-scrollbar-thumb {
-    background: ${({ forceTheme }: { forceTheme?: ThemeMode }) => getThemedColor('var(--border-primary)', forceTheme)};
+    background: ${(props: object) =>
+      getThemedColor('var(--border-primary)', (props as { forceTheme?: ThemeMode }).forceTheme)};
 
     border-radius: 20px; /* roundness of the scroll thumb */
     border: 3px solid transparent; /* creates padding around scroll thumb */
@@ -26,7 +27,8 @@ export const DISPLAY_SCROLLBAR_CSS = css`
 
   /* When you hover over the scrollbar */
   ::-webkit-scrollbar-thumb:hover {
-    color: ${({ forceTheme }: { forceTheme?: ThemeMode }) => getThemedColor('var(--cta-secondary-hover)', forceTheme)};
+    color: ${(props: object) =>
+      getThemedColor('var(--cta-secondary-hover)', (props as { forceTheme?: ThemeMode }).forceTheme)};
   }
 `;
 
@@ -46,8 +48,8 @@ export const REMOVE_SCROLLBAR_CSS = css`
 `;
 
 /** Component will have the same width and height */
-export const SQUARE_CSS = css`
-  ${({ $size }: { $size: number }) => `
+export const SQUARE_CSS = css<{ $size: number }>`
+  ${({ $size }) => `
     width: ${$size}px;
     height: ${$size}px;
   `}

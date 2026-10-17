@@ -14,6 +14,7 @@ import {
   TypographySize
 } from 'nightwatch-ui';
 import React from 'react';
+import type { ReactNode } from 'react';
 import { isMobile } from 'react-device-detect';
 import { CreateUploadAvatarLinkResponse, DisplayPictureData } from 'skiff-graphql';
 import styled, { css } from 'styled-components';
@@ -120,6 +121,7 @@ export interface UserProfileInfoRow {
 }
 
 interface UserProfileViewProps {
+  children?: ReactNode;
   displayPictureData: DisplayPictureData | undefined;
   userProfileInfoRows: UserProfileInfoRow[];
   // For different types of avatars (user, contact, org), we use a different upload mutation

@@ -37,9 +37,7 @@ export function generateRandomPassword() {
   const umax = Math.pow(2, 32);
   const max = umax - (umax % characterPool.length);
 
-  let passwordBytes = Array.from<number>({ length: pwLength }).fill(0);
-
-  passwordBytes = passwordBytes.map(() => {
+  const passwordChars = Array.from({ length: pwLength }, () => {
     do {
       crypto.getRandomValues(randomNumbers); // Overwrite the existing numbers with new ones.
     } while (randomNumbers[0] > max);
@@ -47,7 +45,7 @@ export function generateRandomPassword() {
     const randomPosition = randomNumbers[0] % characterPool.length;
     return characterPool[randomPosition];
   });
-  return passwordBytes.join('');
+  return passwordChars.join('');
 }
 
 export async function canDirectlyUpdateSrp(client: ApolloClient): Promise<boolean> {

@@ -6,16 +6,16 @@ import { Color } from '../../utils/colorUtils';
 import { TypographyOverflow, TypographySize, TypographyWeight } from './Typography.constants';
 
 /** Alignment-specific styles */
-export const ALIGNMENT_CSS = css`
-  ${({ $align }: { $align: Alignment }) => `
+export const ALIGNMENT_CSS = css<{ $align: Alignment }>`
+  ${({ $align }) => `
     text-align: ${$align};
     justify-content: ${$align};
   `}
 `;
 
 /** Overflow-specific styles */
-export const OVERFLOW_CSS = css`
-  ${({ $overflow, $wrap }: { $overflow: TypographyOverflow; $wrap: boolean }) => `
+export const OVERFLOW_CSS = css<{ $overflow: TypographyOverflow; $wrap: boolean }>`
+  ${({ $overflow, $wrap }) => `
     text-overflow: ellipsis;
     overflow: ${$overflow};
     white-space: ${$wrap ? 'normal' : 'nowrap'};
@@ -79,24 +79,16 @@ const CAPTION_CSS = css`
 `;
 
 /** Text-specific styles */
-export const TEXT_CSS = css`
-  ${({
-    $capitalize,
-    $uppercase,
-    $fontColor,
-    $mono,
-    $size,
-    $weight,
-    $transition
-  }: {
-    $capitalize: boolean;
-    $uppercase: boolean;
-    $fontColor: Color;
-    $mono: boolean;
-    $size: TypographySize;
-    $weight: TypographyWeight;
-    $transition?: string;
-  }) => {
+export const TEXT_CSS = css<{
+  $capitalize: boolean;
+  $uppercase: boolean;
+  $fontColor: Color;
+  $mono: boolean;
+  $size: TypographySize;
+  $weight: TypographyWeight;
+  $transition?: string;
+}>`
+  ${({ $capitalize, $uppercase, $fontColor, $mono, $size, $weight, $transition }) => {
     let styles = `
       color: ${$fontColor};
       font-weight: ${$weight};
