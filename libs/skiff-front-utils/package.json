@@ -1,22 +1,12 @@
 {
   "name": "skiff-front-utils",
   "version": "0.0.1",
-  "description": "frontend server utils",
-  "main": "./dist/cjs/index.js",
+  "type": "module",
   "exports": {
-    ".": {
-      "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.js"
-    },
-    "./dist/src/components/CustomCircularProgress": {
-      "import": "./dist/esm/components/CustomCircularProgress.js",
-      "require": "./dist/cjs/components/CustomCircularProgress.js"
-    },
-    "./dist/src/utils/documentUtils/docCryptoUtils": {
-      "import": "./dist/esm/utils/documentUtils/docCryptoUtils.js",
-      "require": "./dist/cjs/utils/documentUtils/docCryptoUtils.js"
-    }
+    ".": "./src/index.ts"
   },
+  "types": "./src/index.ts",
+  "description": "frontend server utils",
   "sideEffects": [
     "*.css",
     "*.scss",
@@ -25,12 +15,7 @@
     "./src/components/Date/DateDisplay.tsx",
     "./src/components/TimeField/TimeFieldDropdown.tsx"
   ],
-  "files": [
-    "dist"
-  ],
-  "types": "dist/src/index.d.ts",
   "private": true,
-  "scripts": {},
   "devDependencies": {
     "@simplewebauthn/typescript-types": "^7.0.0",
     "@types/dompurify": "^2",

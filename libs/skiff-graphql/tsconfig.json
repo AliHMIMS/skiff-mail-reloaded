@@ -1,8 +1,4 @@
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "declarationDir": "dist/",
-    "tsBuildInfoFile": "dist/.tsbuildinfo"
-  },
-  "references": [{ "path": "../skiff-utils" }]
+  "extends": "../../tsconfig.json",
+  "include": ["src"]
 }

@@ -7,18 +7,6 @@ import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
 
 // Workspace libraries are compiled from source (no separate library build step).
-const LIBS = [
-  'nightwatch-ui',
-  'skiff-crypto',
-  'skiff-crypto-v2',
-  'skiff-front-graphql',
-  'skiff-front-search',
-  'skiff-front-utils',
-  'skiff-graphql',
-  'skiff-mail-protos',
-  'skiff-utils'
-];
-
 // process.env values the app reads, fixed at build time (what webpack's EnvironmentPlugin did).
 const ENV_KEYS = [
   'SKEMAIL_API_BASE_URL',
@@ -112,10 +100,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), svgAsComponent(), pushServiceWorker()],
   resolve: {
     alias: [
-      ...LIBS.map((lib) => ({
-        find: new RegExp(`^${lib}$`),
-        replacement: path.resolve(__dirname, `../libs/${lib}/src/index.ts`)
-      })),
       ...Object.entries(NODE_SHIMS).map(([mod, shim]) => ({
         find: new RegExp(`^(node:)?${mod}/?$`),
         replacement: resolveFromApp(shim)

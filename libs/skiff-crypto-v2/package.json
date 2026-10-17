@@ -1,23 +1,17 @@
 {
   "name": "skiff-crypto-v2",
   "version": "2.0.0",
-  "description": "Cryptographic related functions and helpers v2",
-  "main": "./dist/cjs/index.js",
-  "module": "./dist/esm/index.js",
+  "type": "module",
   "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+    ".": "./src/index.ts"
   },
+  "types": "./src/index.ts",
+  "description": "Cryptographic related functions and helpers v2",
   "sideEffects": false,
-  "files": [
-    "dist"
-  ],
   "engines": {
     "node": "20.9.0"
   },
-  "types": "dist/src/index.d.ts",
   "private": true,
-  "scripts": {},
   "dependencies": {
     "@stablelib/base64": "^1.0.1",
     "@stablelib/chacha20poly1305": "^1.0.1",

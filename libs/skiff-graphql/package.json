@@ -1,19 +1,14 @@
 {
   "name": "skiff-graphql",
   "version": "0.0.1",
-  "description": "Graphql types",
-  "main": "./dist/cjs/index.js",
+  "type": "module",
   "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+    ".": "./src/index.ts"
   },
+  "types": "./src/index.ts",
+  "description": "Graphql types",
   "sideEffects": false,
-  "files": [
-    "dist"
-  ],
-  "types": "dist/src/index.d.ts",
   "private": true,
-  "scripts": {},
   "devDependencies": {
     "typescript": "^5.9.3"
   },

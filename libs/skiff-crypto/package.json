@@ -1,19 +1,14 @@
 {
   "name": "skiff-crypto",
   "version": "0.0.1",
-  "description": "Cryptographic related functions and helpers",
-  "main": "./dist/cjs/index.js",
+  "type": "module",
   "exports": {
-    "import": "./dist/esm/index.js",
-    "require": "./dist/cjs/index.js"
+    ".": "./src/index.ts"
   },
+  "types": "./src/index.ts",
+  "description": "Cryptographic related functions and helpers",
   "sideEffects": false,
-  "files": [
-    "dist"
-  ],
-  "types": "dist/src/index.d.ts",
   "private": true,
-  "scripts": {},
   "devDependencies": {
     "@types/argon2-browser": "^1",
     "@types/lodash": "^4",
