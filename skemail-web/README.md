@@ -13,3 +13,11 @@ pnpm dev                                                    # http://localhost:4
 ```
 
 `SKEMAIL_API_BASE_URL` points the app at a [mymail-server](../server) instance.
+
+From the repo root:
+
+```bash
+pnpm lint            # oxlint
+pnpm format          # oxfmt
+pnpm format:check
+```
