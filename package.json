@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "cd skemail-web && ./node_modules/.bin/vite",
     "build": "cd skemail-web && ./node_modules/.bin/vite build && rm -rf src/dist && mv src/dist-next src/dist",
-    "lint": "oxlint skemail-web/src libs"
+    "lint": "oxlint skemail-web/src libs",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
   "devDependencies": {
     "oxfmt": "^0.73.0",

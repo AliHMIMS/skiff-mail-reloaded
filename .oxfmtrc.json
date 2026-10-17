@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "useTabs": false,
+  "tabWidth": 2,
+  "printWidth": 120,
+  "singleQuote": true,
+  "jsxSingleQuote": true,
+  "trailingComma": "none",
+  "semi": true,
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "server/**",
+    "libs/skiff-ics/**",
+    "libs/skiff-prosemirror/**",
+    "libs/skiff-front-graphql/generated/**",
+    "libs/skiff-graphql/src/types.ts",
+    "libs/skiff-graphql/src/completeSchema.graphql",
+    "**/generated/protos/**",
+    "pnpm-lock.yaml",
+    "supergraph.graphql",
+    "protos/**"
+  ]
+}
