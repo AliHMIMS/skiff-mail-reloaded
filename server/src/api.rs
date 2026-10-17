@@ -32,6 +32,8 @@ pub struct App {
     pub server_secret_key: String,
     pub public_url: String,
     pub display_name: String,
+    /// Where the mail database lives (for the storage meter).
+    pub data_dir: std::path::PathBuf,
     /// username -> (b, created); reusable until expiry because the client replays step-2 requests.
     srp_challenges: std::sync::Mutex<HashMap<String, (String, Instant)>>,
     /// Thread summaries for listing/counting, rebuilt only when the store's generation changes.
@@ -46,6 +48,7 @@ impl App {
         google: Option<Arc<Google>>,
         public_url: String,
         display_name: String,
+        data_dir: std::path::PathBuf,
     ) -> Result<Self> {
         let server_secret_key = match store.kv_get("server_secret_key")? {
             Some(sk) => sk,
@@ -63,6 +66,7 @@ impl App {
             google,
             public_url: public_url.trim_end_matches('/').to_string(),
             display_name,
+            data_dir,
             srp_challenges: Default::default(),
             threads_cache: Default::default(),
             sync_now: Default::default(),
@@ -1013,6 +1017,36 @@ async fn delete_auto_reply(c: C) -> Result<Json> {
 }
 
 // ---------------------------------------------------------------------------
+// Storage meter: mail database size vs free space on the server's disk
+
+/// Size of the SQLite database, including its write-ahead log.
+fn database_bytes(dir: &std::path::Path) -> u64 {
+    ["mymail.db", "mymail.db-wal", "mymail.db-shm"]
+        .iter()
+        .filter_map(|f| std::fs::metadata(dir.join(f)).ok())
+        .map(|m| m.len())
+        .sum()
+}
+
+/// Space available to this process on the filesystem holding `dir`.
+fn available_bytes(dir: &std::path::Path) -> Result<u64> {
+    use std::os::unix::ffi::OsStrExt;
+    let path = std::ffi::CString::new(dir.as_os_str().as_bytes())?;
+    let mut stat: libc::statvfs = unsafe { std::mem::zeroed() };
+    // SAFETY: valid NUL-terminated path and a zeroed out-parameter of the right type.
+    if unsafe { libc::statvfs(path.as_ptr(), &mut stat) } != 0 {
+        bail!("statvfs failed: {}", std::io::Error::last_os_error());
+    }
+    Ok(stat.f_bavail as u64 * stat.f_frsize as u64)
+}
+
+async fn instance_storage(c: C) -> Result<Json> {
+    auth(&c)?;
+    let dir = &c.state.data_dir;
+    Ok(json!({ "databaseBytes": database_bytes(dir) as f64, "availableBytes": available_bytes(dir)? as f64 }))
+}
+
+// ---------------------------------------------------------------------------
 
 pub fn handlers() -> Handlers<App> {
     let mut h = Handlers::<App>::default();
@@ -1093,6 +1127,7 @@ pub fn handlers() -> Handlers<App> {
         Err(coded("BAD_REQUEST", "Undo send isn't supported: the message was already handed to Gmail"))
     });
 
+    h.on("Query.instanceStorage", instance_storage);
     h.on("Query.mailFilters", mail_filters);
     h.on("Mutation.createMailFilter", create_mail_filter);
     h.on("Mutation.updateMailFilter", update_mail_filter);

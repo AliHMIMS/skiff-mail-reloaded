@@ -96,7 +96,7 @@ impl Config {
             )),
             _ => None,
         };
-        App::new(store, gmail, google, self.public_url.clone(), self.display_name.clone())
+        App::new(store, gmail, google, self.public_url.clone(), self.display_name.clone(), self.data_dir.clone())
     }
 }
 

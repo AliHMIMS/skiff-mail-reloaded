@@ -2268,7 +2268,14 @@ input PushCalendarEventInput2 {
   updateTypes: [EventUpdateType!]!
 }
 
+"""mymail-server: mail database size vs free space on the server's disk (bytes; Float because Int is 32-bit)"""
+type InstanceStorage {
+  availableBytes: Float!
+  databaseBytes: Float!
+}
+
 type Query {
+  instanceStorage: InstanceStorage
   aliasDisplayInfo(emailAlias: String!): AliasDisplayInfo
   aliasValid(request: GetAliasValidRequest!): Boolean!
   allContacts: [Contact!]!
