@@ -7,7 +7,9 @@
     "import": "./dist/esm/index.js",
     "require": "./dist/cjs/index.js"
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "./src/dateUtils.ts"
+  ],
   "files": [
     "dist"
   ],

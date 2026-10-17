@@ -17,7 +17,14 @@
       "require": "./dist/cjs/utils/documentUtils/docCryptoUtils.js"
     }
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "./src/components/ReactPdf.tsx",
+    "./src/utils/dateUtils.ts",
+    "./src/components/Date/DateDisplay.tsx",
+    "./src/components/TimeField/TimeFieldDropdown.tsx"
+  ],
   "files": [
     "dist"
   ],
