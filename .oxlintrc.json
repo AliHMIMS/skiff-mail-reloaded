@@ -1,13 +1,6 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": [
-    "typescript",
-    "react",
-    "jsx-a11y",
-    "import",
-    "unicorn",
-    "oxc"
-  ],
+  "plugins": ["typescript", "react", "jsx-a11y", "import", "unicorn", "oxc"],
   "categories": {
     "correctness": "error"
   },
@@ -51,7 +44,8 @@
     "react/globals": "warn",
     "react/unsupported-syntax": "warn",
     "react/incompatible-library": "warn",
-    "react/error-boundaries": "warn"
+    "react/error-boundaries": "warn",
+    "jsx-a11y/prefer-tag-over-role": "warn"
   },
   "ignorePatterns": [
     "**/node_modules/**",
