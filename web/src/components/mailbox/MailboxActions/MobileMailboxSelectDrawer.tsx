@@ -1,7 +1,7 @@
 import { DropdownItem, Icon, Icons, Size, ThemeMode, Typography, TypographySize } from 'nightwatch-ui';
 import { FC, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { useGetNumUnreadQuery, useUserLabelsQuery } from 'skiff-front-graphql';
 import {
   Drawer,

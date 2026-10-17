@@ -6,7 +6,7 @@ import { SnackbarProvider } from 'notistack';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { EMPTY_DOCUMENT_DATA, SystemLabels, models } from 'skiff-front-graphql';
 import { removeCurrentUserData, saveCurrentUserData } from 'skiff-front-utils';
 
@@ -30,8 +30,8 @@ vi.mock('skiff-front-utils', async () => {
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual('react-router-dom')),
+vi.mock('react-router', async () => ({
+  ...(await vi.importActual('react-router')),
   useLocation: () => ({ pathname: '/mail/inbox' })
 }));
 

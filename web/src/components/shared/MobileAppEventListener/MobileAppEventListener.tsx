@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { isIOS } from 'react-device-detect';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useSetPushTokenMutation } from 'skiff-front-graphql';
 import { sendRNWebviewMsg } from 'skiff-front-utils';
 
@@ -51,7 +51,7 @@ type MobileAppEvent = GoogleAuthRedirect | PushNotificationTokenMsg | OutlookAut
  * Handles messages from webview
  */
 export default function MobileAppEventListener() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [setPushToken] = useSetPushTokenMutation();
   const onBackClick = useBackButton();
 
@@ -65,13 +65,13 @@ export default function MobileAppEventListener() {
           switch (type) {
             case MobileAppEventTypes.GoogleAuthRedirect:
               // When being redirected from google, set route path
-              void history.push({
+              void navigate({
                 pathname: '/oauth/google/import',
                 search: new URLSearchParams(payload.query).toString()
               });
               break;
             case MobileAppEventTypes.OutlookAuthRedirect:
-              void history.push({
+              void navigate({
                 pathname: '/oauth/outlook/import',
                 search: new URLSearchParams(payload.query).toString()
               });
@@ -118,7 +118,7 @@ export default function MobileAppEventListener() {
         document.removeEventListener(MOBILE_EVENT_NAME, onEvent as unknown as EventListener);
       }
     };
-  }, [history, setPushToken, onBackClick]);
+  }, [navigate, setPushToken, onBackClick]);
 
   return null;
 }

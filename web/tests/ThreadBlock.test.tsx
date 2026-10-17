@@ -4,6 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router';
 import { abbreviateWalletAddress } from 'skiff-front-utils';
 import { SystemLabels } from 'skiff-graphql';
 
@@ -69,7 +70,9 @@ describe('ThreadBlock', () => {
   // TODO: Move wrapper setup to util file https://redux.js.org/usage/writing-tests
   const wrapper = ({ children }) => (
     <Provider store={createStore()}>
-      <MockedProvider>{children}</MockedProvider>
+      <MockedProvider>
+        <MemoryRouter>{children}</MemoryRouter>
+      </MockedProvider>
     </Provider>
   );
 

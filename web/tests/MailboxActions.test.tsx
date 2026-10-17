@@ -27,8 +27,8 @@ vi.mock('../src/hooks/useThreadActions', () => ({
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual('react-router-dom')),
+vi.mock('react-router', async () => ({
+  ...(await vi.importActual('react-router')),
   useLocation: () => ({ pathname: '/mail/inbox' })
 }));
 

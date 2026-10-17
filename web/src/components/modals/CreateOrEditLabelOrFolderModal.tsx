@@ -17,7 +17,7 @@ import {
 import React, { useState, useRef, useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useCreateUserLabelMutation, useDeleteUserLabelMutation, useEditUserLabelMutation } from 'skiff-front-graphql';
 import { ColorSelector } from 'skiff-front-utils';
 import { UserLabelVariant } from 'skiff-graphql';
@@ -50,7 +50,7 @@ const ErrorContainer = styled.div`
 
 export const CreateOrEditLabelOrFolderModal = () => {
   const { label: routeLabel } = useCurrentLabel();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [createLabel] = useCreateUserLabelMutation();
   const [editLabel] = useEditUserLabelMutation();
   const [deleteLabel] = useDeleteUserLabelMutation();
@@ -158,7 +158,7 @@ export const CreateOrEditLabelOrFolderModal = () => {
         isString(routeLabel) && encodeURIComponent(routeLabel.toLowerCase()) === encodedExistingLabelName;
       if (isLabelToModifyActive) {
         const newLabelURL = encodeURIComponent(labelName.toLowerCase());
-        history.push(`/label#${newLabelURL}`);
+        navigate(`/label#${newLabelURL}`);
       }
     }
   };

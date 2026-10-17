@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { TabPage, SettingValue } from 'skiff-front-utils';
 
 import { useSettings } from '../components/Settings/useSettings';

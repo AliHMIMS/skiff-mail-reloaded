@@ -5,7 +5,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 
 import client from '../src/apollo/client';
 import ContactActionDropdown from '../src/components/Thread/ContactDetails/ContactActionDropdown';
@@ -35,8 +35,8 @@ vi.mock('../src/hooks/useDrafts', () => ({
   })
 }));
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual('react-router-dom')),
+vi.mock('react-router', async () => ({
+  ...(await vi.importActual('react-router')),
   useParams: () => ({ mailboxLabel: 'inbox' })
 }));
 vi.mock('../src/hooks/useThreadActions', () => ({

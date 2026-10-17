@@ -1,7 +1,7 @@
 import { ChipSize } from 'nightwatch-ui';
 import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { WalletAliasWithName, useMediaQuery, useUserPreference } from 'skiff-front-utils';
 import { SystemLabels, ThreadDisplayFormat, UserLabelVariant } from 'skiff-graphql';
 import { StorageTypes } from 'skiff-utils';

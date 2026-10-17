@@ -2,7 +2,7 @@ import { useLDClient } from 'launchdarkly-react-client-sdk';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate as useRouterNavigate } from 'react-router';
 import { getEnvironment, getEditorBasePath } from 'skiff-front-utils';
 import { isMobileApp, useCurrentUserData } from 'skiff-front-utils';
 import { SystemLabels } from 'skiff-graphql';
@@ -16,7 +16,7 @@ import { tryCachedLogin } from './useCachedLogin';
 
 const useFetchCurrentUser = () => {
   const location = useLocation();
-  const history = useHistory();
+  const navigate = useRouterNavigate();
   const { navigateToSystemLabel } = useNavigate();
   const dispatch = useDispatch();
   const ldClient = useLDClient();
@@ -52,7 +52,7 @@ const useFetchCurrentUser = () => {
       // If separate origins for editor and skemail (no shared cookies), direct to skemail login
       const editorAndSkemailSeparateOrigin = env === 'local' || env === 'review_app' || env === 'vercel';
       if (editorAndSkemailSeparateOrigin && !ALLOWED_UNAUTHENTICATED_ROUTES.has(location.pathname)) {
-        history.push('/');
+        navigate('/');
         // If same origins for editor and skemail (shared cookies), direct to editor login
       } else if (!editorAndSkemailSeparateOrigin && location.pathname !== 'signup') {
         window.location.replace(getEditorBasePath());
@@ -62,7 +62,7 @@ const useFetchCurrentUser = () => {
       // after logging to google we redirected with code query param, in this case keep them so we can use it later
       navigateToSystemLabel(SystemLabels.Inbox, window.location.search || undefined);
     }
-  }, [isLoggedIn, location, history, navigateToSystemLabel, isCachedLoginDone]);
+  }, [isLoggedIn, location, navigate, navigateToSystemLabel, isCachedLoginDone]);
 
   useEffect(() => {
     if (userData && ldClient) {

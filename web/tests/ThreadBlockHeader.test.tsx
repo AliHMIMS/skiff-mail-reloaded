@@ -4,7 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import { abbreviateWalletAddress } from 'skiff-front-utils';
 
 import { ThreadBlockHeader } from '../src/components/Thread/ThreadBlockHeader';
@@ -31,8 +31,8 @@ vi.mock('../src/hooks/useDrafts', () => ({
   })
 }));
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual('react-router-dom')),
+vi.mock('react-router', async () => ({
+  ...(await vi.importActual('react-router')),
   useParams: () => ({ mailboxLabel: 'inbox' })
 }));
 vi.mock('../src/hooks/useThreadActions', () => ({

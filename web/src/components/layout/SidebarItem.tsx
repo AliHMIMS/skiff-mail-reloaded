@@ -15,7 +15,7 @@ import {
 import React, { useRef, useState } from 'react';
 import { useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router';
 import { IconTextWithEndActions, useTheme, WalletAliasWithName } from 'skiff-front-utils';
 import { SystemLabels, UserLabelVariant } from 'skiff-graphql';
 import styled, { css } from 'styled-components';

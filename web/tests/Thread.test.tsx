@@ -5,6 +5,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import noop from 'lodash/noop';
 import { SnackbarProvider } from 'notistack';
 import { Provider } from 'react-redux';
+import { MemoryRouter } from 'react-router';
 import { GetAttachmentsDocument, GetThreadFromIdDocument, ThreadFragment } from 'skiff-front-graphql';
 import { saveCurrentUserData } from 'skiff-front-utils';
 import { SystemLabels } from 'skiff-graphql';
@@ -116,7 +117,7 @@ describe('Thread', () => {
       >
         <SnackbarProvider maxSnack={7}>
           <RouterLabelContext.Provider value={LABEL_TO_SYSTEM_LABEL[SystemLabels.Inbox]}>
-            {children}
+            <MemoryRouter>{children}</MemoryRouter>
           </RouterLabelContext.Provider>
         </SnackbarProvider>
       </MockedProvider>

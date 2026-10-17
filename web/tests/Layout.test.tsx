@@ -7,7 +7,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router';
 import {
   CreateOrUpdateDraftDocument,
   EMPTY_DOCUMENT_DATA,
@@ -122,8 +122,8 @@ vi.mock('../src/utils/userUtils', async () => ({
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-vi.mock('react-router-dom', async () => ({
-  ...(await vi.importActual('react-router-dom')),
+vi.mock('react-router', async () => ({
+  ...(await vi.importActual('react-router')),
   useLocation: () => ({ pathname: '/mail/inbox' })
 }));
 

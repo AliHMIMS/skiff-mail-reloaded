@@ -2,7 +2,7 @@
 import { DISPLAY_SCROLLBAR_CSS, ThemeMode } from 'nightwatch-ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useNavigate as useRouterNavigate } from 'react-router';
 import { VariableSizeList } from 'react-window';
 import { SystemLabels } from 'skiff-graphql';
 import styled from 'styled-components';
@@ -82,7 +82,7 @@ export const CommandList = ({
   const { navigateToUserLabel } = useNavigate();
   const { setActiveThreadID } = useThreadActions();
   const { label: currentRouteLabel } = useCurrentLabel();
-  const history = useHistory();
+  const navigate = useRouterNavigate();
 
   const navigateToSkemailResult = useCallback(
     (skemailResult: SearchSkemail) => {
@@ -94,7 +94,7 @@ export const CommandList = ({
       if (!query.length) {
         // If the skemail is not in the current route, navigate to a system label the thread does have
         if (!systemLabels.includes(currentRouteLabel as SystemLabels)) {
-          history.push({ pathname: systemLabels[0], search: new URLSearchParams(activeThreadQuery).toString() });
+          navigate({ pathname: systemLabels[0], search: new URLSearchParams(activeThreadQuery).toString() });
         } else {
           setActiveThreadID(activeThreadQuery);
           dispatch(skemailModalReducer.actions.collapse());
@@ -147,7 +147,7 @@ export const CommandList = ({
               void navigateToUserLabel(info.name);
             } else if (info.categoryType === SearchCategoryType.Folders) {
               const folderPath = `/label?folder=true#${info.name}`;
-              history.push(folderPath);
+              navigate(folderPath);
             }
 
             onClose();
@@ -164,7 +164,16 @@ export const CommandList = ({
         }
       }
     },
-    [dispatch, goToFullViewSearch, navigateToSkemailResult, onClose, navigateToUserLabel, query, history, searchResults]
+    [
+      dispatch,
+      goToFullViewSearch,
+      navigateToSkemailResult,
+      onClose,
+      navigateToUserLabel,
+      query,
+      navigate,
+      searchResults
+    ]
   );
 
   // Handles navigating search results with arrow keys, skips headers since we can't select them

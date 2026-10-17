@@ -1,25 +1,25 @@
 import { useCallback } from 'react';
-import { generatePath, useHistory } from 'react-router-dom';
+import { generatePath, useNavigate as useRouterNavigate } from 'react-router';
 import { SystemLabels } from 'skiff-graphql';
 
 import { MailAppRoutes } from '../constants/route.constants';
 
 export const useNavigate = () => {
-  const history = useHistory();
+  const navigate = useRouterNavigate();
 
   const navigateToSystemLabel = useCallback(
     /**
      * Use this function to navigate into a system label without triggering a complete rerender
      */
     (systemLabel: SystemLabels, search?: string) => {
-      history.push({
+      navigate({
         pathname: `${generatePath(MailAppRoutes.MAILBOX, {
           mailboxLabel: systemLabel.toLowerCase()
         })}`,
         search
       });
     },
-    [history]
+    [navigate]
   );
 
   const navigateToUserLabel = useCallback(
@@ -28,9 +28,9 @@ export const useNavigate = () => {
      */
     (userLabel: string) => {
       const encodedUserLabel = encodeURIComponent(userLabel.toLocaleLowerCase());
-      history.push(`${MailAppRoutes.USER_LABEL_MAILBOX}#${encodedUserLabel}`);
+      navigate(`${MailAppRoutes.USER_LABEL_MAILBOX}#${encodedUserLabel}`);
     },
-    [history]
+    [navigate]
   );
 
   const navigateToInbox = useCallback(() => {
@@ -38,10 +38,10 @@ export const useNavigate = () => {
   }, [navigateToSystemLabel]);
 
   const navigateToSearch = useCallback(() => {
-    history.push({
+    navigate({
       pathname: MailAppRoutes.SEARCH
     });
-  }, [history]);
+  }, [navigate]);
 
   return { navigateToSystemLabel, navigateToUserLabel, navigateToInbox, navigateToSearch };
 };

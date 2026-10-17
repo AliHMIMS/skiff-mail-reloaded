@@ -1,7 +1,7 @@
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { useCallback, useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { useDebouncedAsyncCallback } from 'skiff-front-utils';
 
 import { useIsFullScreenThreadOpen } from '../../hooks/useIsFullScreenThreadOpen';

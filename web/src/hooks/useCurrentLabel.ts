@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { matchPath, useParams } from 'react-router-dom';
+import { matchPath, useParams } from 'react-router';
 import { UserLabelVariant } from 'skiff-graphql';
 
 import { MailAppRoutes } from '../constants/route.constants';
@@ -19,11 +19,9 @@ export const useCurrentLabel = () => {
   const { hash, search, pathname } = window.location;
   const params = useMemo(() => new URLSearchParams(search), [search]);
 
-  const { mailboxLabel: mailboxLabelFromRoute } = useParams<MailboxPathParams>();
+  const { mailboxLabel: mailboxLabelFromRoute } = useParams<keyof MailboxPathParams>();
   // Also try matchPath as a fallback -- sometimes useParams is empty for valid routes
-  const routeMatch = matchPath<MailboxPathParams>(pathname, {
-    path: `${MailAppRoutes.MAIL}${MailAppRoutes.MAILBOX}`
-  });
+  const routeMatch = matchPath({ path: `${MailAppRoutes.MAIL}${MailAppRoutes.MAILBOX}`, end: false }, pathname);
   const routeLabel = mailboxLabelFromRoute || routeMatch?.params.mailboxLabel;
 
   const getInitialUserLabelVariant = () => {

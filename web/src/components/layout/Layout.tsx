@@ -1,10 +1,10 @@
 import { AnimatePresence } from 'framer-motion';
 import { BANNER_HEIGHT, CircularProgress, Size } from 'nightwatch-ui';
-import { FC, useCallback, useEffect } from 'react';
+import { FC, PropsWithChildren, useCallback, useEffect } from 'react';
 import React from 'react';
 import { MobileView, isAndroid, isMobile } from 'react-device-detect';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import {
   AddEmailModal,
   BrowserDesktopView,
@@ -113,7 +113,7 @@ const MobileBody = styled.div<{ settingsOpen: boolean }>`
 
 const Settings = React.lazy(() => import('../Settings/Settings'));
 
-export const Layout: FC = ({ children }) => {
+export const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { theme } = useTheme();
   const { isCachedLoginDone, isLoggedIn } = useFetchCurrentUser();
   const { error: addEmailError, loading: isAddingEmail, runAddEmail, setError: setAddEmailError } = useAddBackupEmail();
