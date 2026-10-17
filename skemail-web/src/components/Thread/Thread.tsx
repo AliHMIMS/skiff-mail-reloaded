@@ -69,15 +69,17 @@ const ThreadBody = styled.div`
     ${DISPLAY_SCROLLBAR_CSS}
   }
   height: 100%;
-  ${!isMobile
-    ? 'padding: 12px 24px 64px 24px;'
-    : `
+  ${
+    !isMobile
+      ? 'padding: 12px 24px 64px 24px;'
+      : `
     padding: 0px;
     background: var(--bg-main-container);
     padding-bottom: calc(${BOTTOM_NAVIGATION_HEIGHT}px + 32px + env(safe-area-inset-bottom, 0px));
     height: unset;
     flex: 1;
-  `}
+  `
+  }
 `;
 
 const ThreadSpacer = styled.div<{ height: number }>`
@@ -308,18 +310,24 @@ function Thread({
     );
   };
 
-  const emailRefs = nonTrashedEmails.reduce((acc, val) => {
-    acc[val.id] = React.createRef<HTMLDivElement | null>();
-    return acc;
-  }, {} as Record<string, React.MutableRefObject<HTMLDivElement | null>>);
+  const emailRefs = nonTrashedEmails.reduce(
+    (acc, val) => {
+      acc[val.id] = React.createRef<HTMLDivElement | null>();
+      return acc;
+    },
+    {} as Record<string, React.MutableRefObject<HTMLDivElement | null>>
+  );
 
   const { activeEmailID: routeActiveEmailID } = useThreadActions();
   const activeEmailID = emailID || routeActiveEmailID;
   // Fill a Record<emailID, boolean> with false except for the id of the last email
-  const initialIsExpanded = emails.reduce((acc, email) => {
-    acc[email.id] = email.id === last(emails)?.id;
-    return acc;
-  }, {} as Record<string, boolean>);
+  const initialIsExpanded = emails.reduce(
+    (acc, email) => {
+      acc[email.id] = email.id === last(emails)?.id;
+      return acc;
+    },
+    {} as Record<string, boolean>
+  );
   const [isExpanded, setIsExpanded] = useState<Record<string, boolean>>(initialIsExpanded);
   // So that we only scroll and expand on load
   const [hasScrolled, setHasScrolled] = useState(false);
@@ -486,10 +494,13 @@ function Thread({
       setIsExpanded(initialIsExpanded);
     } else {
       setIsExpanded(
-        emails.reduce((acc, val) => {
-          acc[val.id] = true;
-          return acc;
-        }, {} as Record<string, boolean>)
+        emails.reduce(
+          (acc, val) => {
+            acc[val.id] = true;
+            return acc;
+          },
+          {} as Record<string, boolean>
+        )
       );
     }
   };

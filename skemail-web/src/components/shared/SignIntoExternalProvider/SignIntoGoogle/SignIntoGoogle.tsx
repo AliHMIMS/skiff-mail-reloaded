@@ -3,8 +3,10 @@ import { GoogleLoginButton } from 'skiff-front-utils';
 
 import { SignIntoExternalProvider, SignIntoExternalProviderModalProps } from '../SignIntoExternalProvider';
 
-interface SignIntoGoogleModalProps
-  extends Pick<SignIntoExternalProviderModalProps, 'open' | 'onClose' | 'actionLabel'> {
+interface SignIntoGoogleModalProps extends Pick<
+  SignIntoExternalProviderModalProps,
+  'open' | 'onClose' | 'actionLabel'
+> {
   handleGoogleAuth: () => Promise<void>;
 }
 

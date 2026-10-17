@@ -4,5 +4,5 @@ module.exports = {
   parserOptions: {
     project: 'tsconfig.json'
   },
-  ignorePatterns: ['dist/**', '.eslintrc.js', 'build.js'],
+  ignorePatterns: ['dist/**', '.eslintrc.js', 'build.js']
 };

@@ -10,13 +10,15 @@ const InnerContainerStyle = styled.div`
   max-width: 80%;
   max-height: 100%;
 
-  ${isMobile &&
-  `
+  ${
+    isMobile &&
+    `
     position: relative;
     max-width: 100%;
     display: flex;
     justify-content: center;
-  `}
+  `
+  }
 `;
 
 export const InnerContainer: FC = ({ children }) => (

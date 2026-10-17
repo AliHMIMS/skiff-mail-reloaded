@@ -38,16 +38,19 @@ const ListItem = styled.div<{
       }
     `}
 
-
-  ${isMobile &&
-  css`
-    gap: 16px;
-    justify-content: space-between;
-  `};
-  ${!isMobile &&
-  css`
-    gap: 4px;
-  `}
+  ${
+    isMobile &&
+    css`
+      gap: 16px;
+      justify-content: space-between;
+    `
+  };
+  ${
+    !isMobile &&
+    css`
+      gap: 4px;
+    `
+  }
 
   cursor: ${(props) => (props.$hasOnClick ? 'pointer' : '')};
 `;

@@ -8,7 +8,11 @@ interface ReadRejectValue {
   error: any;
 }
 
-export const readFile = (file: File, progress?: (event: ProgressEvent<FileReader>) => void, encoding?: BufferEncoding) =>
+export const readFile = (
+  file: File,
+  progress?: (event: ProgressEvent<FileReader>) => void,
+  encoding?: BufferEncoding
+) =>
   new Promise((resolve: (value: ReadResolveValue) => void, reject: (value: ReadRejectValue) => void) => {
     const reader = new FileReader();
 

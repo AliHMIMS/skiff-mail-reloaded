@@ -65,13 +65,13 @@ const useCreateAlias = () => {
       },
       update: !!userID
         ? (cache, response) => {
-          const updatedEmailAliases = response.data?.createEmailAlias?.emailAliases;
-          if (!response.errors && updatedEmailAliases) {
-            updateEmailAliases(cache, userID, updatedEmailAliases);
-            // refetch user labels to update aliases labels in the sidebar
-            void fetchUserLabels();
+            const updatedEmailAliases = response.data?.createEmailAlias?.emailAliases;
+            if (!response.errors && updatedEmailAliases) {
+              updateEmailAliases(cache, userID, updatedEmailAliases);
+              // refetch user labels to update aliases labels in the sidebar
+              void fetchUserLabels();
+            }
           }
-        }
         : undefined,
       errorPolicy
     });

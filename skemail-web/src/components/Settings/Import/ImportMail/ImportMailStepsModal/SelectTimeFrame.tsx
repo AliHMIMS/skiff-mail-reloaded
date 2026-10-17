@@ -33,11 +33,13 @@ const Row = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 8px 0;
-  ${isMobile &&
-  css`
-    flex-direction: column;
-    gap: 8px;
-  `}
+  ${
+    isMobile &&
+    css`
+      flex-direction: column;
+      gap: 8px;
+    `
+  }
 `;
 
 const RowTitle = styled(Typography)`

@@ -217,7 +217,7 @@ export const importContactVcfFile = async (
     isPhone = false
   ): ValueLabel[] => {
     if (typeof keys === 'string') {
-      return [{ value: keys, label: isPhone && xABLabels?.length ? xABLabels[0]._data ?? '' : '' }];
+      return [{ value: keys, label: isPhone && xABLabels?.length ? (xABLabels[0]._data ?? '') : '' }];
     }
 
     return keys.map(({ _data, type, group }: VcfKeyData) => {

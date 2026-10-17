@@ -13,11 +13,10 @@ import { ChipContainer, ChipTypography, labelStyling } from './Chips.styles';
 
 const TypeLabel = styled.div<{ $includeBorder: boolean }>`
   ${labelStyling}
-  padding: 0   ${({ $includeBorder }) =>
-    $includeBorder
-      ? CHIP_TYPOGRAPHY_PADDING
-      : FILTER_CONDITION_CHIP_EDGE_PADDING + CHIP_TYPOGRAPHY_PADDING}px 0 ${FILTER_CONDITION_CHIP_EDGE_PADDING +
-  CHIP_TYPOGRAPHY_PADDING}px;
+  padding: 0
+    ${({ $includeBorder }) =>
+      $includeBorder ? CHIP_TYPOGRAPHY_PADDING : FILTER_CONDITION_CHIP_EDGE_PADDING + CHIP_TYPOGRAPHY_PADDING}px
+    0 ${FILTER_CONDITION_CHIP_EDGE_PADDING + CHIP_TYPOGRAPHY_PADDING}px;
   ${({ $includeBorder }) => $includeBorder && 'border-right: 1px var(--border-secondary) solid;'}
 `;
 

@@ -48,7 +48,7 @@ export enum StorageTypes {
   CONFIRM_UNSUBSCRIBE_REDIRECT = 'confirmUnsubscribeRedirect',
   HIDE_IMPORT_COMPLETE = 'hideImportComplete',
   CONFIRM_TRUST_KEY = 'confirmTrustKey',
-  AUTO_ATTACH_PGP_PUBLIC_KEY = 'autoAttachPgpPublicKey',
+  AUTO_ATTACH_PGP_PUBLIC_KEY = 'autoAttachPgpPublicKey'
 }
 
 export const getStorageKey = (type: StorageTypes): string => `skiff:${type}`;

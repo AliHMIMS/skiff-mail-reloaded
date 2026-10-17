@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const SearchContainer = styled.div<{ $showBorder?: boolean }>`
   padding: 16px 0px;
-  border-bottom: ;
+  border-bottom:;
   border-bottom: ${({ $showBorder }) => ($showBorder ? ' 1px solid var(--border-tertiary)' : '')};
 
   display: flex;

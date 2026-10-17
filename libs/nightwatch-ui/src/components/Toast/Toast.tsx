@@ -68,7 +68,9 @@ const IconContainer = styled.div`
 
   background: ${themeNames.dark['--bg-cell-hover']};
   border-radius: 12px;
-  box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.08), inset 0px -1px 0px 1px rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0px 1px 0px rgba(255, 255, 255, 0.08),
+    inset 0px -1px 0px 1px rgba(255, 255, 255, 0.08);
 `;
 
 const TextContainer = styled.div`

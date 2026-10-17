@@ -246,21 +246,21 @@ export const MobileMessageCell = ({
   const leftSwipeIcon = isInboxLabel
     ? getSwipeIcon(curLeftSwipeGesture, read)
     : canUndo
-    ? Icon.MoveMailbox
-    : archiveOrTrashIcon;
+      ? Icon.MoveMailbox
+      : archiveOrTrashIcon;
 
   const leftSwipeBgColor = isInboxLabel
     ? getSwipeBgColor(curLeftSwipeGesture)
     : canUndo
-    ? 'var(--accent-yellow-secondary)'
-    : 'var(--accent-red-primary)';
+      ? 'var(--accent-yellow-secondary)'
+      : 'var(--accent-red-primary)';
   const leftSwipeIconColor = isInboxLabel ? getSwipeIconColor(curLeftSwipeGesture) : canUndo ? 'yellow' : 'white';
 
   const rightSwipeIcon = isInboxLabel
     ? getSwipeIcon(curRightSwipeGesture, read)
     : read
-    ? Icon.EnvelopeUnread
-    : Icon.EnvelopeRead;
+      ? Icon.EnvelopeUnread
+      : Icon.EnvelopeRead;
   const rightSwipeBgColor = isInboxLabel ? getSwipeBgColor(curRightSwipeGesture) : 'var(--accent-blue-primary)';
   const rightSwipeIconColor = isInboxLabel ? getSwipeIconColor(curRightSwipeGesture) : 'white';
 

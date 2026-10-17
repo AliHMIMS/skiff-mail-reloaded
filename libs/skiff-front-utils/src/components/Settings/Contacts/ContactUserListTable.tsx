@@ -40,11 +40,13 @@ const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
-  ${isMobile &&
-  css`
-    background: var(--bg-overlay-quaternary);
-    border-radius: 20px;
-  `}
+  ${
+    isMobile &&
+    css`
+      background: var(--bg-overlay-quaternary);
+      border-radius: 20px;
+    `
+  }
 `;
 
 const EmptyContainer = styled.div`

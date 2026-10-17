@@ -4,7 +4,6 @@
   .MuiTypography-root {
     color: var(--text-primary);
 
-
     &:disabled {
       color: var(--text-disabled) !important;
     }
@@ -21,7 +20,6 @@
     .Mui-disabled * {
       color: var(--text-disabled) !important;
     }
-
   }
 
   .Mui-selected {
@@ -46,5 +44,4 @@
   .MuiPickersDay-today:not(.Mui-selected) {
     border: 1px solid var(--border-primary);
   }
-
 }

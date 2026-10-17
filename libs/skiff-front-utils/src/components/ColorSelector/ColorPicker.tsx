@@ -121,7 +121,9 @@ const ColorPreview = styled.div<{ $color: string }>`
   aspect-ratio: 1;
   border-radius: 8px;
   border: 3px solid #1a1a1a;
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
   background: ${(props) => props.$color};
 `;
 

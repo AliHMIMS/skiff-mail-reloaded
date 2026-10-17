@@ -59,11 +59,13 @@ export const STACKED_AVATAR_WRAPPER_CSS = ({
     position: absolute;
     left: ${position.left}px;
     top: ${position.top}px;
-    ${$numOfAvatars > 1 &&
-    `
+    ${
+      $numOfAvatars > 1 &&
+      `
       border-radius: ${avatarBorderRadius + innerOffset}px;
       padding: ${innerOffset}px;
-    `}
+    `
+    }
   `;
 };
 
@@ -84,11 +86,13 @@ export const INLINE_AVATAR_WRAPPER_CSS = ({
     margin-left: ${$index > 0 ? `-${avatarSize / 3}` : 0}px;
     // The first Avatar should be the top-most Avatar
     z-index: ${$numOfAvatars - $index};
-    ${$numOfAvatars > 1 &&
-    `
+    ${
+      $numOfAvatars > 1 &&
+      `
       border-radius: ${avatarBorderRadius + innerOffset}px;
       padding: ${innerOffset}px;
-    `}
+    `
+    }
   `;
 };
 

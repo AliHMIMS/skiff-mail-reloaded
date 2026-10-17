@@ -74,7 +74,8 @@ export { default as ThemedBanner } from './ThemedBanner';
 export {
   TIME_PICKER_DROPDOWN_CLASSNAME,
   TimeField,
-  TimeFieldDropdown, hourFormatParser,
+  TimeFieldDropdown,
+  hourFormatParser,
   parseCustomTime
 } from './TimeField';
 export {

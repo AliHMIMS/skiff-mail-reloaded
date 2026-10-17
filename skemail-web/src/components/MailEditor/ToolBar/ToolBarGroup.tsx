@@ -134,13 +134,9 @@ const ToolBarDropdownGroup: FC<Omit<ToolbarGroupProps & { forceTheme?: ThemeMode
   const dropdownRef = useRef<HTMLDivElement>(null);
   const groupContainerRef = useRef<HTMLDivElement>(null);
   const { showFormatBar } = useAppSelector((state) => state.modal);
-  useOnClickOutside(
-    dropdownRef,
-    () => {
-      setOpen(false);
-    },
-    ['ignoreThisClick']
-  );
+  useOnClickOutside(dropdownRef, () => {
+    setOpen(false);
+  }, ['ignoreThisClick']);
 
   const groupRect = groupContainerRef?.current?.getBoundingClientRect();
   const dropdownRect = dropdownRef.current?.getBoundingClientRect();

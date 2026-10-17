@@ -106,11 +106,11 @@ const FileCard = styled.div<{
   $isFolder?: boolean;
 }>`
   padding: 0px 6px;
-  ${({ $isDrive, $checkboxVisible, $isFolder }) =>
-    css`
-      width: 32px;
-      overflow: hidden;
-      ${$isDrive &&
+  ${({ $isDrive, $checkboxVisible, $isFolder }) => css`
+    width: 32px;
+    overflow: hidden;
+    ${
+      $isDrive &&
       `
             height: 32px;
             overflow: hidden;
@@ -127,16 +127,19 @@ const FileCard = styled.div<{
               width: 32px;
               height: 32px;
             }
-          `}
-      ${!$isDrive &&
+          `
+    }
+    ${
+      !$isDrive &&
       `
             box-shadow: var(--secondary-button-border);
             height: ${FILE_TABLE_FILE_CARD_PX_HEIGHT}px;
             border-radius: 4px;
-          `}
-      height: ${$isFolder ? '32px' : ''};
-      border-radius: ${$isFolder ? '8px' : ''};
-    `};
+          `
+    }
+    height: ${$isFolder ? '32px' : ''};
+    border-radius: ${$isFolder ? '8px' : ''};
+  `};
 
   display: flex;
   align-items: center;

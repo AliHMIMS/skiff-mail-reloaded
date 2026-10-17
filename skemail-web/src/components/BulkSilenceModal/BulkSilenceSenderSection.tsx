@@ -92,10 +92,13 @@ const BulkSilenceSenderSection = ({
   const [expandSection, setExpandSection] = useState(true);
   const [expandedParents, setExpandedParents] = useState<Record<string, boolean>>(() => {
     if (!bulkSilenceData) return {};
-    return Object.keys(bulkSilenceData).reduce((acc, domain) => {
-      acc[domain] = true; // expand parents by default
-      return acc;
-    }, {} as Record<string, boolean>);
+    return Object.keys(bulkSilenceData).reduce(
+      (acc, domain) => {
+        acc[domain] = true; // expand parents by default
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
   });
   const [sortedbulkSilenceData, setSortedbulkSilenceData] = useState<BulkSilenceEntry[] | undefined>(undefined);
 
@@ -107,12 +110,15 @@ const BulkSilenceSenderSection = ({
 
   useEffect(() => {
     if (!bulkSilenceData) return;
-    const newExpandedState = Object.keys(bulkSilenceData).reduce((acc, domain) => {
-      if (expandedParents[domain] === undefined) {
-        acc[domain] = true; // set expansion for new items
-      }
-      return acc;
-    }, {} as Record<string, boolean>);
+    const newExpandedState = Object.keys(bulkSilenceData).reduce(
+      (acc, domain) => {
+        if (expandedParents[domain] === undefined) {
+          acc[domain] = true; // set expansion for new items
+        }
+        return acc;
+      },
+      {} as Record<string, boolean>
+    );
 
     if (Object.keys(newExpandedState).length) {
       setExpandedParents((prevState) => ({ ...prevState, ...newExpandedState }));

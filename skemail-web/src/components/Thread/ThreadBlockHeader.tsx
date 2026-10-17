@@ -49,11 +49,13 @@ const HeaderPreview = styled.div<{
     cursor: ${(props) => (isMobile ? 'initial' : props.$showContacts ? 'default' : 'pointer')};
   }
   ${(props) => (props.$showContacts ? `overflow-x: scroll` : '')}
-  ${isMobile
-    ? `
+  ${
+    isMobile
+      ? `
         overflow: hidden;
       `
-    : ''}
+      : ''
+  }
 `;
 
 const SubjectBlock = styled.div`

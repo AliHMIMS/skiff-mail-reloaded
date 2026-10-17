@@ -129,17 +129,21 @@ const useAttachments = (initialAttachments: InitialAttachmentsData, fetchAll = f
         });
         return { attachmentID: localID, error: 'File type not supported' };
       }
-      const { content } = await readFile(file, (event) => {
-        updateAttachment(localID, {
-          state: AttachmentStates.LocalUploading,
-          progress: Math.round(100 * (event.loaded / event.total)),
-          id: localID,
-          contentType: file.type,
-          name: file.name,
-          size: file.size,
-          inline
-        });
-      }, encoding);
+      const { content } = await readFile(
+        file,
+        (event) => {
+          updateAttachment(localID, {
+            state: AttachmentStates.LocalUploading,
+            progress: Math.round(100 * (event.loaded / event.total)),
+            id: localID,
+            contentType: file.type,
+            name: file.name,
+            size: file.size,
+            inline
+          });
+        },
+        encoding
+      );
 
       if (content) {
         updateAttachment(localID, {
@@ -438,7 +442,6 @@ const useAttachments = (initialAttachments: InitialAttachmentsData, fetchAll = f
     const publicKeyAttachmentId = metadata.find((attachment) => {
       return isPgpFile(attachment.decryptedMetadata?.contentType || '', attachment.decryptedMetadata?.filename || '');
     })?.attachmentID;
-
 
     if (!publicKeyAttachmentId) return undefined;
     const publicKeyAttachment = (await getAttachmentsDownloadData([publicKeyAttachmentId]))[publicKeyAttachmentId];

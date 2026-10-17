@@ -24,13 +24,15 @@ const PDFWrapperDiv = styled.div<{ $embeddedInPage?: boolean }>`
     height: 100%;
   }
 
-  ${isMobile &&
-  `
+  ${
+    isMobile &&
+    `
     canvas {
       width: 100% !important;
       height: auto !important;
     }
-    `}
+    `
+  }
 
   ${({ $embeddedInPage }) =>
     $embeddedInPage &&
@@ -41,27 +43,29 @@ const PDFWrapperDiv = styled.div<{ $embeddedInPage?: boolean }>`
         height: auto !important;
       }
     `}
-  ${!isMobile &&
-  css`
-    ::-webkit-scrollbar {
-      width: 12px;
-    }
-    /* This is the scrollbar thumb */
-    ::-webkit-scrollbar-thumb {
-      background: ${getThemedColor('var(--border-primary)', ThemeMode.DARK)}; /* color of the scroll thumb */
-      border-radius: 20px; /* roundness of the scroll thumb */
-      border: 3px solid transparent; /* creates padding around scroll thumb */
-      background-clip: content-box; /* ensures padding doesn't take on the background color */
-    }
+  ${
+    !isMobile &&
+    css`
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      /* This is the scrollbar thumb */
+      ::-webkit-scrollbar-thumb {
+        background: ${getThemedColor('var(--border-primary)', ThemeMode.DARK)}; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 3px solid transparent; /* creates padding around scroll thumb */
+        background-clip: content-box; /* ensures padding doesn't take on the background color */
+      }
 
-    ::-webkit-scrollbar-corner {
-      background: transparent;
-    }
-    /* When you hover over the scrollbar */
-    ::-webkit-scrollbar-thumb:hover {
-      background: ${getThemedColor('var(--cta-secondary-hover)', ThemeMode.DARK)}; /* color of the scroll thumb */
-    }
-  `}
+      ::-webkit-scrollbar-corner {
+        background: transparent;
+      }
+      /* When you hover over the scrollbar */
+      ::-webkit-scrollbar-thumb:hover {
+        background: ${getThemedColor('var(--cta-secondary-hover)', ThemeMode.DARK)}; /* color of the scroll thumb */
+      }
+    `
+  }
 `;
 
 const PdfIconContainer = styled.div`

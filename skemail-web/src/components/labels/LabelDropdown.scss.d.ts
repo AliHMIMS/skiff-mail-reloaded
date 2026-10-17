@@ -1,5 +1,4 @@
 declare const styles: {
-  readonly "labelItemDropdown": string;
+  readonly labelItemDropdown: string;
 };
 export = styles;
-

@@ -21,17 +21,21 @@ const Table = styled.table`
   border-collapse: collapse;
   height: 100%;
   table-layout: fixed;
-  ${isMobile &&
-  css`
-    overflow: auto;
-  `}
-  ${!isMobile &&
-  css`
-    overflow: hidden;
-    :hover {
+  ${
+    isMobile &&
+    css`
       overflow: auto;
-    }
-  `}
+    `
+  }
+  ${
+    !isMobile &&
+    css`
+      overflow: hidden;
+      :hover {
+        overflow: auto;
+      }
+    `
+  }
   width: 100%;
   place-self: flex-start;
 `;

@@ -16,7 +16,7 @@ module.exports = {
     'react/jsx-indent': ['warn', 2],
     'react/jsx-newline': ['warn', { prevent: true }],
     'react/jsx-props-no-multi-spaces': 'warn',
-    'react/jsx-key': 'warn',
+    'react/jsx-key': 'warn'
   },
   ignorePatterns: [
     ...tsConfig.exclude,
@@ -26,5 +26,5 @@ module.exports = {
     'generated/**',
     'next.config.js',
     'sw.js'
-  ],
+  ]
 };

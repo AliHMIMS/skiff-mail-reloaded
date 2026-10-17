@@ -1,13 +1,4 @@
-import {
-  ButtonGroup,
-  ButtonGroupItem,
-  Dialog,
-  DialogType,
-  IconText,
-  InputField,
-  InputType,
-  Size
-} from 'nightwatch-ui';
+import { ButtonGroup, ButtonGroupItem, Dialog, DialogType, IconText, InputField, InputType, Size } from 'nightwatch-ui';
 import React, { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import styled from 'styled-components';

@@ -1,6 +1,6 @@
-import { useGetUserTagsQuery } from "skiff-front-graphql";
-import { UserFeature } from "skiff-graphql";
-import useFeatureTagValue from "./useFeatureTagValue";
+import { useGetUserTagsQuery } from 'skiff-front-graphql';
+import { UserFeature } from 'skiff-graphql';
+import useFeatureTagValue from './useFeatureTagValue';
 
 /**
  * Hook to get the current user tags.

@@ -64,7 +64,7 @@ function IconButton(
   const renderIcon = () => {
     const customColor = typeof icon === 'string' ? undefined : icon.props.color;
     const defaultColor = variant === FilledVariant.FILLED ? BUTTON_TYPE_COLOR[type] : (type as IconColor);
-    const color = disabled ? 'disabled' : customColor ?? defaultColor;
+    const color = disabled ? 'disabled' : (customColor ?? defaultColor);
     const iconSize = BUTTON_ICON_SIZE[size];
     return typeof icon === 'string' ? (
       <Icons size={iconSize} icon={icon} color={color} forceTheme={forceTheme} />

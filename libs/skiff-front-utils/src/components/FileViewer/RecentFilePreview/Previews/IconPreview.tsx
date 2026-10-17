@@ -8,15 +8,19 @@ import { PreviewComponent, PreviewComponentProps } from '../RecentFilePreview.ty
 // when using desktop, should force height to be max of 75vh.
 const StyledSvgImg = styled.img`
   user-select: none;
-  ${!isMobile &&
-  ` max-width: 100%;
+  ${
+    !isMobile &&
+    ` max-width: 100%;
     max-height: 75vh
-  `}
-  ${isMobile &&
   `
+  }
+  ${
+    isMobile &&
+    `
     width: 100%;
     max-height: 60vh;
-  `}
+  `
+  }
 `;
 
 const IconPreview: PreviewComponent = ({ data }: PreviewComponentProps) => {

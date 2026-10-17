@@ -39,7 +39,11 @@ export type Envelope<T> = EncryptDatagram<T> & decryptDatagramV2<T>;
  * AADMeta is a class that encapsulates the additional metadata included in these envelope implementations.
  */
 export class AADMeta {
-  constructor(readonly version: string, readonly type: string, readonly nonce: Uint8Array) {}
+  constructor(
+    readonly version: string,
+    readonly type: string,
+    readonly nonce: Uint8Array
+  ) {}
 
   static deserialize(data: Uint8Array): {
     metadata: AADMeta;

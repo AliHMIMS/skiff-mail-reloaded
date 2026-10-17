@@ -15,13 +15,7 @@ const LARGE_CSS = css`
   border-radius: 14px;
 `;
 
-export const INPUT_SIZE_CSS = ({
-  $size,
-  $variant
-}: {
-  $size: InputFieldSize;
-  $variant: InputFieldVariant;
-}) => {
+export const INPUT_SIZE_CSS = ({ $size, $variant }: { $size: InputFieldSize; $variant: InputFieldVariant }) => {
   if ($variant === InputFieldVariant.SEARCH || $size === Size.MEDIUM) return MEDIUM_CSS;
   if ($size === Size.SMALL) return SMALL_CSS;
   return LARGE_CSS;

@@ -1,8 +1,7 @@
-import { generatePGPKey, readPrivateKey } from "skiff-crypto-v2";
-import { useSetPgpKeyMutation } from "skiff-front-graphql";
-import { getPgpRequest } from "../../components/PgpKey/Pgp.utils";
-import useToast from "../useToast";
-
+import { generatePGPKey, readPrivateKey } from 'skiff-crypto-v2';
+import { useSetPgpKeyMutation } from 'skiff-front-graphql';
+import { getPgpRequest } from '../../components/PgpKey/Pgp.utils';
+import useToast from '../useToast';
 
 export function useGeneratePgpKey(alreadyHasPgpKey: boolean, onClose?: () => void, hideToast?: boolean) {
   const { enqueueToast } = useToast();
@@ -42,7 +41,7 @@ export function useGeneratePgpKey(alreadyHasPgpKey: boolean, onClose?: () => voi
         });
       }
     }
-    onClose?.()
-  }
+    onClose?.();
+  };
   return { generateKey };
-};
+}

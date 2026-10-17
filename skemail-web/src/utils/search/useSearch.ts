@@ -62,7 +62,12 @@ export const useSearch = () => {
   const { search: userSearch } = useUserSearch();
 
   const [search] = useDebouncedAsyncCallback(
-    async (searchStr: string, filters?: MailboxSearchFilter[], showResultsInCmdPalette?: boolean, sortOrder?: SearchSortOrder) => {
+    async (
+      searchStr: string,
+      filters?: MailboxSearchFilter[],
+      showResultsInCmdPalette?: boolean,
+      sortOrder?: SearchSortOrder
+    ) => {
       if (!isSearchInProgress) setIsSearchInProgress(true);
       // minisearch results are currently only delivered via full-view search route
       // so regardless of whether search came from command palette or mailbox search bar,

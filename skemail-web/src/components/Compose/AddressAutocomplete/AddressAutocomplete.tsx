@@ -290,8 +290,8 @@ const AddressAutocomplete: React.FC<AddressAutocompleteProps> = ({
                                 {!isValidEmail
                                   ? 'Invalid email'
                                   : isSkiffInternal
-                                  ? 'End-to-end encrypted'
-                                  : 'External'}
+                                    ? 'End-to-end encrypted'
+                                    : 'External'}
                               </Typography>
                             )}
                             <AddressContainer>

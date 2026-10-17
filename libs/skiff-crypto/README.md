@@ -45,7 +45,7 @@ const skiffCrypto = require('@skiff-org/skiff-crypto');
 // or, `import * as skiffCrypto from '@skiff-org/skiff-crypto';`
 
 // Asymmetric encryption example
-const plaintext = "Hello, skiff-crypto!";
+const plaintext = 'Hello, skiff-crypto!';
 const keypair = skiffCrypto.generatePublicPrivateKeyPair();
 const encrypted = skiffCrypto.stringEncryptAsymmetric(keypair.privateKey, { key: keypair.publicKey }, plaintext);
 const decrypted = skiffCrypto.stringDecryptAsymmetric(keypair.privateKey, { key: keypair.publicKey }, encrypted);
@@ -58,7 +58,7 @@ console.log('Expected to be true:', plaintext === decrypted);
 const symmetricKey = skiffCrypto.generateSymmetricKey();
 // A datagram is used to manage object versions and metadata
 const TestDatagram = skiffCrypto.createJSONWrapperDatagram('ddl://test');
-const symmetricPlainText = "Hello, skiff-crypto (symmetric encryption)!";
+const symmetricPlainText = 'Hello, skiff-crypto (symmetric encryption)!';
 const symmetricEncrypted = skiffCrypto.encryptSymmetric(symmetricPlainText, symmetricKey, TestDatagram);
 const symmetricDecrypted = skiffCrypto.decryptSymmetric(symmetricEncrypted, symmetricKey, TestDatagram);
 console.log('Symmetric encrypted content', symmetricEncrypted);

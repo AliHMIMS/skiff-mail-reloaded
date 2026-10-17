@@ -28,8 +28,6 @@ jest.mock('skiff-front-utils', () => {
   };
 });
 
-
-
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),

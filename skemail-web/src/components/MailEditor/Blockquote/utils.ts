@@ -13,4 +13,4 @@ export const getBlockquoteDepth = (node: HTMLElement) => {
 
 const defaultLeftBorderColor = 'var(--accent-blue-primary)';
 export const getLeftBorderColor = (sender: string) =>
-  sender ? stringToColor(sender)?.[0] ?? defaultLeftBorderColor : 'var(--border-primary)';
+  sender ? (stringToColor(sender)?.[0] ?? defaultLeftBorderColor) : 'var(--border-primary)';

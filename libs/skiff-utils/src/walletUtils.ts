@@ -3,11 +3,7 @@ import { fromHex, toHex } from '@cosmjs/encoding/build/hex';
 import { Bech32Address } from '@keplr-wallet/cosmos/build/bech32';
 import isBase58 from 'validator/lib/isBase58';
 
-import {
-  COSMOS_HUB_PREFIX,
-  JUNO_PREFIX,
-  SUPPORTED_ICNS_PREFIXES
-} from './constants';
+import { COSMOS_HUB_PREFIX, JUNO_PREFIX, SUPPORTED_ICNS_PREFIXES } from './constants';
 import { BONFIDA_SUFFIX } from './walletUtils.constants';
 /**
  * Checks if the given alias is a Solana address.

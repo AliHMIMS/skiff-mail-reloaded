@@ -67,7 +67,7 @@ export const prepareInlineAttachments = async (
         id: attachmentID,
         content: base64ImageData as string,
         inline: true,
-        name: typeof node.attrs?.title === 'string' ? node.attrs?.title ?? '' : '',
+        name: typeof node.attrs?.title === 'string' ? (node.attrs?.title ?? '') : '',
         size,
         state: AttachmentStates.Local,
         contentType: type
@@ -125,13 +125,14 @@ export const uploadFilesArrayAsInlineAttachments = async (
   filesArray: Array<File>,
   uploadAttachments?: (files: File[], inline: boolean, encoding?: BufferEncoding) => Promise<void>
 ) => {
-
   if (uploadAttachments) {
     await uploadAttachments(filesArray, true, 'utf-8');
   }
 };
 
-export function isClientLocalAttachment(attachment: ClientAttachment | ClientLocalAttachment): attachment is ClientLocalAttachment {
+export function isClientLocalAttachment(
+  attachment: ClientAttachment | ClientLocalAttachment
+): attachment is ClientLocalAttachment {
   return (attachment as ClientLocalAttachment).content !== undefined;
 }
 

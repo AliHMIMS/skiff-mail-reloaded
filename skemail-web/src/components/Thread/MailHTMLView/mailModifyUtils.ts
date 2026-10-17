@@ -149,7 +149,10 @@ export const handleTransactionalMail = (rootContentDiv: HTMLElement) => {
   try {
     // remove line-height: 0 !important from table elements
     Array.from(rootContentDiv.querySelectorAll<HTMLElement>('table,td,tr')).forEach((el) => {
-      if (el.style.getPropertyPriority('line-height') === 'important' && el.style.lineHeight === '0px' || el.style.lineHeight === '0') {
+      if (
+        (el.style.getPropertyPriority('line-height') === 'important' && el.style.lineHeight === '0px') ||
+        el.style.lineHeight === '0'
+      ) {
         el.style.removeProperty('line-height');
       }
     });
@@ -210,9 +213,9 @@ export const handleTransactionalMail = (rootContentDiv: HTMLElement) => {
       currentRow.getAttribute('height') === '46'
         ? Number(currentRow.getAttribute('row-len'))
         : Array.from(cellsThatAreNext).filter(
-          (cell) =>
-            getStringWithoutSpaces(cell.innerHTML) !== '' && getStringWithoutSpaces(cell.textContent || '') !== ''
-        ).length;
+            (cell) =>
+              getStringWithoutSpaces(cell.innerHTML) !== '' && getStringWithoutSpaces(cell.textContent || '') !== ''
+          ).length;
     let isBlock = false;
     Array.from(cellsThatAreNext).forEach((cell) => {
       // if an image is present in the cell

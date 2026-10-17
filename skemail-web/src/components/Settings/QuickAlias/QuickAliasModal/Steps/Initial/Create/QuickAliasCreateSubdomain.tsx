@@ -159,7 +159,9 @@ const CursorCircle = styled.div`
   filter: blur(18px);
   pointer-events: none;
   transform: translate(-50%, -50%);
-  transition: transform 0.1s, opacity 0.1s;
+  transition:
+    transform 0.1s,
+    opacity 0.1s;
   opacity: 0;
 `;
 

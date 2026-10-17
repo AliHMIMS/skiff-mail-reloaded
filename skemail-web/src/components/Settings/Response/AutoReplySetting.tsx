@@ -115,7 +115,7 @@ export const AutoReplySetting = () => {
         decryptedSessionKey
       );
 
-      const subject = subjectUpdated ? newSubject : currentSubject ?? '';
+      const subject = subjectUpdated ? newSubject : (currentSubject ?? '');
       const messageHtmlBody = newAutoReply ?? currentAutoReply ?? '';
       const messageTextBody = convertHtmlToTextContent(newAutoReply ?? currentAutoReply ?? '');
 

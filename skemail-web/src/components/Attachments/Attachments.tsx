@@ -32,11 +32,13 @@ const AttachmentsContainer = styled.div<{ $fitHeight: boolean }>`
 
   overflow-y: auto;
   padding: 12px 16px;
-  ${isMobile &&
-  css`
-    overflow: hidden;
-    padding: 0 16px env(safe-area-inset-bottom, 0px);
-  `};
+  ${
+    isMobile &&
+    css`
+      overflow: hidden;
+      padding: 0 16px env(safe-area-inset-bottom, 0px);
+    `
+  };
 `;
 
 const TopSection = styled.div<{ $showBorder: boolean }>`
@@ -76,12 +78,14 @@ const AttachmentsList = styled.div`
   gap: 8px;
   flex-wrap: wrap;
 
-  ${isMobile &&
-  `
+  ${
+    isMobile &&
+    `
     flex-direction: column;
     flex-wrap: initial;
     overflow-x: auto;
-  `}
+  `
+  }
 `;
 
 const Dropshadow = styled.div`
@@ -119,11 +123,13 @@ const AttachmentContainer = styled.div`
 
   cursor: pointer;
 
-  ${isMobile &&
-  css`
-    /* justify-content: space-between; */
-    width: 100%;
-  `}
+  ${
+    isMobile &&
+    css`
+      /* justify-content: space-between; */
+      width: 100%;
+    `
+  }
 `;
 
 const TextContainer = styled.div`
@@ -239,8 +245,8 @@ const Attachments: FC<AttachmentsProps> = ({
                         attachmentFailed
                           ? Icon.Warning
                           : isPgpAttachment
-                          ? Icon.Key
-                          : getIconFromMIMEType(attachment.contentType)
+                            ? Icon.Key
+                            : getIconFromMIMEType(attachment.contentType)
                       }
                       size={Size.MEDIUM}
                     />

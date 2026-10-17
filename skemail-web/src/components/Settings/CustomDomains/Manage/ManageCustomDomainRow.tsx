@@ -218,10 +218,12 @@ const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  ${isMobile &&
-  css`
-    padding: 0 0 8px 12px;
-  `}
+  ${
+    isMobile &&
+    css`
+      padding: 0 0 8px 12px;
+    `
+  }
 `;
 
 const ChevronContainer = styled.div`

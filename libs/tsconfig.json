@@ -16,5 +16,11 @@
     "isolatedModules": false
   },
   "include": ["${configDir}/src", "${configDir}/generated", "${configDir}/*.d.ts"],
-  "exclude": ["${configDir}/dist", "${configDir}/**/*.test.ts", "${configDir}/**/*.test.tsx", "${configDir}/**/__tests__/**", "${configDir}/**/__mocks__/**"]
+  "exclude": [
+    "${configDir}/dist",
+    "${configDir}/**/*.test.ts",
+    "${configDir}/**/*.test.tsx",
+    "${configDir}/**/__tests__/**",
+    "${configDir}/**/__mocks__/**"
+  ]
 }

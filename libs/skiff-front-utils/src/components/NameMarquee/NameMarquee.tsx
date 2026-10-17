@@ -63,7 +63,7 @@ export default function NameMarquee(props: NameMarqueeProps) {
           <FilledPill $pillColor={pillColor}>
             <Typography color='disabled' selectable={false} size={TypographySize.H3} weight={TypographyWeight.MEDIUM}>
               {pill}
-              {hideSubdomain ? '' : `@${subdomain || 'mine'}.${loading ? FALLBACK : defaultDomain ?? FALLBACK}`}
+              {hideSubdomain ? '' : `@${subdomain || 'mine'}.${loading ? FALLBACK : (defaultDomain ?? FALLBACK)}`}
             </Typography>
           </FilledPill>
         )}

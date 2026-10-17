@@ -39,10 +39,13 @@ const FILTER_TYPE_OPTIONS = [
 
 export const FILTER_TYPE_TO_OPTION: { [key in FilterType]: FilterTypeOption } = FILTER_TYPE_OPTIONS.reduce<{
   [key in FilterType]: FilterTypeOption;
-}>((acc, label) => {
-  acc[label.value] = label;
-  return acc;
-}, {} as { [key in FilterType]: FilterTypeOption });
+}>(
+  (acc, label) => {
+    acc[label.value] = label;
+    return acc;
+  },
+  {} as { [key in FilterType]: FilterTypeOption }
+);
 
 const FilterConditionChipsContainer = styled.div`
   display: flex;

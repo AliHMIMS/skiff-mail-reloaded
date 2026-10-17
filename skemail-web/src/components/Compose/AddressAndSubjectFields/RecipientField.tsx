@@ -69,13 +69,15 @@ const AddressesContainer = styled.div`
 `;
 
 const OverflowContainer = styled.div`
-  ${isMobile &&
-  css`
-    overflow: hidden;
-    :hover {
-      overflow: auto;
-    }
-  `};
+  ${
+    isMobile &&
+    css`
+      overflow: hidden;
+      :hover {
+        overflow: auto;
+      }
+    `
+  };
 `;
 
 export interface ComposeAddressChipData {

@@ -14,19 +14,21 @@ export const GHOST_ICON_BUTTON_CSS = ({
   $forceTheme?: ThemeMode;
 }) => css`
   ${TERTIARY_BUTTON_CSS}
-  ${$type === Type.DESTRUCTIVE &&
-  css`
-    &:active,
-    &.active {
-      background: ${getThemedColor('var(--cta-destructive-active)', $forceTheme)};
-    }
-    &:hover {
-      background: ${getThemedColor('var(--cta-destructive-hover)', $forceTheme)};
-    }
-    &.disabled {
-      background: transparent;
-    }
-  `}
+  ${
+    $type === Type.DESTRUCTIVE &&
+    css`
+      &:active,
+      &.active {
+        background: ${getThemedColor('var(--cta-destructive-active)', $forceTheme)};
+      }
+      &:hover {
+        background: ${getThemedColor('var(--cta-destructive-hover)', $forceTheme)};
+      }
+      &.disabled {
+        background: transparent;
+      }
+    `
+  }
 `;
 
 export const ICON_BUTTON_VARIANT_CSS = ({ $variant }: { $variant: FilledVariant }) =>

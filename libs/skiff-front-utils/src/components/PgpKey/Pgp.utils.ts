@@ -1,15 +1,12 @@
 import dayjs from 'dayjs';
 import { KeyAlgorithmInfo, PgpPrivateKey } from 'skiff-crypto-v2';
-import {
-  PgpKeyDatagram
-} from 'skiff-front-graphql';
+import { PgpKeyDatagram } from 'skiff-front-graphql';
 
 import { encryptSymmetric, generateSymmetricKey, stringEncryptAsymmetric } from 'skiff-crypto';
 import { requireCurrentUserData } from '../../apollo';
 import { ImportKeyOptions } from './Pgp.types';
 
 export async function getPgpRequest(email: string, pgpPrivateKey: PgpPrivateKey, disablePreviousKey: boolean) {
-
   const currentUser = requireCurrentUserData();
 
   const userPrivateKey = currentUser.privateUserData.privateKey;
@@ -32,13 +29,19 @@ export async function getPgpRequest(email: string, pgpPrivateKey: PgpPrivateKey,
       encryptedBy: userPublicKey,
       encryptedSessionKey: encryptedUserSessionKey
     },
-    signingFingerprint: (await pgpPrivateKey.getSigningKey()).getFingerprint(),
-  }
+    signingFingerprint: (await pgpPrivateKey.getSigningKey()).getFingerprint()
+  };
 }
 
 const ENCRYPTED_KEY_HEADER = '-----BEGIN ENCRYPTED PRIVATE KEY-----';
 
-export function openImportPgpKeyDialog(address: string, ownKey: boolean, alreadyHasPgpKey: boolean, importKey: (options: ImportKeyOptions) => Promise<void>, refetchPgpKey?: () => void,) {
+export function openImportPgpKeyDialog(
+  address: string,
+  ownKey: boolean,
+  alreadyHasPgpKey: boolean,
+  importKey: (options: ImportKeyOptions) => Promise<void>,
+  refetchPgpKey?: () => void
+) {
   // only open pgp key files
   const fileInput = document.createElement('input');
   fileInput.type = 'file';
@@ -62,11 +65,12 @@ export function openImportPgpKeyDialog(address: string, ownKey: boolean, already
 }
 
 export function getAlgorithmReadableString(algorithmInfo?: KeyAlgorithmInfo) {
-  const algorithmString = algorithmInfo ? `${algorithmInfo?.algorithm} ${algorithmInfo?.bits || algorithmInfo?.curve}` : '';
+  const algorithmString = algorithmInfo
+    ? `${algorithmInfo?.algorithm} ${algorithmInfo?.bits || algorithmInfo?.curve}`
+    : '';
   return algorithmString;
 }
 
 export function formattedPgpDate(date: number | Date) {
-  return dayjs(date).format('MMM DD, YYYY')
-
+  return dayjs(date).format('MMM DD, YYYY');
 }

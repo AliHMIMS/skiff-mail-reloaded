@@ -30,7 +30,7 @@ export const getContactDisplayNameAndSubtitle = (
   const firstAndLast = combineContactFirstAndLastName(firstName, lastName);
   const displayName = firstAndLast ?? emailAddressFallback ?? phoneNumberFallback;
 
-  const subtitle = !!firstAndLast ? emailAddressFallback ?? '' : undefined;
+  const subtitle = !!firstAndLast ? (emailAddressFallback ?? '') : undefined;
 
   return { displayName, subtitle };
 };

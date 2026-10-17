@@ -5,5 +5,5 @@ module.exports = {
     project: 'tsconfig.json',
     jsx: true
   },
-  ignorePatterns: ['.eslintrc.js', '**/*.d.ts', 'dist', 'build.js'],
+  ignorePatterns: ['.eslintrc.js', '**/*.d.ts', 'dist', 'build.js']
 };

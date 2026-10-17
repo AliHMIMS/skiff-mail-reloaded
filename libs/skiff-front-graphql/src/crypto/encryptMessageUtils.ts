@@ -110,12 +110,10 @@ const getPublicKeysFromEmailAliases = async (
           fetchPolicy: 'no-cache'
         });
   const returnedData =
-    userFromEmailRes?.data.usersFromEmailAliasWithCatchall.map(
-      (user, i): RecipientAndKey => ({
-        recipient: recipients[allAddresses.indexOf(emailAliases[i])],
-        publicKey: user?.publicKey || null
-      })
-    ) || [];
+    userFromEmailRes?.data.usersFromEmailAliasWithCatchall.map((user, i): RecipientAndKey => ({
+      recipient: recipients[allAddresses.indexOf(emailAliases[i])],
+      publicKey: user?.publicKey || null
+    })) || [];
   const consumerEmails = consumerEmailsToSkip.map((email) => ({
     recipient: recipients[allAddresses.indexOf(email)],
     publicKey: null

@@ -5,7 +5,6 @@ import { getThemedColor } from '../../utils/colorUtils';
 
 import { IconTextSize } from './IconText.types';
 
-
 const X_SMALL_CSS = css`
   gap: 4px;
 `;

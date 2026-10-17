@@ -50,10 +50,11 @@ export const staticFields: FieldGroup[] = [
   {
     label: FieldLabel.PgpKey,
     isE2EE: false,
-    items: [{
-      key: 'pgpKey',
-      placeholder: 'PGP'
-    }
+    items: [
+      {
+        key: 'pgpKey',
+        placeholder: 'PGP'
+      }
     ]
   },
   {

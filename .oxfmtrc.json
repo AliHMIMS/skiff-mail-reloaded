@@ -18,6 +18,7 @@
     "**/generated/protos/**",
     "pnpm-lock.yaml",
     "supergraph.graphql",
-    "protos/**"
+    "protos/**",
+    "libs/skiff-utils/src/emailUtils/familiarNames.json"
   ]
 }

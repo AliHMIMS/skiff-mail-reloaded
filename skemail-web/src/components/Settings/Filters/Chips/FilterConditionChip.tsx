@@ -103,7 +103,7 @@ export const FilterConditionChip: React.FC<FilterConditionChipProps> = ({
   const typeIsAddress = isAddressType(type); // Condition is of type "From" or "To"
   const canEdit = !!editChipHelpers;
 
-  const defaultValue = valueIsContact ? value.value : value ?? '';
+  const defaultValue = valueIsContact ? value.value : (value ?? '');
   const [valueSearch, setValueSearch] = useState(defaultValue);
 
   const [showTypeDropdown, setShowTypeDropdown] = useState(

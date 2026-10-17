@@ -5,5 +5,5 @@
 export enum DiscoveryToastType {
   FreeCustomDomain = 'freeCustomDomain',
   NoiseCanceling = 'noiseCanceling',
-  QuickAlias = 'quickAlias',
+  QuickAlias = 'quickAlias'
 }

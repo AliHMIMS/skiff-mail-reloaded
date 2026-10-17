@@ -164,10 +164,10 @@ const ContactsTable = (props: ContactsTableProps) => {
   const sortedContacts = [...filteredContacts].sort(compareContactsDisplayNameAndSubtitle);
   // use null for new contact empty state, undefined for initial state
   const [selectedContact, setSelectedContact] = useState<ContactWithoutTypename | undefined | null>(
-    !!populateContactContent ? newContact : defaultSelectedContact ?? undefined
+    !!populateContactContent ? newContact : (defaultSelectedContact ?? undefined)
   );
   const [pendingContact, setPendingContact] = useState<ContactWithoutTypename>(
-    !!populateContactContent ? newContact : defaultSelectedContact ?? createEmptyContact()
+    !!populateContactContent ? newContact : (defaultSelectedContact ?? createEmptyContact())
   );
   const isNewContact = !selectedContact || !!populateContactContent;
   const [isEditing, setIsEditing] = React.useState<boolean>(isNewContact);

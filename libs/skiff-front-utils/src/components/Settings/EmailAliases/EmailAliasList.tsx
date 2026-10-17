@@ -19,12 +19,14 @@ const EmailAliasesContainer = styled.div`
   flex-direction: column;
   margin-bottom: 4px;
 
-  ${isMobile &&
-  `
+  ${
+    isMobile &&
+    `
     background: var(--bg-l1-solid);
     border-radius: 12px;
     gap: 0px;
-  `}
+  `
+  }
 `;
 
 const EmailAliasRow = styled.div<{ $isLastRow: boolean; $selected?: boolean }>`

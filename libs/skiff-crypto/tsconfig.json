@@ -1,12 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-      "declarationDir": "dist/",
-      "tsBuildInfoFile": "dist/.tsbuildinfo",
-      "types": ["jest", "node"]
-    },
-    "references": [
-      { "path" : "../skiff-utils"},
-      { "path" : "../skiff-graphql"}
-    ]
+    "declarationDir": "dist/",
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "types": ["jest", "node"]
+  },
+  "references": [{ "path": "../skiff-utils" }, { "path": "../skiff-graphql" }]
 }

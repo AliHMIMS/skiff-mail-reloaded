@@ -16,10 +16,12 @@ const Container = styled.div`
   display: flex;
   width: 100%;
 
-  ${isMobile
-    ? `flex-direction: column;
+  ${
+    isMobile
+      ? `flex-direction: column;
     padding-bottom: 10px;`
-    : `text-align: center;`}
+      : `text-align: center;`
+  }
 `;
 
 /**

@@ -52,9 +52,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
 
   // Label and icon are mutually exclusive
   const customIcon = getCustomIcon();
-  const customIconComponent = customIcon ? (
-    <Icons icon={customIcon} />
-  ) : undefined;
+  const customIconComponent = customIcon ? <Icons icon={customIcon} /> : undefined;
 
   const labelOrIcon = getAvatarIconOrLabel(label, customIconComponent);
 

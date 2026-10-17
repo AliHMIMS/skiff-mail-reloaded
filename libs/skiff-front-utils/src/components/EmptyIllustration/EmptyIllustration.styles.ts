@@ -59,7 +59,9 @@ export const EmptyAvatar = styled.div`
   background: var(--bg-overlay-secondary);
   border: 1px solid var(--border-tertiary);
 
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.02), 0px 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow:
+    0px 1px 3px rgba(0, 0, 0, 0.02),
+    0px 1px 2px rgba(0, 0, 0, 0.02);
   border-radius: 6px;
 `;
 
@@ -72,7 +74,9 @@ export const EmptyName = styled.div`
   background: var(--bg-overlay-secondary);
   border: 1px solid var(--border-tertiary);
 
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.02), 0px 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow:
+    0px 1px 3px rgba(0, 0, 0, 0.02),
+    0px 1px 2px rgba(0, 0, 0, 0.02);
   border-radius: 6px;
 `;
 
@@ -85,7 +89,9 @@ export const EmptySubject = styled.div`
   background: var(--bg-overlay-tertiary);
   border: 1px solid var(--border-tertiary);
 
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.02), 0px 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow:
+    0px 1px 3px rgba(0, 0, 0, 0.02),
+    0px 1px 2px rgba(0, 0, 0, 0.02);
   border-radius: 6px;
 `;
 
@@ -98,6 +104,8 @@ export const EmptyDate = styled.div`
   background: var(--bg-overlay-tertiary);
   border: 1px solid var(--border-tertiary);
 
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.02), 0px 1px 2px rgba(0, 0, 0, 0.02);
+  box-shadow:
+    0px 1px 3px rgba(0, 0, 0, 0.02),
+    0px 1px 2px rgba(0, 0, 0, 0.02);
   border-radius: 6px;
 `;

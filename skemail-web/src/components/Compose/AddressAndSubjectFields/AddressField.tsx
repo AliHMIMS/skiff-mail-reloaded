@@ -27,9 +27,11 @@ const AddressFieldContainer = styled.div<{
     props.$isSendField &&
     css`
       display: grid;
-      grid-template-columns: ${props.$showField
-        ? `min-content auto ${props.$moveButtons ? '' : props.$additionalButtons ? 'min-content' : '0px'}`
-        : 'auto 56px'};
+      grid-template-columns: ${
+        props.$showField
+          ? `min-content auto ${props.$moveButtons ? '' : props.$additionalButtons ? 'min-content' : '0px'}`
+          : 'auto 56px'
+      };
     `}
 
   ${(props) =>
@@ -38,19 +40,23 @@ const AddressFieldContainer = styled.div<{
       display: flex;
     `}
 
-  ${isMobile &&
-  css`
-    box-sizing: border-box;
-    max-width: 100%;
-    padding: 0px;
-    align-items: center;
-  `}
-  ${!isMobile &&
-  css`
-    padding: 0px 16px;
-    min-height: ${INITIAL_INPUT_HEIGHT}px;
-    box-sizing: border-box;
-  `}
+  ${
+    isMobile &&
+    css`
+      box-sizing: border-box;
+      max-width: 100%;
+      padding: 0px;
+      align-items: center;
+    `
+  }
+  ${
+    !isMobile &&
+    css`
+      padding: 0px 16px;
+      min-height: ${INITIAL_INPUT_HEIGHT}px;
+      box-sizing: border-box;
+    `
+  }
   max-height: 30vh;
   align-items: center;
 `;

@@ -1,13 +1,9 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-      "declarationDir": "dist/",
-      "tsBuildInfoFile": "dist/.tsbuildinfo",
-      "types": ["node"]
-    },
-    "references": [
-      { "path" : "../skiff-utils"},
-      { "path" : "../skiff-crypto"},
-      { "path" : "../skiff-graphql"}
-    ]
+    "declarationDir": "dist/",
+    "tsBuildInfoFile": "dist/.tsbuildinfo",
+    "types": ["node"]
+  },
+  "references": [{ "path": "../skiff-utils" }, { "path": "../skiff-crypto" }, { "path": "../skiff-graphql" }]
 }

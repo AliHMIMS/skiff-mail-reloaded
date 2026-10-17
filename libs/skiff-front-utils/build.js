@@ -72,7 +72,11 @@ Promise.all([
   esbuild.build(esbuildConf('cjs')),
   esbuild.build(esbuildConf('esm')),
   // SKIP_TSC=1 skips .d.ts emit (memory-heavy; the app bundles with babel and doesn't need it)
-  process.env.SKIP_TSC ? Promise.resolve() : WATCH ? spawn('yarn tsc -b --preserveWatchOutput -w') : spawn('yarn tsc -b')
+  process.env.SKIP_TSC
+    ? Promise.resolve()
+    : WATCH
+      ? spawn('yarn tsc -b --preserveWatchOutput -w')
+      : spawn('yarn tsc -b')
 ])
   .then(async (results) => {
     const [result1, result2] = results;

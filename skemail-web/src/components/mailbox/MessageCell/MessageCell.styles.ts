@@ -20,23 +20,27 @@ export const EmailInfo = styled.div`
   align-items: center;
   gap: 16px;
 
-  ${isMobile
-    ? `
+  ${
+    isMobile
+      ? `
       grid-column: 3;
       grid-row: 1;
       margin-top: 4px;
     `
-    : undefined}
+      : undefined
+  }
 `;
 
 export const AnimatedCheckbox = styled.div<{ show: boolean }>`
   position: absolute;
-  ${isMobile
-    ? `
+  ${
+    isMobile
+      ? `
       margin-left: 18px;
       margin-top: 18px;
     `
-    : ''}
+      : ''
+  }
   ${(props) => {
     // Open
     if (props.show) {
@@ -244,12 +248,14 @@ export const UnreadIndicator = styled.div<{
 
 export const EmailSender = styled.div<{ isCompact?: boolean }>`
   display: flex;
-  ${isMobile
-    ? `
+  ${
+    isMobile
+      ? `
       width: 100%;
       margin: 0 0px;
     `
-    : '  width: 100%'}
+      : '  width: 100%'
+  }
 `;
 
 export const MobileMessageCellContainer = styled.div<{ multiSelectOpen?: boolean; read: boolean; isDarkMode: boolean }>`

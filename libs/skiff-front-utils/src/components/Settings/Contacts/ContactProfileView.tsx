@@ -60,10 +60,12 @@ const ProfileContainer = styled.div<{ $singleView?: boolean }>`
 const ListItemContainer = styled.div`
   padding: 16px;
   padding-top: 32px;
-  ${isMobile &&
-  css`
-    padding: 32px 0px;
-  `}
+  ${
+    isMobile &&
+    css`
+      padding: 32px 0px;
+    `
+  }
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -245,15 +247,18 @@ const ContactProfileView: React.FC<ContactProfileViewProps> = ({
   // Only show delete for an existing non-org contact while editing
   const showDelete = !isNewContact && !isOrgMember && isEditing;
 
-  const refs = fields.reduce((acc, fieldConfig) => {
-    fieldConfig.items.forEach((item) => {
-      acc[item.key] =
-        item.type === FieldType.textarea
-          ? React.useRef<HTMLTextAreaElement>(null)
-          : React.useRef<HTMLInputElement>(null);
-    });
-    return acc;
-  }, {} as { [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement> });
+  const refs = fields.reduce(
+    (acc, fieldConfig) => {
+      fieldConfig.items.forEach((item) => {
+        acc[item.key] =
+          item.type === FieldType.textarea
+            ? React.useRef<HTMLTextAreaElement>(null)
+            : React.useRef<HTMLInputElement>(null);
+      });
+      return acc;
+    },
+    {} as { [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement> }
+  );
 
   useEffect(() => {
     if (isEmptyContact(pendingContact)) {

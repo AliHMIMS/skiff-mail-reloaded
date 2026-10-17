@@ -44,15 +44,17 @@ const ThreadHeaderContainer = styled.div`
   z-index: 9;
   width: 100%;
 
-  ${isMobile
-    ? `
+  ${
+    isMobile
+      ? `
     padding: 0px 12px 12px 12px;
     `
-    : `
+      : `
     /* Space on the right of the thread header for the scrollbar */
     width: calc(100% - 9px);
 
-  `}
+  `
+  }
 `;
 
 const LabelsContainer = styled.div<{ hasLabels?: boolean }>`
@@ -67,12 +69,14 @@ const LabelsContainer = styled.div<{ hasLabels?: boolean }>`
       padding: 0px 16px;
       margin-bottom: ${props.hasLabels ? '12px' : undefined};
     `}
-  ${isMobile &&
-  css`
-    margin-top: 8px;
-    padding-left: 16px;
-    overflow-x: auto;
-  `}
+  ${
+    isMobile &&
+    css`
+      margin-top: 8px;
+      padding-left: 16px;
+      overflow-x: auto;
+    `
+  }
   overflow-y: hidden;
 `;
 

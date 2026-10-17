@@ -3,8 +3,10 @@ import { isMobile } from 'react-device-detect';
 
 import { SignIntoExternalProvider, SignIntoExternalProviderModalProps } from '../SignIntoExternalProvider';
 
-interface SignIntoOutlookModalProps
-  extends Pick<SignIntoExternalProviderModalProps, 'open' | 'onClose' | 'actionLabel'> {
+interface SignIntoOutlookModalProps extends Pick<
+  SignIntoExternalProviderModalProps,
+  'open' | 'onClose' | 'actionLabel'
+> {
   handleOutlookAuth: () => Promise<void>;
 }
 

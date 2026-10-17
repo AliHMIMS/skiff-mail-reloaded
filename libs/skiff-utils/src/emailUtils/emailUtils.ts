@@ -5,13 +5,7 @@ import isEthereumAddress from 'validator/lib/isEthereumAddress';
 import { SHORT_ALIAS_MIN_LENGTH, SKIFF_ALIAS_MIN_LENGTH } from '../constants';
 import { getMailDomain } from '../customDomainUtils';
 import { isENSName } from '../wallet/isENSName';
-import {
-  isBonfidaName,
-  isCosmosHubAddress,
-  isICNSName,
-  isJunoAddress,
-  isSolanaAddress
-} from '../walletUtils';
+import { isBonfidaName, isCosmosHubAddress, isICNSName, isJunoAddress, isSolanaAddress } from '../walletUtils';
 
 import FamiliarNames from './familiarNames.json';
 

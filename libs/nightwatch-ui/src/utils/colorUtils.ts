@@ -136,7 +136,7 @@ export function getAccentColorValues(
   forceTheme?: ThemeMode
 ): [string, string, AccentColor | Color] {
   const [primaryColor, secondaryColor, name] = Object.keys(ACCENT_COLOR_VALUES).includes(color)
-    ? ACCENT_COLOR_VALUES[color as AccentColor] ?? ACCENT_COLOR_VALUES.red
+    ? (ACCENT_COLOR_VALUES[color as AccentColor] ?? ACCENT_COLOR_VALUES.red)
     : ['var(--bg-l0-solid)', 'var(--text-secondary)', 'disabled'];
 
   const themedPrimaryColor = getThemedColor(primaryColor, forceTheme);

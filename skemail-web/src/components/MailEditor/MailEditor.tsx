@@ -63,9 +63,11 @@ const MailEditorInputContainer = styled.div<{
     max-height: unset;
     overflow-x: hidden;
   `}
-  ${!isMobile &&
-  `  padding: 16px;
-    `}
+  ${
+    !isMobile &&
+    `  padding: 16px;
+    `
+  }
   // When we have attachments give min height for compose body for making attechments at the bottom (calc: size screen - header height - attechmetns height)
   // TODO: move it to js vars
   ${(props) => (props.hasAttachments && isMobile ? 'min-height: calc(100vh - 270px - 150px);' : '')}

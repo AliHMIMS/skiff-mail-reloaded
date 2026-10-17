@@ -19,9 +19,7 @@ import client, { getRouterUri } from '../apollo/client';
 import { updateThreadsWithModifiedLabels } from '../utils/cache/cache';
 import { removeThreadsFromMailboxQuery } from '../utils/cache/mailbox';
 
-type ServerMessage =
-  | { type: 'changes'; threadIDs: string[]; labels: boolean; drafts: boolean }
-  | { type: 'resync' };
+type ServerMessage = { type: 'changes'; threadIDs: string[]; labels: boolean; drafts: boolean } | { type: 'resync' };
 
 const MAX_RECONNECT_DELAY_MS = 30_000;
 

@@ -59,22 +59,26 @@ const ThreadBlockContainer = styled.div<{ $expanded: boolean; $isTrashed: boolea
 const ThreadBlockExpanded = styled.div`
   display: flex;
   flex-direction: column;
-  ${isMobile
-    ? `
+  ${
+    isMobile
+      ? `
         padding-bottom: 24px;
       `
-    : ''}
+      : ''
+  }
 `;
 
 const EmailBody = styled.div<{ isTransactional: boolean }>`
   padding: ${(props) => (props.isTransactional ? '24px 0px' : '24px 50px')};
   color: var(--text-primary);
-  ${isMobile
-    ? `
+  ${
+    isMobile
+      ? `
         padding: 0;
         overflow: hidden;
       `
-    : ''}
+      : ''
+  }
 `;
 
 const ActionsContainer = styled.div`

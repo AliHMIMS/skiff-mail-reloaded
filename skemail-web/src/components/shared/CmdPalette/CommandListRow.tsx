@@ -118,5 +118,4 @@ export const CommandListRow = memo(function CommandListRow({
       />
     );
   }
-},
-areEqual);
+}, areEqual);

@@ -31,11 +31,13 @@ export async function encryptMessage(
   recipients: RecipientPGPInfo[]
 ) {
   const recipientPublicKeys = recipients.map((recipient) => recipient.publicKey); // pass the main key
-  const recipientKeyIDs = await Promise.all(recipients.map(async (recipient) => {
-    // validate that the keyID is an actual encryption key
-    const key = await recipient.publicKey.getEncryptionKey(recipient.keyID);
-    return key.getKeyID();
-  }));
+  const recipientKeyIDs = await Promise.all(
+    recipients.map(async (recipient) => {
+      // validate that the keyID is an actual encryption key
+      const key = await recipient.publicKey.getEncryptionKey(recipient.keyID);
+      return key.getKeyID();
+    })
+  );
   const recipientUserInfo = recipients.map((recipient) => {
     return { name: recipient.name, email: recipient.email };
   });

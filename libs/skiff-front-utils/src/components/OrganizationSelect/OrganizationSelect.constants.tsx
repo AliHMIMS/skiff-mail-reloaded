@@ -297,17 +297,21 @@ export const SidebarButtonContainer = styled.div<{ $macAppMargin: boolean }>`
 
 export const Sections = styled.div`
   max-height: calc(100vh - 300px);
-  ${isMobile &&
-  css`
-    overflow: auto;
-  `}
-  ${!isMobile &&
-  css`
-    overflow: hidden;
-    :hover {
+  ${
+    isMobile &&
+    css`
       overflow: auto;
-    }
-  `}
+    `
+  }
+  ${
+    !isMobile &&
+    css`
+      overflow: hidden;
+      :hover {
+        overflow: auto;
+      }
+    `
+  }
   overflow-x: hidden;
   display: flex;
   flex-direction: column;

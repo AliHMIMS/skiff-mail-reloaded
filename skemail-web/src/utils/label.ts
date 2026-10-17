@@ -280,17 +280,23 @@ export const isDefaultSidebarLabel = (label: SystemLabel) => {
 
 export const LABEL_TO_SYSTEM_LABEL: { [key in SystemLabels]: SystemLabel } = SYSTEM_LABELS.reduce<{
   [key in SystemLabels]: SystemLabel;
-}>((acc, label) => {
-  acc[label.value] = label;
-  return acc;
-}, {} as { [key in SystemLabels]: SystemLabel });
+}>(
+  (acc, label) => {
+    acc[label.value] = label;
+    return acc;
+  },
+  {} as { [key in SystemLabels]: SystemLabel }
+);
 
 export const LABEL_TO_HIDDEN_LABEL: { [key in SystemLabels]: HiddenLabel } = HIDDEN_LABELS.reduce<{
   [key in SystemLabels]: HiddenLabel;
-}>((acc, label) => {
-  acc[label.value] = label;
-  return acc;
-}, {} as { [key in SystemLabels]: HiddenLabel });
+}>(
+  (acc, label) => {
+    acc[label.value] = label;
+    return acc;
+  },
+  {} as { [key in SystemLabels]: HiddenLabel }
+);
 
 export function getHiddenLabelFromPathParams(label: string): string | undefined {
   if (!label) return;

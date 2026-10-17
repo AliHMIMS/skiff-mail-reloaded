@@ -38,13 +38,11 @@ import {
 } from './mailModifyUtils';
 import LazyPinchZoom from './PinchZoom/LazyPinchZoom';
 
-const StylediFrame = React.memo(
-  styled.iframe`
-    width: 100%;
-    height: 62px;
-    border: 0;
-  `
-);
+const StylediFrame = React.memo(styled.iframe`
+  width: 100%;
+  height: 62px;
+  border: 0;
+`);
 
 export interface MailViewProps {
   email: MailboxEmailInfo;

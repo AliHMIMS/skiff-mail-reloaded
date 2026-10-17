@@ -20,10 +20,12 @@ const ListHeaders = styled.div`
 
   gap: 4px;
 
-  ${isMobile &&
-  css`
-    justify-content: space-between;
-  `};
+  ${
+    isMobile &&
+    css`
+      justify-content: space-between;
+    `
+  };
 `;
 
 const ListHeader = styled.span<{ $isFirst: boolean }>`

@@ -1,20 +1,19 @@
-import { readArmoredPrivateKey, readArmoredPublicKey } from "skiff-crypto-v2";
-import { useSetPgpKeyMutation } from "skiff-front-graphql";
-import { assertExists } from "skiff-utils";
-import { ImportKeyOptions } from "../../components/PgpKey/Pgp.types";
-import { getPgpRequest } from "../../components/PgpKey/Pgp.utils";
-import useToast from "../useToast";
-
+import { readArmoredPrivateKey, readArmoredPublicKey } from 'skiff-crypto-v2';
+import { useSetPgpKeyMutation } from 'skiff-front-graphql';
+import { assertExists } from 'skiff-utils';
+import { ImportKeyOptions } from '../../components/PgpKey/Pgp.types';
+import { getPgpRequest } from '../../components/PgpKey/Pgp.utils';
+import useToast from '../useToast';
 
 export function useImportKey() {
   const [setPGPKey] = useSetPgpKeyMutation();
   const { enqueueToast } = useToast();
 
-
   const importKey = async ({ email, key, ownKey, alreadyHasPgpKey, passphrase, refetchPgpKey }: ImportKeyOptions) => {
     try {
       assertExists(key);
-      if (!ownKey) { // can only import public key if its a contact
+      if (!ownKey) {
+        // can only import public key if its a contact
         try {
           const publicKey = await readArmoredPublicKey(key.toString());
           if (publicKey.isPrivate()) {
@@ -55,6 +54,6 @@ export function useImportKey() {
         body: 'There was an error while importing your PGP key.'
       });
     }
-  }
+  };
   return { importKey };
 }

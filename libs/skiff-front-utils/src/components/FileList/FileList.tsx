@@ -22,17 +22,21 @@ const Files = styled.div`
   width: 100%;
   max-height: 27vh;
   flex-flow: wrap;
-  ${isMobile &&
-  css`
-    overflow: auto;
-  `}
-  ${!isMobile &&
-  css`
-    overflow: hidden;
-    :hover {
+  ${
+    isMobile &&
+    css`
       overflow: auto;
-    }
-  `}
+    `
+  }
+  ${
+    !isMobile &&
+    css`
+      overflow: hidden;
+      :hover {
+        overflow: auto;
+      }
+    `
+  }
 `;
 
 const FileRow = styled.div`

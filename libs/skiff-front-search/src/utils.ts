@@ -55,7 +55,6 @@ export const getSortableSearchResults = (searchResults: SearchResult[]): MiniSea
 export const chronSortResults = (sortableSearchResults: MiniSearchResultBase[], order?: AscDesc) =>
   orderBy(sortableSearchResults, ['updatedAt'], [!!order && order === AscDesc.Asc ? 'asc' : 'desc']);
 
-
 // if the difference between a relevance score and a reference is less than or equal to this proportion of the reference,
 // we say they are roughly equal
 const CLOSE_SCORE_PROPORTION = 0.05;

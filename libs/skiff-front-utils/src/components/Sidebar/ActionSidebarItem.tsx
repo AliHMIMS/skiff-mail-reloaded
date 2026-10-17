@@ -29,11 +29,9 @@ const SidebarLabel = styled.div<{
   ${(props) =>
     !props.$primaryAction &&
     css`
-      background-color: ${props.$active
-        ? 'var(--bg-cell-active)'
-        : props.$isOver
-        ? 'var(--bg-cell-hover)'
-        : 'transparent'};
+      background-color: ${
+        props.$active ? 'var(--bg-cell-active)' : props.$isOver ? 'var(--bg-cell-hover)' : 'transparent'
+      };
       border: ${props.$isOver ? '1px solid var(--border-active)' : '1px solid transparent'};
       &:hover {
         background: ${props.$active ? 'var(--bg-cell-active)' : 'var(--bg-cell-hover)'};
@@ -48,9 +46,11 @@ const SidebarLabel = styled.div<{
     props.$primaryAction &&
     css`
       background: var(--bg-l3-solid);
-      box-shadow: ${props.$isDarkMode
-        ? '1px 2px 0 rgb(255 255 255 / 7%), inset 1px 1px 0 rgb(255 255 255 / 7%)'
-        : 'var(--shadow-l1)'};
+      box-shadow: ${
+        props.$isDarkMode
+          ? '1px 2px 0 rgb(255 255 255 / 7%), inset 1px 1px 0 rgb(255 255 255 / 7%)'
+          : 'var(--shadow-l1)'
+      };
       &:hover {
         box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.24);
         cursor: pointer;

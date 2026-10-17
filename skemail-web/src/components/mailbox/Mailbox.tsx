@@ -593,7 +593,7 @@ export const Mailbox = () => {
   };
 
   const threads: MailboxThreadInfo[] = useMemo(
-    () => (isDrafts ? draftThreads : data?.mailbox?.threads ?? []),
+    () => (isDrafts ? draftThreads : (data?.mailbox?.threads ?? [])),
     [data?.mailbox?.threads, draftThreads, isDrafts]
   );
   const threadIDs = threads.map((thread) => thread.threadID);

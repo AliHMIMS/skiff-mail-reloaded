@@ -25,16 +25,18 @@ const Container = styled.div<{ $expanded: boolean }>`
   gap: 12px;
   align-self: stretch;
   background: rgba(255, 143, 143, 0.06);
-  ${isMobile
-    ? css`
-        border-top: 1px solid var(--border-destructive);
-        border-bottom: 1px solid var(--border-destructive);
-      `
-    : css`
-        border-radius: 8px;
-        border: 1px solid var(--border-destructive);
-        margin-bottom: 12px;
-      `}
+  ${
+    isMobile
+      ? css`
+          border-top: 1px solid var(--border-destructive);
+          border-bottom: 1px solid var(--border-destructive);
+        `
+      : css`
+          border-radius: 8px;
+          border: 1px solid var(--border-destructive);
+          margin-bottom: 12px;
+        `
+  }
 `;
 
 const Header = styled.div`

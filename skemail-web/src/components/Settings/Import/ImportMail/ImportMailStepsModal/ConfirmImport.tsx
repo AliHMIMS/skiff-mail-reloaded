@@ -9,13 +9,15 @@ import { ImportMailStepHeader } from './ImportMailStepHeader';
 
 const IllustrationContainer = styled.div`
   ${!isMobile && 'height: 148px;'}
-  ${isMobile &&
-  css`
-    display: flex;
-    align-self: stretch;
-    justify-content: center;
-    align-items: center;
-  `}
+  ${
+    isMobile &&
+    css`
+      display: flex;
+      align-self: stretch;
+      justify-content: center;
+      align-items: center;
+    `
+  }
 `;
 
 const MobileIconContainer = styled.div`

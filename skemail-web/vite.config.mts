@@ -68,15 +68,24 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), svgr({ include: '**/*.svg', svgrOptions: { exportType: 'default' } }), pushServiceWorker()],
   resolve: {
     alias: [
-      ...LIBS.map((lib) => ({ find: new RegExp(`^${lib}$`), replacement: path.resolve(__dirname, `../libs/${lib}/src/index.ts`) })),
-      ...Object.entries(NODE_SHIMS).map(([mod, shim]) => ({ find: new RegExp(`^(node:)?${mod}/?$`), replacement: resolveFromApp(shim) })),
+      ...LIBS.map((lib) => ({
+        find: new RegExp(`^${lib}$`),
+        replacement: path.resolve(__dirname, `../libs/${lib}/src/index.ts`)
+      })),
+      ...Object.entries(NODE_SHIMS).map(([mod, shim]) => ({
+        find: new RegExp(`^(node:)?${mod}/?$`),
+        replacement: resolveFromApp(shim)
+      })),
       // the default entry loads its .wasm through a webpack loader; the bundled build inlines it
       { find: /^argon2-browser$/, replacement: 'argon2-browser/dist/argon2-bundled.min.js' }
     ]
   },
   define: {
     ...Object.fromEntries(
-      ENV_KEYS.map((key) => [`process.env.${key}`, process.env[key] === undefined ? 'undefined' : JSON.stringify(process.env[key])])
+      ENV_KEYS.map((key) => [
+        `process.env.${key}`,
+        process.env[key] === undefined ? 'undefined' : JSON.stringify(process.env[key])
+      ])
     ),
     'process.env.NODE_ENV': JSON.stringify(mode === 'production' ? 'production' : 'development'),
     global: 'globalThis'

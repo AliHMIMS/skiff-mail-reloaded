@@ -54,10 +54,9 @@ const sortSearchByOrder = (results: MiniSearchResultBase[], sortOrder?: SearchSo
     default:
       return smartSortResults(results);
   }
-}
+};
 
 export const useSkemailSearch = () => {
-
   const [getFilteredThreadIDs] = useFilteredThreadIDsLazyQuery();
 
   const normalizeResults = (results: IndexedItemBase[]): SkemailSearchResult[] => {
@@ -67,7 +66,6 @@ export const useSkemailSearch = () => {
       ...result
     }));
   };
-
 
   const workerSearch = async (
     query: string,
@@ -79,7 +77,8 @@ export const useSkemailSearch = () => {
     if (!searchString && !searchFilters?.length) {
       return;
     }
-    const sortAndNormalizeResults = (results: MiniSearchResultBase[]) => normalizeResults(sortSearchByOrder(results, searchSortOrder));
+    const sortAndNormalizeResults = (results: MiniSearchResultBase[]) =>
+      normalizeResults(sortSearchByOrder(results, searchSortOrder));
     const searchWorker = getSearchWorker();
     const hasSearchFilters = !!searchFilters?.length;
     const dateRangeFilter = hasSearchFilters ? getDateRangeFilter(searchFilters) : undefined;

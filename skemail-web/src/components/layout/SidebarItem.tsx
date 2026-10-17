@@ -79,11 +79,9 @@ const SidebarLabel = styled.div<{
   ${(props) =>
     !props.$primaryAction &&
     css`
-      background: ${props.$active
-        ? 'var(--bg-overlay-tertiary)'
-        : props.$isOver
-        ? 'var(--bg-overlay-tertiary)'
-        : 'transparent'};
+      background: ${
+        props.$active ? 'var(--bg-overlay-tertiary)' : props.$isOver ? 'var(--bg-overlay-tertiary)' : 'transparent'
+      };
       border: ${props.$isOver ? '1px solid var(--border-active)' : '1px solid transparent'};
       &:hover {
         background: var(--bg-overlay-tertiary);

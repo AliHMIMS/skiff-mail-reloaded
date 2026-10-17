@@ -29,11 +29,13 @@ const ContentContainer = styled.div`
   padding: ${isMobile ? '12px 8px' : '12px'};
   box-sizing: border-box;
 
-  ${!isMobile &&
-  `
+  ${
+    !isMobile &&
+    `
     border: 1px solid var(--border-primary);
     border-radius: 16px;
-  `}
+  `
+  }
 `;
 
 const ButtonGroupContainer = styled.div`

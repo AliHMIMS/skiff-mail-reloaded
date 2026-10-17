@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { KeyAlgorithmInfo, PgpPublicKey } from "skiff-crypto-v2";
+import { useEffect, useState } from 'react';
+import { KeyAlgorithmInfo, PgpPublicKey } from 'skiff-crypto-v2';
 
 export function usePgpDataFromPublicKey(activePublicKey: PgpPublicKey | null) {
   const [activeAlgorithm, setActiveAlgorithm] = useState<KeyAlgorithmInfo | undefined>(undefined);

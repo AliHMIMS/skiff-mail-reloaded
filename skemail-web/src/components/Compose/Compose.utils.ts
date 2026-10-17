@@ -1,16 +1,9 @@
 import { decryptSymmetric, stringDecryptAsymmetric } from 'skiff-crypto';
-import {
-  PgpPublicKey,
-  encryptMessage,
-  fetchWKDKey,
-  getStringFromStream,
-  readArmoredPrivateKey
-} from 'skiff-crypto-v2';
+import { PgpPublicKey, encryptMessage, fetchWKDKey, getStringFromStream, readArmoredPrivateKey } from 'skiff-crypto-v2';
 import { PgpKeyDatagram } from 'skiff-front-graphql';
 import { getBaseProxyURL, getEnvironment } from 'skiff-front-utils';
 import { AddressObject, PgpInfo } from 'skiff-graphql';
 import { PGP_CONTENT_TYPES, PGP_EXTENSIONS, SENDER_PUBLIC_KEY_FILENAME } from './Compose.constants';
-
 
 export const addSenderPublicKey = (uploadAttachmentsAsync: (files: File[]) => void, publicKey?: string) => {
   if (!publicKey) return;
@@ -21,9 +14,7 @@ export const addSenderPublicKey = (uploadAttachmentsAsync: (files: File[]) => vo
 
 export const isPgpFile = (contentType: string, filename: string) => {
   return PGP_CONTENT_TYPES.includes(contentType) || PGP_EXTENSIONS.includes(filename.split('.').pop() ?? '');
-}
-
-
+};
 
 export const encryptPgpEmail = async (
   senderKey: PgpInfo,
@@ -31,7 +22,6 @@ export const encryptPgpEmail = async (
   recipientPublicKeys: Array<PgpPublicKey>, // TODO require
   userPrivateKey: string
 ) => {
-
   const decryptedSessionKey = stringDecryptAsymmetric(
     userPrivateKey,
     senderKey.encryptedSessionKey.encryptedBy,

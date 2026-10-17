@@ -40,18 +40,20 @@ const SenderTableScroll = styled.div`
   flex-direction: column;
   overflow-y: scroll;
 
-  ${!isMobile &&
-  css`
-    ::-webkit-scrollbar-thumb {
-      background: transparent;
-    }
-    :hover::-webkit-scrollbar-thumb {
-      background: var(--border-primary);
-      border-radius: 20px;
-      border: 3px solid transparent;
-      background-clip: content-box;
-    }
-  `}
+  ${
+    !isMobile &&
+    css`
+      ::-webkit-scrollbar-thumb {
+        background: transparent;
+      }
+      :hover::-webkit-scrollbar-thumb {
+        background: var(--border-primary);
+        border-radius: 20px;
+        border: 3px solid transparent;
+        background-clip: content-box;
+      }
+    `
+  }
 `;
 
 const SenderTableContainer = styled.div<{ $noContainer?: boolean }>`

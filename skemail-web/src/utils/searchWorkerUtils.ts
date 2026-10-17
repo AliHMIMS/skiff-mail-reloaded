@@ -318,7 +318,7 @@ export const getIconFromFilter = (
     case SearchFilterType.UserLabel:
       const userLabelIcon =
         userLabels.find((label) => label.labelName.toLowerCase() === filterValue.toLowerCase())?.variant ===
-          UserLabelVariant.Folder
+        UserLabelVariant.Folder
           ? Icon.Folder
           : Icon.Tag;
       return {

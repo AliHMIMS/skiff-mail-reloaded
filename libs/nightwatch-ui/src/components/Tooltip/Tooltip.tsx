@@ -159,51 +159,50 @@ export const TooltipTrigger = React.forwardRef<
   );
 });
 
-export const TooltipContent = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(function TooltipContent(
-  props,
-  propRef
-) {
-  const state = useTooltipState();
-  const { context } = useFloating();
-  const { delay, setCurrentId } = useDelayGroupContext();
+export const TooltipContent = React.forwardRef<HTMLDivElement, React.HTMLProps<HTMLDivElement>>(
+  function TooltipContent(props, propRef) {
+    const state = useTooltipState();
+    const { context } = useFloating();
+    const { delay, setCurrentId } = useDelayGroupContext();
 
-  useDelayGroup(state?.context || context, {
-    id: props.children
-  });
+    useDelayGroup(state?.context || context, {
+      id: props.children
+    });
 
-  // props.children should be primitive (e.g. string)
-  React.useLayoutEffect(() => {
-    if (!state) return;
-    if (state.open) {
-      setCurrentId(props.children);
-    }
-  }, [state?.open, props.children, setCurrentId]);
+    // props.children should be primitive (e.g. string)
+    React.useLayoutEffect(() => {
+      if (!state) return;
+      if (state.open) {
+        setCurrentId(props.children);
+      }
+    }, [state?.open, props.children, setCurrentId]);
 
-  if (!state) return null;
-  if (!props.children) return null;
+    if (!state) return null;
+    if (!props.children) return null;
 
-  return (
-    <FloatingPortal>
-      <AnimatePresence>
-        {state.open && (
-          <TooltipWrap
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            transition={
-              // When in "grouped phase", make the transition faster
-              // The open delay becomes 1ms during this phase.
-              typeof delay === 'object' && delay.open === 1
-                ? { duration: 0.08 }
-                : { type: 'tween', delay: 0, duration: 0.2, ease: [0.96, 0.23, 0, 0.96] }
-            }
-            ref={state?.floating || propRef}
-            $stateX={state.x}
-            $stateY={state.y}
-            {...state.getFloatingProps(props)}
-          />
-        )}
-      </AnimatePresence>
-    </FloatingPortal>
-  );
-});
+    return (
+      <FloatingPortal>
+        <AnimatePresence>
+          {state.open && (
+            <TooltipWrap
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={
+                // When in "grouped phase", make the transition faster
+                // The open delay becomes 1ms during this phase.
+                typeof delay === 'object' && delay.open === 1
+                  ? { duration: 0.08 }
+                  : { type: 'tween', delay: 0, duration: 0.2, ease: [0.96, 0.23, 0, 0.96] }
+              }
+              ref={state?.floating || propRef}
+              $stateX={state.x}
+              $stateY={state.y}
+              {...state.getFloatingProps(props)}
+            />
+          )}
+        </AnimatePresence>
+      </FloatingPortal>
+    );
+  }
+);

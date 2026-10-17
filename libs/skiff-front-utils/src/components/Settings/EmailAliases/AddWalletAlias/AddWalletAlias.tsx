@@ -205,9 +205,8 @@ export const AddWalletAlias = ({
         return;
       }
 
-      const { connectEthWallet, connectSolWallet, connectCosmosWallet } = await import(
-        '../../../../utils/walletUtils/walletUtils'
-      );
+      const { connectEthWallet, connectSolWallet, connectCosmosWallet } =
+        await import('../../../../utils/walletUtils/walletUtils');
       let challenge = '';
       let challengeSignature = '';
       // Right now, we only support BitKeep's eth wallet

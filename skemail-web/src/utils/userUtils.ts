@@ -32,7 +32,6 @@ import isEthereumAddress from 'validator/lib/isEthereumAddress';
 import { getENSNameFromEthAddr } from 'skiff-front-utils';
 import client from '../apollo/client';
 
-
 /**
  * Return user profile data from query
  * @param {string} userID - userID

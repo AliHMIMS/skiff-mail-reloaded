@@ -6,12 +6,7 @@ import { createRawCompressedJSONDatagram, generateSymmetricKey } from 'skiff-cry
 
 import { decryptSearchIndex, encryptSearchIndex } from './encryption';
 import { DateRangeFilter, IndexedItemBase, MiniSearchResult, SearchClient } from './types';
-import {
-  chronSortResults,
-  getCustomDateFilter,
-  getDefaultSearchOptions,
-  getSortableSearchResults
-} from './utils';
+import { chronSortResults, getCustomDateFilter, getDefaultSearchOptions, getSortableSearchResults } from './utils';
 
 interface StoredSearchIndex<T extends IndexedItemBase, IndexMetadata> {
   serializedIndex: AsPlainObject;
@@ -176,9 +171,9 @@ export const createSearchIndexType = <IndexedItem extends IndexedItemBase, Index
       const searchOptions = options ? customOptions : defaultSearchOptions;
       const andedResults = preferFullMatches
         ? this.miniSearch.search(query, {
-          ...searchOptions,
-          combineWith: 'AND'
-        })
+            ...searchOptions,
+            combineWith: 'AND'
+          })
         : [];
       // if there are results that match on all terms in the query, return only those; otherwise, widen the search to the default "OR" behavior
       const miniSearchResults = andedResults.length ? andedResults : this.miniSearch.search(query, searchOptions);

@@ -69,13 +69,15 @@ const DEFAULT_CSS = ({
     padding-right: ${$paddingRight ?? FILLED_HORIZONTAL_PADDING}px;
 
     ${$error && `background: ${destructiveBg};`}
-    ${!$error &&
-    `
+    ${
+      !$error &&
+      `
       background: ${$active ? activeBg : inactiveBg};
       &:focus {
         background: ${activeBg};
       }
-    `}
+    `
+    }
   `;
 };
 
@@ -158,11 +160,13 @@ export const INPUT_FIELD_CSS = ({
     color: ${getThemedColor('var(--text-disabled)', $forceTheme)};
   }
 
-  ${!$dynamicHeight &&
-  ` &::-webkit-scrollbar {
+  ${
+    !$dynamicHeight &&
+    ` &::-webkit-scrollbar {
     width: 16px;
     color: ${getThemedColor('var(--scrollbar-gray)', $forceTheme)};
-  }`}
+  }`
+  }
 
   &::-webkit-scrollbar-thumb {
     background-clip: content-box;
@@ -181,12 +185,14 @@ export const INPUT_FIELD_CSS = ({
     background: transparent;
   }
 
-  ${$readOnly &&
-  `
+  ${
+    $readOnly &&
+    `
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  `}
+  `
+  }
 
   ${$typographySize === TypographySize.SMALL && TYPOGRAPHY_SMALL_CSS}
   ${$typographySize === TypographySize.MEDIUM && TYPOGRAPHY_MEDIUM_CSS}

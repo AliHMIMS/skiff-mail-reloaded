@@ -69,6 +69,6 @@ export const useCurrentLabel = () => {
   return {
     label: userLabel,
     userLabelVariant: userLabel ? userLabelVariant : null,
-    activeAliasInbox: userLabelVariant === UserLabelVariant.Alias ? userLabel ?? '' : undefined
+    activeAliasInbox: userLabelVariant === UserLabelVariant.Alias ? (userLabel ?? '') : undefined
   };
 };

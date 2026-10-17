@@ -6,7 +6,11 @@ import { isENSName, isICNSName, isJunoAddress, isSolanaAddress } from 'skiff-uti
 import isEthereumAddress from 'validator/lib/isEthereumAddress';
 
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
-import { CreateWalletChallengeSkemailDocument, CreateWalletChallengeSkemailMutation, CreateWalletChallengeSkemailMutationVariables } from 'skiff-front-graphql';
+import {
+  CreateWalletChallengeSkemailDocument,
+  CreateWalletChallengeSkemailMutation,
+  CreateWalletChallengeSkemailMutationVariables
+} from 'skiff-front-graphql';
 import { getAndSignChallenge } from './metamaskUtils';
 import { COSMOS_CHAIN_ID, CosmosProvider, EthProvider, SolanaProvider, WalletProvider } from './walletUtils.constants';
 
@@ -78,7 +82,6 @@ export async function getSkemailChallengeToken(walletAddress: string, client: Ap
   return token;
 }
 
-
 /**
  * Connect an Ethereum wallet and get the challenge signature
  * @param provider the Ethereum provider to connect to
@@ -96,7 +99,6 @@ export const connectEthWallet = async (provider: any, client: ApolloClient<Norma
   }
   return { challenge: token, challengeSignature: signedToken };
 };
-
 
 /**
  * Connect an Solana wallet and get the challenge signature
@@ -134,7 +136,6 @@ export const connectCosmosWallet = async (provider: Keplr, client: ApolloClient<
   }
   return { challenge: token, challengeSignature: signature };
 };
-
 
 /**
  * Returns the wallet icon associated with the wallet alias

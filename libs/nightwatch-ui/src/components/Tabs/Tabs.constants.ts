@@ -6,7 +6,7 @@ export const SLIDER_ANIMATION_DURATION = 0.25;
 
 export type TabsSize = Size.SMALL | Size.MEDIUM | Size.LARGE;
 export interface TabsProps {
-  tabs: { active: boolean; label?: string; onClick?: () => void, icon?: Icon }[];
+  tabs: { active: boolean; label?: string; onClick?: () => void; icon?: Icon }[];
   forceTheme?: ThemeMode;
   fullWidth?: boolean;
   size?: TabsSize;

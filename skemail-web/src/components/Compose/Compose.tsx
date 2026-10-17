@@ -152,7 +152,7 @@ const MobileComposeContentContainer = styled(
     return <div className={className}>{children}</div>;
   }
 )`
-  height: calc(85vh - ${isMobileApp() && isAndroid ? window.statusBarHeight ?? 0 : 0}px);
+  height: calc(85vh - ${isMobileApp() && isAndroid ? (window.statusBarHeight ?? 0) : 0}px);
   width: 100%;
   box-sizing: border-box;
 `;

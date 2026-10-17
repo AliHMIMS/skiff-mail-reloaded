@@ -13,18 +13,20 @@ const FILLED_CSS = ({
   $forceTheme?: ThemeMode;
 }) => css`
   background: ${getThemedColor(
-  $destructive ? 'var(--bg-overlay-destructive)' : 'var(--bg-overlay-tertiary)',
-  $forceTheme
-)};
-  ${$clickable &&
-  `
-    &:hover {
-      background: ${getThemedColor(
-    $destructive ? 'var(--bg-overlay-destructive)' : 'var(--bg-overlay-secondary)',
+    $destructive ? 'var(--bg-overlay-destructive)' : 'var(--bg-overlay-tertiary)',
     $forceTheme
   )};
+  ${
+    $clickable &&
+    `
+    &:hover {
+      background: ${getThemedColor(
+        $destructive ? 'var(--bg-overlay-destructive)' : 'var(--bg-overlay-secondary)',
+        $forceTheme
+      )};
     }
-  `}
+  `
+  }
 `;
 
 const UNFILLED_CSS = ({
@@ -37,15 +39,17 @@ const UNFILLED_CSS = ({
   $forceTheme?: ThemeMode;
 }) => css`
   background: transparent;
-  ${$clickable &&
-  `
+  ${
+    $clickable &&
+    `
       &:hover {
         background: ${getThemedColor(
-    $destructive ? 'var(--bg-overlay-destructive)' : 'var(--bg-overlay-tertiary)',
-    $forceTheme
-  )};
+          $destructive ? 'var(--bg-overlay-destructive)' : 'var(--bg-overlay-tertiary)',
+          $forceTheme
+        )};
       }
-    `}
+    `
+  }
 `;
 
 export const CHIP_TYPE_CSS = ({ $variant }: { $variant: FilledVariant }) =>

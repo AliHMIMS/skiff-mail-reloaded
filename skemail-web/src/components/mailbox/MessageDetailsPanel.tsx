@@ -61,24 +61,26 @@ const MessageDetailsPanelContainer = styled.div<{ animation?: boolean; radius?: 
   -ms-overflow-style: none;
   scrollbar-width: none;
 
-  ${isMobile
-    ? css`
-        left: 0px;
-        top: 0px;
-        position: absolute;
-        width: 100vw;
-        margin: 0;
-        right: 16px;
-        display: flex;
-        background: var(--bg-l1-solid);
-        border-radius: 0;
-        box-shadow: none;
-        border: none;
-        max-height: unset;
-        transform: translateX(100vw);
-        z-index: 2;
-      `
-    : ''}
+  ${
+    isMobile
+      ? css`
+          left: 0px;
+          top: 0px;
+          position: absolute;
+          width: 100vw;
+          margin: 0;
+          right: 16px;
+          display: flex;
+          background: var(--bg-l1-solid);
+          border-radius: 0;
+          box-shadow: none;
+          border: none;
+          max-height: unset;
+          transform: translateX(100vw);
+          z-index: 2;
+        `
+      : ''
+  }
   ${({ radius }) => (radius ? 'border-radius: 16px 16px 0px 0px;' : '')}
   ${(props) => (!!props.animation && isMobile ? 'transform: translateX(calc(100vw * var(--mailswipep, 0)));' : '')}
 `;

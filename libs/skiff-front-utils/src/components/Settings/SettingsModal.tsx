@@ -80,10 +80,12 @@ const View = styled.div<{ $noPadding?: boolean; $noOverflow?: boolean }>`
     css`
       overflow: hidden;
     `}
-  ${isMobile &&
-  css`
-    overflow-y: auto;
-  `}
+  ${
+    isMobile &&
+    css`
+      overflow-y: auto;
+    `
+  }
 `;
 
 const SidebarLabel = styled.div<{ active?: boolean }>`
@@ -109,17 +111,21 @@ const LabelList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  ${isMobile &&
-  css`
-    overflow: auto;
-  `}
-  ${!isMobile &&
-  css`
-    overflow: hidden;
-    :hover {
+  ${
+    isMobile &&
+    css`
       overflow: auto;
-    }
-  `}
+    `
+  }
+  ${
+    !isMobile &&
+    css`
+      overflow: hidden;
+      :hover {
+        overflow: auto;
+      }
+    `
+  }
 `;
 
 const TitleBlock = styled.div`

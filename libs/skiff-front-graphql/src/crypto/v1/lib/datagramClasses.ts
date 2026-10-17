@@ -22,7 +22,6 @@ export const SessionCacheKeyDatagram = createJSONWrapperDatagram<string>('ddl://
  */
 export const UserSignatureDatagram = createJSONWrapperDatagram<string>('ddl://skiff/UserSignatureDatagram');
 
-
 /**
  * The pgp key datagram stores the encrypted copy of the pgp key.
  */

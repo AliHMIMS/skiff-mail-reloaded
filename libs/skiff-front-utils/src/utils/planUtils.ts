@@ -105,7 +105,7 @@ export const getPlanTableColumnWidths = (showEssential?: boolean) => {
     const col = Number(colNum);
     if (isNaN(col)) return '';
     return (width += ` ${
-      showEssential ? PLAN_TABLE_COLUMN_WIDTHS[col].fourTiers : PLAN_TABLE_COLUMN_WIDTHS[col].threeTiers ?? ''
+      showEssential ? PLAN_TABLE_COLUMN_WIDTHS[col].fourTiers : (PLAN_TABLE_COLUMN_WIDTHS[col].threeTiers ?? '')
     }`);
   }, '');
   return widths.trim();

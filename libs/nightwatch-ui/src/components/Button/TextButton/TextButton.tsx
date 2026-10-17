@@ -112,7 +112,7 @@ function Button(
 
   const renderIcon = (icon: Icon | IconComponent) => {
     const customColor = typeof icon === 'string' ? undefined : icon.props.color;
-    const iconColor = isDisabledOrLoading ? 'disabled' : customColor ?? BUTTON_TYPE_COLOR[type];
+    const iconColor = isDisabledOrLoading ? 'disabled' : (customColor ?? BUTTON_TYPE_COLOR[type]);
     return typeof icon === 'string' ? (
       <Icons size={iconSize} icon={icon} color={iconColor} forceTheme={forceTheme} />
     ) : (

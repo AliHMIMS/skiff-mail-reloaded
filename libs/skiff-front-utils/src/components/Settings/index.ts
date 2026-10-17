@@ -1,14 +1,15 @@
-export {
-  EncryptionKeyDropdown,
-  PgpKeyTable
-} from '../PgpKey';
+export { EncryptionKeyDropdown, PgpKeyTable } from '../PgpKey';
 export { default as CurrentSubscriptions } from './Billing/CurrentSubscriptions/CurrentSubscriptions';
 export { default as InvoiceHistory } from './Billing/InvoiceHistory';
 export { default as PaymentDetails } from './Billing/PaymentDetails';
 export { useBillingSettings } from './Billing/useBillingSettings';
 export {
-  ContactWithoutTypename, contactToAddressObject, getContactDisplayNameAndSubtitle,
-  getContactDisplayPictureData, getContactWithoutTypename, useContactsSettings
+  ContactWithoutTypename,
+  contactToAddressObject,
+  getContactDisplayNameAndSubtitle,
+  getContactDisplayPictureData,
+  getContactWithoutTypename,
+  useContactsSettings
 } from './Contacts';
 export { default as CryptoBanner } from './CryptoBanner/CryptoBanner';
 export { useAliasesSettings } from './EmailAliases';

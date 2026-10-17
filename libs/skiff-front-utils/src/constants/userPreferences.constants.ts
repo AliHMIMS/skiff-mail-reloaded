@@ -120,7 +120,7 @@ export interface UserPreferences {
   tableOfContents: TableOfContentsSetting;
 }
 
-export interface AllUserPreferences extends LocalSettings, UserPreferences { }
+export interface AllUserPreferences extends LocalSettings, UserPreferences {}
 
 export const DEFAULT_LOCAL_SETTINGS: LocalSettings = {
   defaultEmailAlias: '',

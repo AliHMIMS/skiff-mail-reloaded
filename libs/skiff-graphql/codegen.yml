@@ -21,7 +21,6 @@ generates:
         PublicKeyWithSignature: '{ key: string, signature: string }'
         Void: 'any'
 
-
   # Recreate a schema with all types, including local types, which will be used by every other client codegen operations
   src/completeSchema.graphql:
     plugins:

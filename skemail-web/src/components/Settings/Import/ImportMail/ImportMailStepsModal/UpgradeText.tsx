@@ -8,12 +8,14 @@ const UpgradeTextContainer = styled.div`
   align-items: center;
   gap: 8px;
   padding: 4px 0;
-  ${isMobile &&
-  css`
-    gap: 4px;
-    flex-direction: column;
-    align-items: flex-start;
-  `}
+  ${
+    isMobile &&
+    css`
+      gap: 4px;
+      flex-direction: column;
+      align-items: flex-start;
+    `
+  }
 `;
 
 const Description = styled(Typography)`

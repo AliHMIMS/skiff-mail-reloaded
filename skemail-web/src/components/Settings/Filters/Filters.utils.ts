@@ -317,12 +317,10 @@ export const filterFromGraphQL = (
   } = graphqlFilter;
   try {
     // Convert actions
-    const actions = graphQLActions.map(
-      (action): Action => ({
-        type: action.actionType,
-        value: action.serializedData || undefined
-      })
-    );
+    const actions = graphQLActions.map((action): Action => ({
+      type: action.actionType,
+      value: action.serializedData || undefined
+    }));
     if (!actions.length) {
       throw new Error('No actions could be parsed for this filter');
     }

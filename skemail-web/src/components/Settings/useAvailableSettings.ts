@@ -14,7 +14,8 @@ import {
   isReactNativeDesktopApp,
   useAliasesSettings,
   useBillingSettings,
-  useContactsSettings, useRequiredCurrentUserData
+  useContactsSettings,
+  useRequiredCurrentUserData
 } from 'skiff-front-utils';
 import { PermissionLevel, SubscriptionPlan } from 'skiff-graphql';
 import { PaywallErrorCode, insertIf } from 'skiff-utils';
@@ -61,8 +62,7 @@ export const useAvailableSettings = () => {
     client,
     openSettings: openSettingsPage,
     openPaywallModal
-  }
-  );
+  });
   const importSettings = useImportSettings();
   const inboxSettings = useInboxSettings();
   const forwardingSettings = useForwardingSettings();
@@ -135,10 +135,10 @@ export const useAvailableSettings = () => {
         }),
         ...insertIf(
           !isMobileApp() &&
-          !isReactNativeDesktopApp() &&
-          currentUserIsOrgAdmin &&
-          !subscriptionLoading &&
-          activeSubscription !== SubscriptionPlan.Free,
+            !isReactNativeDesktopApp() &&
+            currentUserIsOrgAdmin &&
+            !subscriptionLoading &&
+            activeSubscription !== SubscriptionPlan.Free,
           {
             label: SETTINGS_TABS_LABELS[TabPage.Billing],
             value: TabPage.Billing,

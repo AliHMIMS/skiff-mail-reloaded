@@ -33,7 +33,7 @@ const DEFAULT_PREVIEW: PreviewObject = {
   fileName: ''
 };
 
-const EMPTY_PREVIEW_RESPONSE = { loading: false, error: undefined, preview: DEFAULT_PREVIEW, refetch: () => { } };
+const EMPTY_PREVIEW_RESPONSE = { loading: false, error: undefined, preview: DEFAULT_PREVIEW, refetch: () => {} };
 // Max preview file size
 export const MAX_PREVIEW_FILE_SIZE = mbToBytes(200); // 200 MB
 
@@ -119,7 +119,7 @@ export function useFilePreview({ docID, client, includeFileData, getThumbnail = 
   const docMimeType = document ? getFileDocMimeType(document) : undefined;
   const fileName = document?.decryptedMetadata.title ?? '';
   const docFileTypeLabel = document
-    ? getFileDocFileTypeLabel(document) ?? DEFAULT_FILE_TYPE_LABEL
+    ? (getFileDocFileTypeLabel(document) ?? DEFAULT_FILE_TYPE_LABEL)
     : DEFAULT_FILE_TYPE_LABEL;
   const documentType = document?.documentType ?? NwContentType.File;
 
@@ -160,7 +160,7 @@ export function useFilePreview({ docID, client, includeFileData, getThumbnail = 
 
       // If we downloaded the preview data
       if ((docSize || Math.max()) < MAX_PREVIEW_FILE_SIZE) {
-        const fileData = documentHasContents ? (await getMediaURL(document)) ?? '' : '';
+        const fileData = documentHasContents ? ((await getMediaURL(document)) ?? '') : '';
 
         if (hasPassword || !docContents) {
           // doc locked

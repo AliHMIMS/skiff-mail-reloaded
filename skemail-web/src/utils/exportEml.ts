@@ -119,14 +119,9 @@ export const createExportableEML = async (
   });
 };
 
-
 const DUMMY_EMAIL = 'dummy@placeholder.com';
 
-export const createPgpMIME = async (
-  message: string,
-  attachments: ClientLocalAttachment[]
-): Promise<string> => {
-
+export const createPgpMIME = async (message: string, attachments: ClientLocalAttachment[]): Promise<string> => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const { default: emlFormat } = await import('eml-format');
 

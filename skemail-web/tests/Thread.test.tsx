@@ -18,8 +18,6 @@ import { MOCK_EMAIL } from './mocks/mockEmail';
 import { MOCK_THREAD } from './mocks/mockThread';
 import { MOCK_USER } from './mocks/mockUser';
 
-
-
 jest.mock('skiff-front-utils', () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const original = jest.requireActual('skiff-front-utils');

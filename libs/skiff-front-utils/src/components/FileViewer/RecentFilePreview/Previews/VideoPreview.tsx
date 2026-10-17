@@ -145,8 +145,8 @@ const CustomSlider = styled.input.attrs({ type: 'range' })<{ $value: number; $ma
   /* Progress background */
   background: linear-gradient(
     90deg,
-    white ${(props) => (props.$value / props.$max) * 100}%,
-    rgba(255, 255, 255, 0.08) ${(props) => (props.$value / props.$max) * 100}%
+    white ${(props) => (props.$value / props.$max) * 100}%, rgba(255, 255, 255, 0.08)
+      ${(props) => (props.$value / props.$max) * 100}%
   ) !important;
 `;
 
