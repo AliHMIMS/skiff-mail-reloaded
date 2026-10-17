@@ -1,4 +1,5 @@
 // Wrapper around react-pdf: lazy-loaded, and the one place that configures the pdf.js worker
+// oxlint-disable-next-line import/default -- Vite `?url` import, resolved by the bundler
 import pdfjsWorkerUrl from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import { Document, Page, pdfjs } from 'react-pdf';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
