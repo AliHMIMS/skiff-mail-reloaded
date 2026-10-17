@@ -21,14 +21,14 @@ const usePollForPurchasedDomain = ({
   startPolling,
   stopPolling
 }: PollForPurchasedDomainParams) => {
-  if (typeof window !== 'object') return;
-  const url = new URL(window.location.href);
+  const url = typeof window === 'object' ? new URL(window.location.href) : undefined;
   // we attach the purchased domain as a query param to the url after a successful Stripe checkout
-  const newlyRegisteredCustomDomainName = url.searchParams.get(PaymentQueryParam.DOMAIN_REGISTRATION_SUCCESS);
+  const newlyRegisteredCustomDomainName = url?.searchParams.get(PaymentQueryParam.DOMAIN_REGISTRATION_SUCCESS);
   const customDomainNames = customDomains?.map((customDomain) => customDomain.domain);
   const isWaitingForNewCustomDomain =
     !!newlyRegisteredCustomDomainName && !customDomainNames?.includes(newlyRegisteredCustomDomainName);
   const wasPreviouslyWaiting = usePrevious(isWaitingForNewCustomDomain);
+  if (!url) return;
   if (isWaitingForNewCustomDomain && !isPolling) {
     startPolling();
     setIsPolling(true);

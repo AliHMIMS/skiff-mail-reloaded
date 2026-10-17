@@ -90,6 +90,10 @@ function useMediaQueryImplementation(
 
   return snapshot;
 }
+// Chosen once at load time, so the same hook always runs (React's useSyncExternalStore never appears later)
+const useMediaQueryForReactVersion: typeof useMediaQueryImplementation =
+  maybeReactUseSyncExternalStore !== undefined ? () => false : useMediaQueryImplementation;
+
 export default function useMediaQuery<Theme = unknown>(
   queryInput: string,
   options: UseMediaQueryOptions = {}
@@ -106,9 +110,5 @@ export default function useMediaQuery<Theme = unknown>(
   } = options;
 
   const query = queryInput.replace(/^@media( ?)/m, '');
-  const match =
-    maybeReactUseSyncExternalStore !== undefined
-      ? false
-      : useMediaQueryImplementation(query, defaultMatches, matchMedia, ssrMatchMedia, noSsr);
-  return match;
+  return useMediaQueryForReactVersion(query, defaultMatches, matchMedia, ssrMatchMedia, noSsr);
 }

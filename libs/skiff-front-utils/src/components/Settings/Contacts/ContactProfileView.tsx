@@ -17,13 +17,7 @@ import EditProfile from '../../EditProfile';
 import PgpSection from '../../PgpKey/PgpSection';
 import ContactProfileViewFooter from './ContactProfileViewFooter';
 import { renderFieldGroup } from './Contacts.renderingUtils';
-import {
-  ContactProfileConfirmModalType,
-  ContactWithoutTypename,
-  ErrorState,
-  FieldGroup,
-  FieldType
-} from './Contacts.types';
+import { ContactProfileConfirmModalType, ContactWithoutTypename, ErrorState, FieldGroup } from './Contacts.types';
 import {
   getContactDisplayNameAndSubtitle,
   getContactDisplayPictureData,
@@ -247,18 +241,13 @@ const ContactProfileView: React.FC<ContactProfileViewProps> = ({
   // Only show delete for an existing non-org contact while editing
   const showDelete = !isNewContact && !isOrgMember && isEditing;
 
-  const refs = fields.reduce(
-    (acc, fieldConfig) => {
-      fieldConfig.items.forEach((item) => {
-        acc[item.key] =
-          item.type === FieldType.textarea
-            ? React.useRef<HTMLTextAreaElement>(null)
-            : React.useRef<HTMLInputElement>(null);
-      });
-      return acc;
-    },
-    {} as { [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement> }
+  const refStore = React.useRef<{ [key: string]: React.RefObject<HTMLInputElement | HTMLTextAreaElement> }>({});
+  fields.forEach((fieldConfig) =>
+    fieldConfig.items.forEach((item) => {
+      refStore.current[item.key] ??= React.createRef<HTMLInputElement | HTMLTextAreaElement>();
+    })
   );
+  const refs = refStore.current;
 
   useEffect(() => {
     if (isEmptyContact(pendingContact)) {

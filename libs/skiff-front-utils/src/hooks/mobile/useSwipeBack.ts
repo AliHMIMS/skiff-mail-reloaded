@@ -24,10 +24,6 @@ export const useSwipeBack = (
   const activeScreenRef = useRef<HTMLDivElement | null>(null);
   const previousScreenRef = useRef<HTMLDivElement | null>(null);
 
-  if (!screenId) {
-    return;
-  }
-
   function handleTouchStart(e: any) {
     lastX.current = e.targetTouches[0].clientX;
     activeSwipe.current = lastX.current < ALLOWES_LEFT_AREA && !progress.current;
@@ -102,6 +98,7 @@ export const useSwipeBack = (
   };
 
   useEffect(() => {
+    if (!screenId) return;
     document.addEventListener('touchmove', handleTouchMove, { passive: false });
     document.addEventListener('touchend', handleTouchEnd);
     document.addEventListener('touchstart', handleTouchStart);
@@ -111,8 +108,11 @@ export const useSwipeBack = (
       document.removeEventListener('touchend', handleTouchEnd);
       document.removeEventListener('touchstart', handleTouchStart);
     };
-  }, []);
+  }, [screenId]);
 
+  if (!screenId) {
+    return;
+  }
   return {
     changeProgress
   };
