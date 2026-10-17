@@ -4,6 +4,11 @@
   "packageManager": "pnpm@12.14.0",
   "scripts": {
     "dev": "cd skemail-web && ./node_modules/.bin/vite",
-    "build": "cd skemail-web && ./node_modules/.bin/vite build && rm -rf src/dist && mv src/dist-next src/dist"
+    "build": "cd skemail-web && ./node_modules/.bin/vite build && rm -rf src/dist && mv src/dist-next src/dist",
+    "lint": "oxlint skemail-web/src libs"
+  },
+  "devDependencies": {
+    "oxfmt": "^0.73.0",
+    "oxlint": "^1.88.0"
   }
 }

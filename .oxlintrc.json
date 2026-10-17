@@ -1,0 +1,68 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "typescript",
+    "react",
+    "jsx-a11y",
+    "import",
+    "unicorn",
+    "oxc"
+  ],
+  "categories": {
+    "correctness": "error"
+  },
+  "env": {
+    "browser": true,
+    "es2022": true
+  },
+  "rules": {
+    "eslint/no-unused-vars": "warn",
+    "eslint/no-shadow": "warn",
+    "eslint/no-use-before-define": [
+      "warn",
+      {
+        "functions": false
+      }
+    ],
+    "typescript/no-var-requires": "warn",
+    "typescript/return-await": "warn",
+    "import/no-cycle": "warn",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "warn",
+    "react/react-in-jsx-scope": "off",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
+    "jsx-a11y/no-noninteractive-element-interactions": "warn",
+    "jsx-a11y/mouse-events-have-key-events": "warn",
+    "jsx-a11y/alt-text": "warn",
+    "jsx-a11y/iframe-has-title": "warn",
+    "jsx-a11y/media-has-caption": "warn",
+    "jsx-a11y/interactive-supports-focus": "warn",
+    "jsx-a11y/no-autofocus": "off",
+    "eslint/no-extra-boolean-cast": "off",
+    "eslint/no-useless-escape": "warn",
+    "react/set-state-in-effect": "warn",
+    "react/refs": "warn",
+    "react/immutability": "warn",
+    "react/purity": "warn",
+    "react/static-components": "warn",
+    "react/preserve-manual-memoization": "warn",
+    "react/use-memo": "warn",
+    "react/globals": "warn",
+    "react/unsupported-syntax": "warn",
+    "react/incompatible-library": "warn",
+    "react/error-boundaries": "warn"
+  },
+  "ignorePatterns": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/dist-next/**",
+    ".tools/**",
+    "server/**",
+    "libs/skiff-ics/**",
+    "libs/skiff-prosemirror/**",
+    "libs/skiff-front-graphql/generated/**",
+    "libs/skiff-graphql/src/types.ts",
+    "**/generated/protos/**"
+  ]
+}
