@@ -12,8 +12,7 @@
   "devDependencies": {
     "@types/lodash": "^4",
     "@types/semver": "^7",
-    "@types/validator": "13.7.1",
-    "typescript": "^5.9.3"
+    "@types/validator": "13.7.1"
   },
   "dependencies": {
     "comlink": "^4.3.1",

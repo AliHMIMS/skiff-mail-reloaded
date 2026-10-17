@@ -15,8 +15,7 @@
     "@types/node": "^22",
     "@types/randombytes": "^2",
     "@types/semver": "^7",
-    "@types/varint": "^6.0.0",
-    "typescript": "^5.9.3"
+    "@types/varint": "^6.0.0"
   },
   "dependencies": {
     "@stablelib/base64": "^1.0.1",
@@ -32,7 +31,6 @@
     "semver": "^7.3.4",
     "skiff-graphql": "workspace:*",
     "skiff-utils": "workspace:*",
-    "tslib": "^2.4.0",
     "tweetnacl": "^1.0.3",
     "varint": "^6.0.0"
   }

@@ -14,20 +14,15 @@
   "devDependencies": {
     "@types/lodash": "^4",
     "@types/node": "^22",
-    "@types/validator": "13.7.1",
-    "regenerator-runtime": "0.13.7",
-    "typescript": "^5.9.3"
+    "@types/validator": "13.7.1"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.121.0",
     "@cosmjs/encoding": "^0.28.13",
     "@keplr-wallet/cosmos": "^0.10.19",
     "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
     "long": "^5.2.0",
     "protobufjs": "^7.2.4",
-    "ts-proto": "^1.105.1",
-    "tslib": "^2.4.0",
     "validator": "^13.7.0"
   }
 }

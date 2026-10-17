@@ -9,14 +9,11 @@
   "description": "Graphql types",
   "sideEffects": false,
   "private": true,
-  "devDependencies": {
-    "typescript": "^5.9.3"
-  },
+  "devDependencies": {},
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "apollo-server-errors": "^3.3.1",
     "graphql": "16.8.1",
-    "skiff-utils": "workspace:*",
-    "tslib": "^2.4.0"
+    "skiff-utils": "workspace:*"
   }
 }
