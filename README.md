@@ -8,29 +8,7 @@ Self-hosted Skiff Mail for your Gmail. Based on the original [Skiff Mail](https:
 
 The Skiff Mail client runs on your own server, backed by a Gmail or Google Workspace account. New mail arrives in seconds. Actions sync to Gmail and to every open client.
 
-### Reusable components and UI
-
-This library, along with Skiff UI, implements reusable, powerful design components for the Skiff product ecosystem.
-
-### Fast, instant search
-
-Search runs in the browser, on a local index of your mail.
-
-<img width="988" alt="CleanShot 2023-05-13 at 16 28 38@2x" src="https://github.com/skiff-org/skiff-mail/assets/3527315/c310497c-8e68-44d0-9e81-fe7b7855532c">
-
-### Mobile friendly
-
-Skiff Mail is designed to be highly compatible with native and web mobile clients.
-
-![PD - Mobile updates 2](https://github.com/skiff-org/skiff-mail/assets/3527315/bbddbd84-99ac-4543-897f-483af4158ec3)
-
 ## How it works
-
-```
-browser ──https/wss──> mymail-server (Rust) ──IMAP / SMTP / Gmail API──> Gmail
-                              ▲
-                    Gmail push (Cloud Pub/Sub)
-```
 
 The client is unchanged where possible. The server speaks the client's GraphQL API and encrypts mail to your key in Skiff's format. The browser decrypts it.
 
@@ -79,7 +57,6 @@ Measured on a 2 vCPU / 4 GB server.
 | Package manager | Yarn 3 PnP | pnpm 12 |
 | Root dependencies | 210 | 0 |
 | Web app dev dependencies | 119 | 38 |
-| TypeScript | 5.1 | 5.9 |
 | Mailbox refresh | Polling every 20 s | WebSocket push (60 s fallback) |
 | Changes across clients | Up to 20 s | ~3 s |
 
