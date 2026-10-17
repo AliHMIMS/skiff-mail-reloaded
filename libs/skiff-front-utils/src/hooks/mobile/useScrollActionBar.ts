@@ -42,8 +42,6 @@ export const useScrollActionBar = (actionBarHeight: number, id: string) => {
     const touchstart = () => {
       touchLeadsToScroll = false;
       disableScrollEvent = false;
-
-      lastScrollPos.current = lastScrollPos.current;
     };
 
     const touchend = () => {

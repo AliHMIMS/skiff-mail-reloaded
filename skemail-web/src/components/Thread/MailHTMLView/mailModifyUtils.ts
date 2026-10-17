@@ -367,7 +367,7 @@ const getVisibleColor = (rgb: RGBValue) => {
 /**
  * Recursively get all dark hard to read elements
  */
-const darkTextNodes = (elem: HTMLElement, elements: DarkElement[], dom: HTMLElement) => {
+const darkTextNodes = (elem: HTMLElement, elements: DarkElement[]) => {
   if (hasBackground(elem)) {
     return elements; // If the element has custom background stop looking in that branch
   }
@@ -388,7 +388,7 @@ const darkTextNodes = (elem: HTMLElement, elements: DarkElement[], dom: HTMLElem
       (child as HTMLElement).style.color = 'initial';
     // Continue on non text node children
     if (!isTextNode(child)) {
-      darkTextNodes(child as HTMLElement, elements, dom);
+      darkTextNodes(child as HTMLElement, elements);
     }
   });
   return elements;
@@ -398,7 +398,7 @@ const darkTextNodes = (elem: HTMLElement, elements: DarkElement[], dom: HTMLElem
  * Returns an array of elements deemed dark
  */
 const queryDarkTextElements = (dom: Document) => {
-  return darkTextNodes(dom.body, [], dom.body);
+  return darkTextNodes(dom.body, []);
 };
 
 // When on dark mode make dark text white

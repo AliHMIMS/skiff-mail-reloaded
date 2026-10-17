@@ -11,7 +11,7 @@ import { reverseWordList, wordlist } from './wordlist';
  * @returns {string} Passphrase consisting of words translated from input bytes.
  */
 export function bytesToPassphrase(bytes: Buffer, separator = ' ') {
-  const words: Array<string> = new Array<string>(bytes.length);
+  const words: Array<string> = Array.from<string>({ length: bytes.length });
   const zero = Buffer.from([0]);
   const bs = Buffer.concat([zero, bytes]);
   // prepend constant '0' so that, when the highest bits are discarded by the windowing function, no information is lost

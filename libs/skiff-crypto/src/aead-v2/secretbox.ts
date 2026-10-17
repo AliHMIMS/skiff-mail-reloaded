@@ -7,9 +7,9 @@ import { concatUint8Arrays } from '../aead/typedArraysUtils';
 import {
   AADMetaV2,
   DatagramV2,
-  deserializeAADMeta as deserializeAADMeta,
+  deserializeAADMeta,
   EnvelopeV2,
-  serializeAADMeta as serializeAADMeta,
+  serializeAADMeta,
   TypedBytesV2
 } from './common';
 

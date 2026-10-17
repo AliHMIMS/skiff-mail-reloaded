@@ -33,7 +33,6 @@ export const useMobileMailboxScrollProgress = () => {
     let touchLeadsToScroll = false;
     const touchstart = () => {
       touchLeadsToScroll = false;
-      lastScrollPos.current = lastScrollPos.current;
     };
 
     const touchend = () => {

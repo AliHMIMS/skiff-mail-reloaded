@@ -76,7 +76,7 @@ export async function exportRecoveryKeyToClient(
   filename: string,
   overlayText: PDFOverlayText
 ) {
-  const [{ default: jsPDF }] = await Promise.all([import('jspdf')]);
+  const { default: jsPDF } = await import('jspdf');
   // Set options
   const opt = {
     filename,

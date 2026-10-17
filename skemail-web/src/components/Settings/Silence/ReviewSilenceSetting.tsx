@@ -58,7 +58,7 @@ export const ReviewSilenceSetting = () => {
 
   const bulkSilenceData: BulkSilenceData =
     transformedSilencedSenderDomains || transformedSilencedSenderIndividuals
-      ? { ...(transformedSilencedSenderDomains ?? {}), ...(transformedSilencedSenderIndividuals ?? {}) }
+      ? { ...transformedSilencedSenderDomains, ...transformedSilencedSenderIndividuals }
       : {};
 
   const { totalSenders } = getTotalEmailsAndSenders(silenceSenderDomains, silenceSenderIndividuals);

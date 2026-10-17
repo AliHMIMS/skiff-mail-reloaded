@@ -5,9 +5,9 @@ import { ChaCha20Poly1305, NONCE_LENGTH } from '@stablelib/chacha20poly1305';
 import {
   AADMeta,
   Datagram,
-  deserializeAADMeta as deserializeAADMeta,
+  deserializeAADMeta,
   Envelope,
-  serializeAADMeta as serializeAADMeta,
+  serializeAADMeta,
   TypedBytes
 } from './common';
 import { concatUint8Arrays } from './typedArraysUtils';

@@ -19,7 +19,7 @@ export const downloadSlices = async function* (
   concurrency = 5
 ) {
   let offset = 0;
-  const sliceProgress = new Array<number>(slices.length).fill(0);
+  const sliceProgress = Array.from<number>({ length: slices.length }).fill(0);
 
   const updateOverallProgress = (): void => {
     if (updateProgress) {

@@ -89,9 +89,7 @@ const BulkSilenceModalSenderTable = (props: BulkSilenceModalSenderTableProps) =>
   const handleToggleAll = () => {
     if (!setCheckedItems || !checkedItems) return;
     const allChecked = Object.values(checkedItems).every((value) => value);
-    const newCheckedState = {
-      ...Object.fromEntries(Object.keys(checkedItems).map((key) => [key, !allChecked]))
-    };
+    const newCheckedState = Object.fromEntries(Object.keys(checkedItems).map((key) => [key, !allChecked]));
     setCheckedItems(newCheckedState);
   };
 

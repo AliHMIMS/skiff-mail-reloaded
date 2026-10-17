@@ -426,7 +426,7 @@ export async function setDisplayName(
   saveCurrentUserData({
     ...currentUserData,
     publicData: {
-      ...(currentUserData.publicData ?? {}),
+      ...currentUserData.publicData,
       displayName
     }
   });

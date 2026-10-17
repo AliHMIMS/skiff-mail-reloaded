@@ -213,7 +213,7 @@ const PDFPreview = ({
             onLoadSuccess={onDocumentLoadSuccess}
             onPassword={onPassword}
           >
-            {Array.from(new Array(numPages), (_el, index) => (
+            {Array.from({ length: numPages }, (_el, index) => (
               <Page key={`page_${index + 1}`} loading={<FallbackIcon />} pageNumber={index + 1} />
             ))}
           </ReactPDFDocument>

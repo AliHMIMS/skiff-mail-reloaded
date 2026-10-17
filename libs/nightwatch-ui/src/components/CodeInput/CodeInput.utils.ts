@@ -19,5 +19,5 @@ export const isValid = (type: CodeInputType, value: string) => {
  */
 export const padEnd = (currString: string, targetLength: number, padString = '') => {
   const stringArray = currString.split('');
-  return Object.assign(new Array(targetLength).fill(padString), stringArray);
+  return Object.assign(Array.from({ length: targetLength }).fill(padString), stringArray);
 };

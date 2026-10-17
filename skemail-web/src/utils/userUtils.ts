@@ -178,7 +178,7 @@ export async function setDisplayName(userID: UserID, displayName: string): Promi
   saveCurrentUserData({
     ...currentUserData,
     publicData: {
-      ...(currentUserData.publicData ?? {}),
+      ...currentUserData.publicData,
       displayName
     }
   });

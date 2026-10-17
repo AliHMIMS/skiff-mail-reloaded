@@ -21,9 +21,7 @@ function createInputProps({
 }: CreateInputPropsProps & { directory?: boolean }) {
   const initialInputProps = getInputProps();
   const directoryProps = { directory: '', webkitdirectory: '' };
-  const inputProps = {
-    ...(directory ? { ...initialInputProps, ...directoryProps } : { ...initialInputProps })
-  };
+  const inputProps = (directory ? { ...initialInputProps, ...directoryProps } : { ...initialInputProps });
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files ?? []);

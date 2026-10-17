@@ -37,7 +37,7 @@ export function generateRandomPassword() {
   const umax = Math.pow(2, 32);
   const max = umax - (umax % characterPool.length);
 
-  let passwordBytes = new Array(pwLength).fill(0);
+  let passwordBytes = Array.from<number>({ length: pwLength }).fill(0);
 
   passwordBytes = passwordBytes.map(() => {
     do {
