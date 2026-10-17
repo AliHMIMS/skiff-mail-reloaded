@@ -49,19 +49,20 @@ The client is unchanged where possible. The server speaks the client's GraphQL A
 
 Measured on a 2 vCPU / 4 GB server.
 
-|                          | Original                                      | Reloaded                       |
-| ------------------------ | --------------------------------------------- | ------------------------------ |
-| Web build                | ~7 min (webpack 5, Babel, per-library builds) | ~15 s (Vite 8, Rolldown, Oxc)  |
-| Build memory (peak)      | ~2.7 GB                                       | ~1.3 GB                        |
-| Build output             | 48 MB                                         | 17 MB                          |
-| Package manager          | Yarn 3 PnP                                    | pnpm 12                        |
-| Linter                   | ESLint (airbnb-typescript)                    | oxlint, ~2.6 s for 1,400 files |
-| Formatter                | Prettier                                      | oxfmt, ~0.7 s for 1,400 files  |
-| Type check               | ~68 s (TypeScript 5)                          | ~24 s (TypeScript 7)           |
-| Root dependencies        | 210                                           | 3 (oxlint, oxfmt, TypeScript)  |
-| Web app dev dependencies | 119                                           | 25                             |
-| Mailbox refresh          | Polling every 20 s                            | WebSocket push (60 s fallback) |
-| Changes across clients   | Up to 20 s                                    | ~3 s                           |
+|                          | Original                                      | Reloaded                                     |
+| ------------------------ | --------------------------------------------- | -------------------------------------------- |
+| Web build                | ~7 min (webpack 5, Babel, per-library builds) | ~15 s (Vite 8, Rolldown, Oxc)                |
+| Build memory (peak)      | ~2.7 GB                                       | ~1.3 GB                                      |
+| Build output             | 48 MB                                         | 17 MB                                        |
+| Package manager          | Yarn 3 PnP                                    | pnpm 12                                      |
+| Linter                   | ESLint (airbnb-typescript)                    | oxlint, ~2.6 s for 1,400 files               |
+| Formatter                | Prettier                                      | oxfmt, ~0.7 s for 1,400 files                |
+| Tests                    | Jest, per library                             | Vitest 5 + cargo, `pnpm test`                |
+| Type check               | ~68 s (TypeScript 5)                          | ~24 s (TypeScript 7)                         |
+| Root dependencies        | 210                                           | 5 (oxlint, oxfmt, TypeScript, Vitest, jsdom) |
+| Web app dev dependencies | 119                                           | 30                                           |
+| Mailbox refresh          | Polling every 20 s                            | WebSocket push (60 s fallback)               |
+| Changes across clients   | Up to 20 s                                    | ~3 s                                         |
 
 ## Getting started
 
