@@ -1,4 +1,4 @@
-import { GraphQLError } from 'graphql';
+import type { GraphQLFormattedError } from 'graphql';
 import {
   GetCheckoutSessionUrlOrStripeUpdateStatusDocument,
   GetCheckoutSessionUrlOrStripeUpdateStatusQuery,
@@ -51,7 +51,7 @@ export const getCheckoutSessionOrUpdatePlan = async (
 export const getCustomDomainCheckoutSession = async (
   customDomain: string,
   redirectURL: string
-): Promise<{ errors?: readonly GraphQLError[]; checkoutSession?: CheckoutSession }> => {
+): Promise<{ errors?: readonly GraphQLFormattedError[]; checkoutSession?: CheckoutSession }> => {
   const response = await client.query<GetCustomDomainCheckoutPortalQuery, GetCustomDomainCheckoutPortalQueryVariables>({
     query: GetCustomDomainCheckoutPortalDocument,
     variables: {

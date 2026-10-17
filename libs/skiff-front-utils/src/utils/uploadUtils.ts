@@ -24,7 +24,7 @@ export async function computeContentHash(contentChunks: string[]) {
 }
 
 export const handleFileUploadErrors = (
-  errors: FileError[],
+  errors: readonly FileError[],
   enqueueToast: (toastParams: ToastProps) => void,
   file: File | { name: string },
   setPaywallOpen?: (open: boolean) => void

@@ -1,6 +1,6 @@
 import { ApolloCache, useApolloClient } from '@apollo/client';
 import { NormalizedCacheObject } from '@apollo/client/cache';
-import { GraphQLError } from 'graphql';
+import type { GraphQLFormattedError } from 'graphql';
 import difference from 'lodash/difference';
 import forEach from 'lodash/forEach';
 import {
@@ -58,7 +58,8 @@ export function updateNumUnreadAllLabelsCache(
   cache: ApolloCache<NormalizedCacheObject>,
   diffByLabelMap: Map<string, number>
 ): void {
-  cache.modify({
+  // explicit entity type: otherwise Apollo infers it from the modifier and expects store references
+  cache.modify<Record<string, any>>({
     id: cache.identify({ __typename: 'Query' }),
     fields: {
       unreadAllLabels(existingData: LabelUnreadCount[] = []) {
@@ -111,7 +112,7 @@ export function removeThreadsFromCache(params: {
   cache: ApolloCache<NormalizedCacheObject>;
   threadIDs: string[];
   label: SystemLabels;
-  errors?: readonly GraphQLError[];
+  errors?: readonly GraphQLFormattedError[];
 }) {
   const { cache, threadIDs, errors, label } = params;
   if (errors) {
@@ -142,7 +143,7 @@ export function removeThreadsFromCache(params: {
 export function updateThreadsWithModifiedLabels(params: {
   cache: ApolloCache<NormalizedCacheObject>;
   updatedThreads: UpdatedThreadLabels[] | null | undefined;
-  errors?: readonly GraphQLError[];
+  errors?: readonly GraphQLFormattedError[];
 }) {
   const { cache, updatedThreads, errors } = params;
   if (errors) {
@@ -283,7 +284,7 @@ export function updateThreadsWithModifiedLabels(params: {
 export function updateUserLabelsOnCreateOrEdit(
   cache: ApolloCache<any>,
   modifiedLabel: UserLabel | null | undefined,
-  errors?: readonly GraphQLError[]
+  errors?: readonly GraphQLFormattedError[]
 ) {
   if (errors) {
     console.error('There was an error creating or modifying label', errors);

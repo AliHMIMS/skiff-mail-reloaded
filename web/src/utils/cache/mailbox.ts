@@ -167,7 +167,7 @@ export function removeThreadsFromMailboxQuery(
  * Updates all threads in the cache to be read
  */
 export function cacheMarkAllRead(cache: ApolloCache<any>, read: boolean) {
-  cache.modify({
+  cache.modify<Record<string, any>>({
     fields: {
       mailbox: (previous: Mailbox | undefined) => {
         const newThreads = previous?.threads ? [...previous.threads] : [];

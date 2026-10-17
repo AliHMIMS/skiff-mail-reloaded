@@ -107,7 +107,7 @@ const EmailAliasOptions: React.FC<EmailAliasOptionsProps> = ({
     } catch (e) {
       // Typescript won't allow us to annotate `e` as ApolloError above, so
       // we cast it below
-      const code = (e as ApolloError)?.graphQLErrors?.[0].extensions.code as PaywallErrorCode;
+      const code = (e as ApolloError)?.graphQLErrors?.[0]?.extensions?.code as PaywallErrorCode;
       if (isPaywallErrorCode(code)) {
         setPaywallErrorCode(code);
         return;

@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, type Middleware } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 
 import { reducer } from '../reducers';
@@ -9,7 +9,8 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => {
     const defaultMiddleware = getDefaultMiddleware({ serializableCheck: false });
     if (process.env.NODE_ENV === 'development') {
-      return defaultMiddleware.concat(createLogger({ level: 'info', collapsed: true }));
+      // redux-logger is typed against Redux 5, the toolkit against Redux 4
+      return defaultMiddleware.concat(createLogger({ level: 'info', collapsed: true }) as Middleware);
     }
     return defaultMiddleware;
   }

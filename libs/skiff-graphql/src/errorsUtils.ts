@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { ApolloError } from '@apollo/client/errors'; // Importing directly from this file to prevent adding the whole @apollo/client lib to this lib
-import { GraphQLError } from 'graphql';
+import { GraphQLError, type GraphQLFormattedError } from 'graphql';
 import { isPaywallErrorCode, PaywallErrorCode } from 'skiff-utils';
 
 import type { LogicErrorTypes } from './errors';
@@ -21,7 +21,7 @@ export const convertBatchError = (e: BatchError) =>
     ]
   });
 
-export const getPaywallErrorCode = (errors: readonly GraphQLError[]) => {
+export const getPaywallErrorCode = (errors: readonly GraphQLFormattedError[]) => {
   if (!errors.length) return;
   const allErrorCodes = errors.map((error) => (!!error.extensions?.code ? (error.extensions.code as string) : ''));
   const paywallErrorCode = allErrorCodes.find((code) => isPaywallErrorCode(code));

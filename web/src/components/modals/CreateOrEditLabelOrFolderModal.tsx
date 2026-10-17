@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import { GraphQLError } from 'graphql';
+import type { GraphQLFormattedError } from 'graphql';
 import isString from 'lodash/isString';
 import {
   ButtonGroup,
@@ -75,7 +75,7 @@ export const CreateOrEditLabelOrFolderModal = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const isReadyToSubmit = color && labelName;
-  const [errors, setErrors] = useState<readonly GraphQLError[]>([]);
+  const [errors, setErrors] = useState<readonly GraphQLFormattedError[]>([]);
   const [paywallErrorCode, setPaywallErrorCode] = useState<PaywallErrorCode | null>(null);
 
   const onClose = (userLabel?: UserLabelPlain | UserLabelFolder) => {

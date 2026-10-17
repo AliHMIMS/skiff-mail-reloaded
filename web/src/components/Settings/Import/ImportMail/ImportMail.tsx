@@ -1,5 +1,5 @@
 import { ApolloError } from '@apollo/client';
-import { GraphQLError } from 'graphql';
+import type { GraphQLFormattedError } from 'graphql';
 import { useState } from 'react';
 import { TitleActionSection, useToast } from 'skiff-front-utils';
 import styled from 'styled-components';
@@ -34,7 +34,7 @@ export const ImportMail: React.FC = () => {
   };
 
   const handleFileImportError = (err: ApolloError) => {
-    err.graphQLErrors?.some((graphError: GraphQLError) => {
+    err.graphQLErrors?.some((graphError: GraphQLFormattedError) => {
       if (graphError.extensions?.code === 'IMPORT_ERROR') {
         enqueueToast({
           title: 'Import failed',
