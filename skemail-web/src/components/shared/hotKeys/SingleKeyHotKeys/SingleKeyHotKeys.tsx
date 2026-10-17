@@ -199,7 +199,7 @@ const SingleKeyHotKeys = () => {
     (e?: KeyboardEvent) => {
       onHandleHotKeyPress(e);
 
-      // act like a toggle, if threadFormat is full, set it to right and vice versa
+      // act like a toggle, if threadFormat is full, set it to right and vice versa
       setThreadFormat(threadFormat === ThreadDisplayFormat.Full ? ThreadDisplayFormat.Right : ThreadDisplayFormat.Full);
     },
     [threadFormat, setThreadFormat]

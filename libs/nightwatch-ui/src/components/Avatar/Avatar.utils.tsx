@@ -15,4 +15,5 @@ export const getAvatarIconOrLabel = (label?: string, icon?: Icon | IconComponent
  * @param {string} str - Text with emojis
  * @returns {string} - Text without emojis
  */
+// oxlint-disable-next-line no-control-regex -- keeps the ASCII range (control characters included) and drops the rest
 export const stripEmojis = (str: string) => str.replace(/[^\x00-\x7F]/g, '');

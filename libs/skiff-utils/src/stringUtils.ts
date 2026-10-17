@@ -2,6 +2,7 @@ import { CONTENT_SNIPPET_SIZE } from './constants';
 
 const invalidProtocolRegex = /^([^\w]*)(javascript|data|vbscript)/im;
 const htmlEntitiesRegex = /&#(\w+)(^\w|;)?/g;
+// oxlint-disable-next-line no-control-regex -- matching control characters is the point: they're stripped from URLs
 const ctrlCharactersRegex = /[\u0000-\u001F\u007F-\u009F\u2000-\u200D\uFEFF]/gim;
 const urlSchemeRegex = /^([^:]+):/gm;
 const relativeFirstCharacters = ['.', '/'];
