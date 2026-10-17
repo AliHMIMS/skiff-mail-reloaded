@@ -1,2 +1,2 @@
-export { HourPicker, HourPickerProps } from './HourPicker';
-export { TimeFormat } from './hourPickerUtils';
+export { HourPicker, type HourPickerProps } from './HourPicker';
+export { type TimeFormat } from './hourPickerUtils';

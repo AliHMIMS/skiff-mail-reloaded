@@ -1,1 +1,1 @@
-export { default, IconTextWithEndActionsProps, IconTextEndAction } from './IconTextWithEndActions';
+export { default, type IconTextWithEndActionsProps, type IconTextEndAction } from './IconTextWithEndActions';

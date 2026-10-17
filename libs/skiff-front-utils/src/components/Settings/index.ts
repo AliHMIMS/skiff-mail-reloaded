@@ -4,7 +4,7 @@ export { default as InvoiceHistory } from './Billing/InvoiceHistory';
 export { default as PaymentDetails } from './Billing/PaymentDetails';
 export { useBillingSettings } from './Billing/useBillingSettings';
 export {
-  ContactWithoutTypename,
+  type ContactWithoutTypename,
   contactToAddressObject,
   getContactDisplayNameAndSubtitle,
   getContactDisplayPictureData,
@@ -31,4 +31,4 @@ export { default as PlanChangeConfirmModal } from './SubscriptionPlans/PlanChang
 export { default as PriceBlock } from './SubscriptionPlans/PriceBlock/PriceBlock';
 export { default as SubscriptionPlans } from './SubscriptionPlans/SubscriptionPlans';
 export { default as ThemeSelectSettings } from './ThemeSelectSettings';
-export { SettingAction, default as TitleActionSection } from './TitleActionSection';
+export { type SettingAction, default as TitleActionSection } from './TitleActionSection';

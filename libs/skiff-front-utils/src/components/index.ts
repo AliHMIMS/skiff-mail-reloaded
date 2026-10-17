@@ -7,13 +7,13 @@ export { default as CircleBadge } from './CircleBadge';
 export { ColorCircle, ColorOption, ColorPicker, default as ColorSelector } from './ColorSelector';
 export * from './ContactsDropdownItems';
 export { AnimatedCopyIcon, COPIED_DURATION, default as CopyToClipboardButton } from './CopyToClipboardButton';
-export { default as CreditManagement, CreditPromptProps } from './CreditManagement';
+export { default as CreditManagement, type CreditPromptProps } from './CreditManagement';
 export { DateDisplay, getDateContent } from './Date';
 export { DATE_PICKER_DROPDOWN_CLASSNAME, DateField, DateInputField } from './DateField';
 export {
   DAY_PICKER_SIZE,
   default as DatePicker,
-  DatePickerEvent,
+  type DatePickerEvent,
   WEEK_ROW_VERTICAL_MARGIN,
   getDatePickerHeight
 } from './DatePicker';
@@ -38,9 +38,9 @@ export { FilterSelect, FilterSelectMetadataItem } from './FilterSelect';
 export { GoogleLoginButton } from './GoogleLoginButton';
 export * from './HourPicker';
 export {
-  IconTextEndAction,
+  type IconTextEndAction,
   default as IconTextWithEndActions,
-  IconTextWithEndActionsProps
+  type IconTextWithEndActionsProps
 } from './IconTextWithEndActions';
 export { default as InputFieldEndAction } from './InputFieldEndAction';
 export { default as KeyCodeSequence } from './KeyCodeSequence';
@@ -56,8 +56,8 @@ export {
   ORG_SELECTOR_ID,
   OrganizationSelect,
   SKIFF_APPS,
-  SectionAction,
-  WorkspaceOptionItem
+  type SectionAction,
+  type WorkspaceOptionItem
 } from './OrganizationSelect';
 export { default as PaidPlanTag } from './PaidPlanTag';
 export { default as PasswordAndConfirmPasswordBlock } from './PasswordAndConfirmPasswordBlock';

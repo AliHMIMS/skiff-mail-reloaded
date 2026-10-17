@@ -1,2 +1,2 @@
 export { default } from './ButtonGroupItem';
-export { ButtonGroupItemComponent } from './ButtonGroupItem.types';
+export { type ButtonGroupItemComponent } from './ButtonGroupItem.types';

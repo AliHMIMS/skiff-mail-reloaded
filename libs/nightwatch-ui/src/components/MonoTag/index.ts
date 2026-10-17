@@ -1,2 +1,2 @@
 export { default } from './MonoTag';
-export { MonoTagProps } from './MonoTag.types';
+export { type MonoTagProps } from './MonoTag.types';

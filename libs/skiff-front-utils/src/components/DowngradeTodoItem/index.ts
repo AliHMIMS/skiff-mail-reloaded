@@ -1,1 +1,1 @@
-export { default, DowngradeTodoItemProps } from './DowngradeTodoItem';
+export { default, type DowngradeTodoItemProps } from './DowngradeTodoItem';

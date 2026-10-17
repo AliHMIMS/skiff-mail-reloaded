@@ -129,12 +129,10 @@ export default defineConfig(({ mode }) => ({
     sourcemap: false,
     chunkSizeWarningLimit: 8000,
     rolldownOptions: {
-      // the libraries re-export TypeScript types without `export type`; those names don't exist at runtime
-      shimMissingExports: true,
       transform: { inject: NODE_GLOBALS },
       onLog(level, log, handler) {
-        // expected: the type re-exports above, and `eval` inside a third-party dependency
-        if (log.code === 'SHIMMED_EXPORT' || log.code === 'EVAL') return;
+        // expected: `eval` inside a third-party dependency
+        if (log.code === 'EVAL') return;
         handler(level, log);
       }
     }

@@ -1,2 +1,2 @@
 export * from './RecentFilePreview';
-export { FileTableHeader, ActionIcon, FileTypeFilter, FileTableRow, FileTableHeaderSelectionState } from './FileTable';
+export { FileTableHeader, type ActionIcon, FileTypeFilter, FileTableRow, FileTableHeaderSelectionState } from './FileTable';

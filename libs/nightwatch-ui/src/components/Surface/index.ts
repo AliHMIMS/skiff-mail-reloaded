@@ -1,4 +1,4 @@
-export { default, SurfaceProps } from './Surface';
+export { default, type SurfaceProps } from './Surface';
 export {
   SCRIM_CLASSNAME,
   OPTION_MENU_CLASSNAME,

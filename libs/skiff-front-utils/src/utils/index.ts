@@ -42,7 +42,7 @@ export * from './reactUtils';
 export * from './recoveryUtils';
 // Note: Intentionally not exporting everything from sharingUtils
 export {
-  ShareDocWithUsersRequest,
+  type ShareDocWithUsersRequest,
   changeUserExpiry,
   convertLinkDataIntoURL,
   getUsersToShare,

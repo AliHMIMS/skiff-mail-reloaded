@@ -1,8 +1,8 @@
 export { OrganizationSelect } from './OrganizationSelect';
 export {
   ORG_SELECTOR_ID,
-  SectionAction,
+  type SectionAction,
   SKIFF_APPS,
   INBOX_WORKSPACE_ID,
-  WorkspaceOptionItem
+  type WorkspaceOptionItem
 } from './OrganizationSelect.constants';

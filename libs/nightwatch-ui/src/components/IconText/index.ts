@@ -1,2 +1,2 @@
 export { default } from './IconText';
-export { IconTextProps, IconComponent, IconTextSize } from './IconText.types';
+export { type IconTextProps, type IconComponent, type IconTextSize } from './IconText.types';

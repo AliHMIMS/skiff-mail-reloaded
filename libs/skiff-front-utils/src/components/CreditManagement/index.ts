@@ -1,2 +1,2 @@
 export { default } from './CreditManagement';
-export { CreditPromptProps } from './CreditPrompt';
+export { type CreditPromptProps } from './CreditPrompt';

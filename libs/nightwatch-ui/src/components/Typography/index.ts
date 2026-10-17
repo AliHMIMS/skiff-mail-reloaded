@@ -1,7 +1,7 @@
 export { default } from './Typography';
 export {
   TextDecoration,
-  TypographyProps,
+  type TypographyProps,
   TypographyOverflow,
   TypographySize,
   TypographyWeight

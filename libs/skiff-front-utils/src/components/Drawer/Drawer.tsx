@@ -22,7 +22,7 @@ import styled, { css } from 'styled-components';
 import { ANCHOR, DRAWER_PADDING_LEFT_RIGHT } from './Drawer.constants';
 import { DRAWER_PAPER_CSS, TITLE_CSS } from './Drawer.styles';
 import { DrawerProps } from './Drawer.types';
-export { DrawerProps } from './Drawer.types';
+export { type DrawerProps } from './Drawer.types';
 
 const KEYBOARD_POS_CSS = (keyboardHeight: number) => css`
   transform: translateY(-${keyboardHeight}px) !important;
