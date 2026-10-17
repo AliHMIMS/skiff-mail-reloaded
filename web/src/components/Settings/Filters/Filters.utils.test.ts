@@ -1,3 +1,4 @@
+import { describe, it, expect, vi, type Mock } from 'vitest';
 import * as skiffCrypto from 'skiff-crypto';
 import { AddressObjectWithDisplayPicture } from 'skiff-front-utils';
 import {
@@ -19,26 +20,27 @@ import { Condition } from './Filters.types';
 import { conditionsFromFilterGraphQL, createCreateMailFilterInput, filterFromGraphQL } from './Filters.utils';
 
 // MOCKS
-jest.mock('skiff-crypto', () => ({
+vi.mock('skiff-crypto', () => ({
   __esModule: true,
   encryptSessionKey: () => ({ encryptedKey: '', encryptedBy: { key: '' } }),
-  encryptDatagramV2: jest.fn(),
-  decryptDatagramV2: jest.fn(),
-  generateSymmetricKey: jest.fn()
+  encryptDatagramV2: vi.fn(),
+  decryptDatagramV2: vi.fn(),
+  generateSymmetricKey: vi.fn()
 }));
 
-jest.mock('skiff-front-utils', () => ({
+vi.mock('skiff-front-utils', () => ({
   __esModule: true,
   requireCurrentUserData: () => ({
     userID: 'id',
     username: '1@skiff.com',
+    publicKey: { key: '' },
     privateUserData: {
       privateKey: 'privateKey'
     }
   })
 }));
 
-jest.mock('../../../crypto/filters', () => ({
+vi.mock('../../../crypto/filters', () => ({
   SubjectTextDatagram: 'SubjectTextDatagram',
   BodyTextDatagram: 'BodyTextDatagram'
 }));
@@ -275,10 +277,11 @@ describe('createCreateMailFilterInput', () => {
 
   it('createCreateMailFilterInput encrypts subject conditions', () => {
     const encryptedSubject = 'encryptedSubject';
-    (skiffCrypto.encryptDatagramV2 as jest.Mock).mockReturnValue({ encryptedData: encryptedSubject });
-    jest
-      .spyOn(skiffCrypto, 'encryptSessionKey')
-      .mockImplementation(() => ({ encryptedKey: 'encryptedKey', encryptedBy: { key: 'encryptedByKey' } }));
+    (skiffCrypto.encryptDatagramV2 as Mock).mockReturnValue({ encryptedData: encryptedSubject });
+    vi.spyOn(skiffCrypto, 'encryptSessionKey').mockImplementation(() => ({
+      encryptedKey: 'encryptedKey',
+      encryptedBy: { key: 'encryptedByKey' }
+    }));
 
     const conditions: Condition[] = [
       {
@@ -301,10 +304,11 @@ describe('createCreateMailFilterInput', () => {
 
   it('createCreateMailFilterInput encrypts body conditions', () => {
     const encryptedBody = 'encryptedBody';
-    (skiffCrypto.encryptDatagramV2 as jest.Mock).mockReturnValue({ encryptedData: encryptedBody });
-    jest
-      .spyOn(skiffCrypto, 'encryptSessionKey')
-      .mockImplementation(() => ({ encryptedKey: 'encryptedKey', encryptedBy: { key: 'encryptedByKey' } }));
+    (skiffCrypto.encryptDatagramV2 as Mock).mockReturnValue({ encryptedData: encryptedBody });
+    vi.spyOn(skiffCrypto, 'encryptSessionKey').mockImplementation(() => ({
+      encryptedKey: 'encryptedKey',
+      encryptedBy: { key: 'encryptedByKey' }
+    }));
 
     const conditions: Condition[] = [
       {
@@ -382,7 +386,7 @@ describe('conditionsFromFilterGraphQL', () => {
   it('decrypts subject conditions', () => {
     const encryptedSubject = 'test subject';
     const decryptedSubject = 'test subject';
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: decryptedSubject } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: decryptedSubject } });
 
     const graphQLFilter: MailFilterFieldGraphQL = {
       filterType: FilterTypeGraphQL.And,
@@ -404,7 +408,7 @@ describe('conditionsFromFilterGraphQL', () => {
   it('decrypts body conditions', () => {
     const encryptedBody = 'test body';
     const decryptedBody = 'test body';
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: decryptedBody } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: decryptedBody } });
 
     const graphQLFilter: MailFilterFieldGraphQL = {
       filterType: FilterTypeGraphQL.And,

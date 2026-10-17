@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -30,51 +31,49 @@ import * as useCurrentLabel from '../src/hooks/useCurrentLabel';
 import SystemLabelMailbox from '../src/pages/SystemLabelMailbox';
 import store from '../src/redux/store/reduxStore';
 
-jest.mock('email-regex', () => jest.fn());
+vi.mock('email-regex', () => ({ default: vi.fn() }));
 
-jest.mock('idb-keyval', () => ({
-  get: jest.fn(),
-  set: jest.fn(),
-  del: jest.fn()
+vi.mock('idb-keyval', () => ({
+  get: vi.fn(),
+  set: vi.fn(),
+  del: vi.fn()
 }));
-jest.mock(
-  'react-virtualized-auto-sizer',
-  () =>
-    ({ children }: any) =>
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
-      children({ height: 600, width: 600 })
-);
+vi.mock('react-virtualized-auto-sizer', () => ({
+  default: ({ children }: any) =>
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
+    children({ height: 600, width: 600 })
+}));
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('../src/utils/draftUtils', () => ({
-  ...jest.requireActual('../src/utils/draftUtils'),
-  getUserDrafts: jest.fn().mockResolvedValue([]),
-  getDraftSaveData: jest.fn().mockResolvedValue({})
+vi.mock('../src/utils/draftUtils', async () => ({
+  ...(await vi.importActual('../src/utils/draftUtils')),
+  getUserDrafts: vi.fn().mockResolvedValue([]),
+  getDraftSaveData: vi.fn().mockResolvedValue({})
 }));
-jest.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: jest.fn(),
-  useInitializeSearchWorker: jest.fn()
-}));
-
-jest.mock('../src/hooks/useGetSearchIndexProgressDate', () => jest.fn());
-
-jest.mock('../src/hooks/useFetchCurrentUser', () => () => ({
-  isLoggedIn: true,
-  isCachedLoginSuccessful: true,
-  isCachedLoginDone: true
+vi.mock('../src/hooks/useSearchWorker', () => ({
+  getSearchWorker: vi.fn(),
+  useInitializeSearchWorker: vi.fn()
 }));
 
-jest.mock('../src/utils/mailFiltering/mailFiltering', () => ({
-  runClientSideMailFilters: jest.fn()
+vi.mock('../src/hooks/useGetSearchIndexProgressDate', () => ({ default: vi.fn() }));
+
+vi.mock('../src/hooks/useFetchCurrentUser', () => ({
+  default: () => ({ isLoggedIn: true, isCachedLoginSuccessful: true, isCachedLoginDone: true })
 }));
 
-jest.mock('skiff-front-utils', () => {
+vi.mock('../src/hooks/useRealtimeSync', () => ({ useRealtimeSync: vi.fn() }));
+
+vi.mock('../src/utils/mailFiltering/mailFiltering', () => ({
+  runClientSideMailFilters: vi.fn()
+}));
+
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useToast: () => ({ enqueueToast: jest.fn(), closeToast: jest.fn() }),
-    useCheckoutResultToast: jest.fn(),
+    useToast: () => ({ enqueueToast: vi.fn(), closeToast: vi.fn() }),
+    useCheckoutResultToast: vi.fn(),
     useCurrentUserEmailAliases: () => ({ emailAliases: ['1@skiff.town'], walletAliasesWithName: [], quickAliases: [] }),
     useRequiredCurrentUserData: () => ({
       userID: 'id',
@@ -95,9 +94,9 @@ jest.mock('skiff-front-utils', () => {
   };
 });
 
-jest.mock('skiff-front-graphql', () => {
+vi.mock('skiff-front-graphql', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-graphql');
+  const original = await vi.importActual('skiff-front-graphql');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
@@ -108,23 +107,23 @@ jest.mock('skiff-front-graphql', () => {
     })
   };
 });
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
-    trashThreads: jest.fn(),
-    setActiveThreadID: jest.fn()
+    trashThreads: vi.fn(),
+    setActiveThreadID: vi.fn()
   })
 }));
 
-jest.mock('../src/svgs/empty-inbox.svg', () => jest.fn().mockReturnValue(null));
+vi.mock('../src/svgs/empty-inbox.svg', () => ({ default: vi.fn().mockReturnValue(null) }));
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('../src/utils/userUtils', () => ({
-  ...jest.requireActual('../src/utils/userUtils'),
-  storeWorkspaceEvent: jest.fn()
+vi.mock('../src/utils/userUtils', async () => ({
+  ...(await vi.importActual('../src/utils/userUtils')),
+  storeWorkspaceEvent: vi.fn()
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({ pathname: '/mail/inbox' })
 }));
 
@@ -305,9 +304,10 @@ describe('Layout', () => {
   });
 
   it('opens and closes compose properly', async () => {
-    jest
-      .spyOn(useCurrentLabel, 'useCurrentLabel')
-      .mockImplementation(() => ({ label: SystemLabels.Inbox, userLabelVariant: null }));
+    vi.spyOn(useCurrentLabel, 'useCurrentLabel').mockImplementation(() => ({
+      label: SystemLabels.Inbox,
+      userLabelVariant: null
+    }));
 
     render(
       <Suspense fallback={null}>
@@ -360,9 +360,10 @@ describe('Layout', () => {
   });
 
   it('creates, saves, and re-opens draft', async () => {
-    jest
-      .spyOn(useCurrentLabel, 'useCurrentLabel')
-      .mockImplementation(() => ({ label: SystemLabels.Drafts, userLabelVariant: null }));
+    vi.spyOn(useCurrentLabel, 'useCurrentLabel').mockImplementation(() => ({
+      label: SystemLabels.Drafts,
+      userLabelVariant: null
+    }));
 
     act(() => {
       render(

@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { generateHash } from './hash';
 
 // expected length of crypto hash method

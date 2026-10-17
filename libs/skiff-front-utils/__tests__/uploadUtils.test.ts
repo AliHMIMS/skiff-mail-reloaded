@@ -1,11 +1,12 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { FileImportFailures, handleFileUploadErrors } from '../src';
 
 describe('handleFileUploadErrors', () => {
   let mockSetPaywallOpen: () => void;
   let mockEnqueueToast: () => void;
   beforeEach(() => {
-    mockSetPaywallOpen = jest.fn();
-    mockEnqueueToast = jest.fn();
+    mockSetPaywallOpen = vi.fn();
+    mockEnqueueToast = vi.fn();
   });
   it('opens paywall if not upgraded', () => {
     const fileUploadErrors = [{ code: FileImportFailures.TOO_LARGE, message: 'message' }];

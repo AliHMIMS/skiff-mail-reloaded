@@ -1,3 +1,4 @@
+import { describe, test, expect } from 'vitest';
 import { concatUint8Arrays, varintPrefixed } from './typedArraysUtils';
 
 describe('test concatenation', () => {

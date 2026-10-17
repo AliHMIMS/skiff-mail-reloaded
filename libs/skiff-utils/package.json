@@ -6,6 +6,9 @@
     ".": "./src/index.ts"
   },
   "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run"
+  },
   "description": "global utils function for backend and frontend",
   "sideEffects": [
     "./src/dateUtils.ts"

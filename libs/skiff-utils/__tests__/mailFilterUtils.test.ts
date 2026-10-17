@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { isClientside } from '../src/mailFilterUtils';
 
 describe('isClientside', () => {

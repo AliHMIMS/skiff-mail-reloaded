@@ -6,6 +6,9 @@
     ".": "./src/index.ts"
   },
   "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run"
+  },
   "description": "Cryptographic related functions and helpers",
   "sideEffects": false,
   "private": true,

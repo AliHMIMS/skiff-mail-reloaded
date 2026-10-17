@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { render, screen } from '@testing-library/react';
 

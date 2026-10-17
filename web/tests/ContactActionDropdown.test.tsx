@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { ApolloProvider } from '@apollo/client';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
@@ -16,29 +17,29 @@ import {
   ETHERSCAN_ENS_LOOKUP_URL
 } from '../src/utils/walletUtils/walletUtils.constants';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useToast: () => ({ enqueueToast: jest.fn(), closeToast: jest.fn() })
+    useToast: () => ({ enqueueToast: vi.fn(), closeToast: vi.fn() })
   };
 });
-jest.mock('../src/hooks/useDrafts', () => ({
+vi.mock('../src/hooks/useDrafts', () => ({
   useDrafts: () => ({
-    composeNewDraft: jest.fn()
+    composeNewDraft: vi.fn()
   })
 }));
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useParams: () => ({ mailboxLabel: 'inbox' })
 }));
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
     activeThreadID: 'threadID'
   })
@@ -63,7 +64,7 @@ describe('ContactActionDropdown', () => {
   );
 
   beforeEach(() => {
-    window.open = jest.fn();
+    window.open = vi.fn();
   });
 
   afterEach(() => {
@@ -80,7 +81,7 @@ describe('ContactActionDropdown', () => {
         <ContactActionDropdown
           address={sender}
           buttonRef={React.createRef<HTMLDivElement>()}
-          setShowActionDropdown={jest.fn()}
+          setShowActionDropdown={vi.fn()}
           show
         />
       </ApolloProvider>,
@@ -99,7 +100,7 @@ describe('ContactActionDropdown', () => {
         <ContactActionDropdown
           address={sender}
           buttonRef={React.createRef<HTMLDivElement>()}
-          setShowActionDropdown={jest.fn()}
+          setShowActionDropdown={vi.fn()}
           show
         />
       </ApolloProvider>,
@@ -114,7 +115,7 @@ describe('ContactActionDropdown', () => {
     const ethAddress = `0x${'a'.padStart(40, 'a')}`;
     // If you change name, update the regex below
     const sender = { address: ethAddress, name: 'name' };
-    const setShowActionDropdown = jest.fn();
+    const setShowActionDropdown = vi.fn();
 
     render(
       <ApolloProvider client={client}>
@@ -149,7 +150,7 @@ describe('ContactActionDropdown', () => {
         <ContactActionDropdown
           address={sender}
           buttonRef={React.createRef<HTMLDivElement>()}
-          setShowActionDropdown={jest.fn()}
+          setShowActionDropdown={vi.fn()}
           show
         />
       </ApolloProvider>,
@@ -175,7 +176,7 @@ describe('ContactActionDropdown', () => {
         <ContactActionDropdown
           address={sender}
           buttonRef={React.createRef<HTMLDivElement>()}
-          setShowActionDropdown={jest.fn()}
+          setShowActionDropdown={vi.fn()}
           show
         />
       </ApolloProvider>,

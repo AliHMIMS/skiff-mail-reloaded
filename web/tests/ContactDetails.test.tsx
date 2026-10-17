@@ -1,13 +1,14 @@
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
 import RecipientDetails from '../src/components/Thread/ContactDetails/RecipientDetails';
 
 import { MOCK_EMAIL } from './mocks/mockEmail';
 
-jest.mock('../src/hooks/useDrafts', () => ({
-  composeNewDraft: jest.fn()
+vi.mock('../src/hooks/useDrafts', () => ({
+  composeNewDraft: vi.fn()
 }));
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
 

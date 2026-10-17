@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { Contact } from 'skiff-graphql';
 import { v4 } from 'uuid';
 

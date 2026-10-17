@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi, type Mock } from 'vitest';
 import { EmailFragment } from 'skiff-front-graphql';
 import * as skiffFrontUtils from 'skiff-front-utils';
 import { ActionType, FilterField, FilterType, MailFilter, SystemLabels } from 'skiff-graphql';
@@ -13,7 +14,7 @@ import * as mailFilteringUtils from './mailFiltering.utils';
 const PRIVATE_KEY = 'privateKey';
 
 // MOCKS
-jest.mock('skiff-front-utils', () => ({
+vi.mock('skiff-front-utils', () => ({
   __esModule: true,
   requireCurrentUserData: () => ({
     userID: 'id',
@@ -22,21 +23,21 @@ jest.mock('skiff-front-utils', () => ({
       privateKey: PRIVATE_KEY
     }
   }),
-  aggregateMailFilterActionsForThreads: jest.fn()
+  aggregateMailFilterActionsForThreads: vi.fn()
 }));
 
-jest.mock('./mailFiltering.utils', () => ({
-  fetchUnfilteredThreads: jest.fn(),
-  fetchClientsideFilters: jest.fn(),
-  applyLabelsToThreads: jest.fn(),
-  applySystemLabelsToThreads: jest.fn(),
-  markThreadsAsRead: jest.fn(),
-  markThreadsAsClientsideFiltered: jest.fn(),
-  decryptEmailTextAndSubject: jest.fn()
+vi.mock('./mailFiltering.utils', () => ({
+  fetchUnfilteredThreads: vi.fn(),
+  fetchClientsideFilters: vi.fn(),
+  applyLabelsToThreads: vi.fn(),
+  applySystemLabelsToThreads: vi.fn(),
+  markThreadsAsRead: vi.fn(),
+  markThreadsAsClientsideFiltered: vi.fn(),
+  decryptEmailTextAndSubject: vi.fn()
 }));
 
-jest.mock('../mailboxUtils', () => ({
-  updateThreadAsReadUnread: jest.fn()
+vi.mock('../mailboxUtils', () => ({
+  updateThreadAsReadUnread: vi.fn()
 }));
 
 describe('runClientSideMailFilters', () => {
@@ -77,14 +78,14 @@ describe('runClientSideMailFilters', () => {
   ];
 
   beforeEach(() => {
-    (mailFilteringUtils.fetchUnfilteredThreads as jest.Mock).mockResolvedValue({
+    (mailFilteringUtils.fetchUnfilteredThreads as Mock).mockResolvedValue({
       pageInfo: { hasNextPage: false, cursor: undefined },
       threads: threadsToApplyFilterTo
     });
-    (mailFilteringUtils.fetchClientsideFilters as jest.Mock).mockResolvedValue(clientSideFilters);
-    (mailFilteringUtils.markThreadsAsRead as jest.Mock).mockResolvedValue([]);
-    (mailFilteringUtils.applyLabelsToThreads as jest.Mock).mockResolvedValue([]);
-    (mailFilteringUtils.decryptEmailTextAndSubject as jest.Mock).mockReturnValue({
+    (mailFilteringUtils.fetchClientsideFilters as Mock).mockResolvedValue(clientSideFilters);
+    (mailFilteringUtils.markThreadsAsRead as Mock).mockResolvedValue([]);
+    (mailFilteringUtils.applyLabelsToThreads as Mock).mockResolvedValue([]);
+    (mailFilteringUtils.decryptEmailTextAndSubject as Mock).mockReturnValue({
       text: 'test body',
       subject: decryptedSubjectOfEmailMatchingSubjectFilter
     });
@@ -92,13 +93,13 @@ describe('runClientSideMailFilters', () => {
 
   afterEach(() => {
     // reset all mocks
-    // (skiffCrypto.decryptDatagramV2 as jest.Mock).mockClear();
-    (mailFilteringUtils.fetchUnfilteredThreads as jest.Mock).mockClear();
-    (mailFilteringUtils.fetchClientsideFilters as jest.Mock).mockClear();
-    (mailFilteringUtils.markThreadsAsRead as jest.Mock).mockClear();
-    (mailFilteringUtils.applyLabelsToThreads as jest.Mock).mockClear();
-    (mailFilteringUtils.markThreadsAsClientsideFiltered as jest.Mock).mockClear();
-    (mailFilteringUtils.decryptEmailTextAndSubject as jest.Mock).mockClear();
+    // (skiffCrypto.decryptDatagramV2 as Mock).mockClear();
+    (mailFilteringUtils.fetchUnfilteredThreads as Mock).mockClear();
+    (mailFilteringUtils.fetchClientsideFilters as Mock).mockClear();
+    (mailFilteringUtils.markThreadsAsRead as Mock).mockClear();
+    (mailFilteringUtils.applyLabelsToThreads as Mock).mockClear();
+    (mailFilteringUtils.markThreadsAsClientsideFiltered as Mock).mockClear();
+    (mailFilteringUtils.decryptEmailTextAndSubject as Mock).mockClear();
   });
 
   it('applies filters to threads that match the conditions', async () => {
@@ -109,7 +110,7 @@ describe('runClientSideMailFilters', () => {
       [systemLabelToMoveTo]: [threadMatchingFilterID]
     };
 
-    (skiffFrontUtils.aggregateMailFilterActionsForThreads as jest.Mock).mockReturnValue({
+    (skiffFrontUtils.aggregateMailFilterActionsForThreads as Mock).mockReturnValue({
       userLabelToThreadIDs: expectedLabelToThreadIDs,
       systemLabelToThreadIDs: expectedSystemLabelToThreadIDs,
       threadsToMarkAsRead: [threadMatchingFilterID]
@@ -128,7 +129,7 @@ describe('runClientSideMailFilters', () => {
   });
 
   it('does not mark threads with actions that failed to apply as successfully filtered', async () => {
-    (mailFilteringUtils.applyLabelsToThreads as jest.Mock).mockResolvedValue([threadMatchingFilterID]);
+    (mailFilteringUtils.applyLabelsToThreads as Mock).mockResolvedValue([threadMatchingFilterID]);
 
     await runClientSideMailFilters();
 
@@ -137,7 +138,7 @@ describe('runClientSideMailFilters', () => {
   });
 
   it('paginates through all threads that have not yet run through the filters', async () => {
-    (mailFilteringUtils.fetchUnfilteredThreads as jest.Mock)
+    (mailFilteringUtils.fetchUnfilteredThreads as Mock)
       // first call to get threads returns with next page as true
       .mockResolvedValueOnce({
         pageInfo: {

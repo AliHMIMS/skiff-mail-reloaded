@@ -1,4 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
+import { describe, test, expect } from 'vitest';
 import randomBytes from 'randombytes';
 import { Range } from 'semver';
 

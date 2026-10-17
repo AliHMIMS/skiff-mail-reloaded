@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -11,16 +12,16 @@ import {
 
 import { MOCK_USER } from './mocks/mockUser';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useToast: () => ({ enqueueToast: jest.fn(), closeToast: jest.fn() })
+    useToast: () => ({ enqueueToast: vi.fn(), closeToast: vi.fn() })
   };
 });
 
@@ -33,11 +34,11 @@ describe('ConnectWalletModal', () => {
     render(
       <MockedProvider>
         <ConnectWalletModal
-          closeParentModal={jest.fn}
-          onBack={jest.fn()}
-          onClose={jest.fn()}
+          closeParentModal={vi.fn}
+          onBack={vi.fn()}
+          onClose={vi.fn()}
           open
-          setUserPublicKey={jest.fn()}
+          setUserPublicKey={vi.fn()}
           userID={''}
         />
       </MockedProvider>
@@ -53,15 +54,15 @@ describe('ConnectWalletModal', () => {
 
   it('redirects to wallet page if the wallet is not detected', async () => {
     const originalOpen = window.open;
-    window.open = jest.fn();
+    window.open = vi.fn();
     render(
       <MockedProvider>
         <ConnectWalletModal
-          closeParentModal={jest.fn}
-          onBack={jest.fn()}
-          onClose={jest.fn()}
+          closeParentModal={vi.fn}
+          onBack={vi.fn()}
+          onClose={vi.fn()}
           open
-          setUserPublicKey={jest.fn()}
+          setUserPublicKey={vi.fn()}
           userID={''}
         />
       </MockedProvider>
@@ -81,19 +82,19 @@ describe('ConnectWalletModal', () => {
   // TODO: Uncomment
   it.skip('renders error message', async () => {
     const originalOpen = window.open;
-    window.open = jest.fn();
-    jest.spyOn(skiffFrontUtils, 'activateEthProvider').mockImplementation(() => {
+    window.open = vi.fn();
+    vi.spyOn(skiffFrontUtils, 'activateEthProvider').mockImplementation(() => {
       throw new Error('Could not connect wallet.');
     });
 
     render(
       <MockedProvider>
         <ConnectWalletModal
-          closeParentModal={jest.fn}
-          onBack={jest.fn()}
-          onClose={jest.fn()}
+          closeParentModal={vi.fn}
+          onBack={vi.fn()}
+          onClose={vi.fn()}
           open
-          setUserPublicKey={jest.fn()}
+          setUserPublicKey={vi.fn()}
           userID={''}
         />
       </MockedProvider>
@@ -108,15 +109,15 @@ describe('ConnectWalletModal', () => {
   });
 
   it('clicking back button calls onBack', async () => {
-    const onBack = jest.fn();
+    const onBack = vi.fn();
     render(
       <MockedProvider>
         <ConnectWalletModal
-          closeParentModal={jest.fn}
+          closeParentModal={vi.fn}
           onBack={onBack}
-          onClose={jest.fn()}
+          onClose={vi.fn()}
           open
-          setUserPublicKey={jest.fn()}
+          setUserPublicKey={vi.fn()}
           userID={''}
         />
       </MockedProvider>
@@ -128,15 +129,15 @@ describe('ConnectWalletModal', () => {
   });
 
   it('clicking close button calls onClose', async () => {
-    const onClose = jest.fn();
+    const onClose = vi.fn();
     render(
       <MockedProvider>
         <ConnectWalletModal
-          closeParentModal={jest.fn}
-          onBack={jest.fn()}
+          closeParentModal={vi.fn}
+          onBack={vi.fn()}
           onClose={onClose}
           open
-          setUserPublicKey={jest.fn()}
+          setUserPublicKey={vi.fn()}
           userID={''}
         />
       </MockedProvider>

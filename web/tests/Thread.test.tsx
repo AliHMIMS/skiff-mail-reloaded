@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, waitFor } from '@testing-library/react';
@@ -18,9 +19,9 @@ import { MOCK_EMAIL } from './mocks/mockEmail';
 import { MOCK_THREAD } from './mocks/mockThread';
 import { MOCK_USER } from './mocks/mockUser';
 
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
@@ -28,12 +29,12 @@ jest.mock('skiff-front-utils', () => {
   };
 });
 
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
     activeEmailID: 'emailID'
   })
 }));
-jest.mock('../src/utils/mailboxUtils', () => ({
+vi.mock('../src/utils/mailboxUtils', () => ({
   updateThreadAsReadUnread: () => Promise.resolve()
 }));
 window.HTMLElement.prototype.getBoundingClientRect = () => {
@@ -46,7 +47,7 @@ window.HTMLElement.prototype.getBoundingClientRect = () => {
     width: 0,
     x: 0,
     y: 0,
-    toJSON: jest.fn()
+    toJSON: vi.fn()
   };
 };
 

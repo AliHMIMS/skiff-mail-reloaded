@@ -8,14 +8,16 @@
     "build:web": "pnpm --filter web build",
     "build:server": "pnpm --filter server build",
     "test": "pnpm -r --workspace-concurrency=1 test",
-    "lint": "oxlint web/src libs && pnpm --filter server lint",
+    "lint": "oxlint web/src web/tests libs && pnpm --filter server lint",
     "format": "oxfmt && pnpm --filter server format",
     "format:check": "oxfmt --check && pnpm --filter server format:check",
     "typecheck": "tsc -p web"
   },
   "devDependencies": {
+    "jsdom": "^29.1.1",
     "oxfmt": "^0.73.0",
     "oxlint": "^1.88.0",
-    "typescript": "^7.0.2"
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
   }
 }

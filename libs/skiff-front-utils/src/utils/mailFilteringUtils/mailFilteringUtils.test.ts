@@ -1,3 +1,4 @@
+import { describe, it, expect, vi, type Mock } from 'vitest';
 import * as skiffCrypto from 'skiff-crypto';
 import { ActionType, FilterField, FilterType, MailFilter, MailFilterField, SystemLabels } from 'skiff-graphql';
 import { v4 } from 'uuid';
@@ -17,14 +18,14 @@ import {
 const PRIVATE_KEY = 'privateKey';
 
 // MOCKS
-jest.mock('skiff-crypto', () => ({
+vi.mock('skiff-crypto', () => ({
   __esModule: true,
   decryptSessionKey: () => 'decryptedSessionKey',
-  decryptDatagramV2: jest.fn(),
-  generateSymmetricKey: jest.fn()
+  decryptDatagramV2: vi.fn(),
+  generateSymmetricKey: vi.fn()
 }));
 
-jest.mock('skiff-front-graphql', () => ({
+vi.mock('skiff-front-graphql', () => ({
   SubjectTextDatagram: '',
   BodyTextDatagram: ''
 }));
@@ -174,7 +175,7 @@ describe('emailMatchesFilter', () => {
 
   it('returns true if email matches SUBJECT filter', () => {
     // Mock for decrypting serializedData in the filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: valueMatchingDecryptedSubject } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: valueMatchingDecryptedSubject } });
     const filter: MailFilterField = {
       filterType: FilterType.Subject,
       serializedData: 'encryptedSubject',
@@ -185,7 +186,7 @@ describe('emailMatchesFilter', () => {
 
   it('returns false if email does not match SUBJECT filter', () => {
     // Mock for decrypting serializedData in the filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: 'random' } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: 'random' } });
     const filter: MailFilterField = {
       filterType: FilterType.Subject,
       serializedData: 'encryptedSubject',
@@ -196,7 +197,7 @@ describe('emailMatchesFilter', () => {
 
   it('returns true if email matches BODY filter', () => {
     // Mock for decrypting serializedData in the filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: valueMatchingDecryptedBodyText } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: valueMatchingDecryptedBodyText } });
     const filter: MailFilterField = {
       filterType: FilterType.Body,
       serializedData: 'encryptedBody',
@@ -207,7 +208,7 @@ describe('emailMatchesFilter', () => {
 
   it('returns false if email does not match BODY filter', () => {
     // Mock for decrypting serializedData in the filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: 'random' } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: 'random' } });
     const filter: MailFilterField = {
       filterType: FilterType.Subject,
       serializedData: 'encryptedBody',
@@ -231,7 +232,7 @@ describe('emailMatchesFilter', () => {
 
   it('returns true if email matches filter with OR conditions', () => {
     // Mock for decrypting serializedData in the SUBJECT filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: 'random' } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: 'random' } });
     const filter: MailFilterField = {
       filterType: FilterType.Or,
       subFilter: [
@@ -247,7 +248,7 @@ describe('emailMatchesFilter', () => {
 
   it('returns false if email does not match filter with OR conditions', () => {
     // Mock for decrypting serializedData in the SUBJECT filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: 'random' } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: 'random' } });
     const filter: MailFilterField = {
       filterType: FilterType.Or,
       subFilter: [
@@ -262,7 +263,7 @@ describe('emailMatchesFilter', () => {
 
   it('returns true if email matches filter with AND conditions', () => {
     // Mock for decrypting serializedData in the SUBJECT filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({ body: { text: valueMatchingDecryptedSubject } });
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({ body: { text: valueMatchingDecryptedSubject } });
     const filter: MailFilterField = {
       filterType: FilterType.And,
       subFilter: [
@@ -294,7 +295,7 @@ describe('aggregateMailFilterActionsForThreads', () => {
     const decryptedSubjectOfEmailMatchingSubjectFilter = 'test subject';
     // Return the decrypted subjected filter value as the first word
     // of the subject of the email that should match the filter
-    (skiffCrypto.decryptDatagramV2 as jest.Mock).mockReturnValue({
+    (skiffCrypto.decryptDatagramV2 as Mock).mockReturnValue({
       body: { text: decryptedSubjectOfEmailMatchingSubjectFilter.split(' ')[0] }
     });
 

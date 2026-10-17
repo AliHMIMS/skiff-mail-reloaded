@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -109,12 +110,15 @@ export default defineConfig(({ mode }) => ({
     ]
   },
   define: {
-    ...Object.fromEntries(
-      ENV_KEYS.map((key) => [
-        `process.env.${key}`,
-        process.env[key] === undefined ? 'undefined' : JSON.stringify(process.env[key])
-      ])
-    ),
+    // (not under Vitest: there these become process.env assignments, turning undefined into "undefined")
+    ...(mode === 'test'
+      ? {}
+      : Object.fromEntries(
+          ENV_KEYS.map((key) => [
+            `process.env.${key}`,
+            process.env[key] === undefined ? 'undefined' : JSON.stringify(process.env[key])
+          ])
+        )),
     'process.env.NODE_ENV': JSON.stringify(mode === 'production' ? 'production' : 'development'),
     global: 'globalThis'
   },
@@ -137,5 +141,11 @@ export default defineConfig(({ mode }) => ({
       }
     }
   },
-  server: { port: 4200 }
+  server: { port: 4200 },
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./tests/setup.ts'],
+    // the Layout tests render the whole app: ~10 s each on a 2 vCPU host
+    testTimeout: 30_000
+  }
 }));

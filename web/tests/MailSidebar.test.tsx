@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
@@ -16,25 +17,25 @@ import { SYSTEM_LABELS, isDefaultSidebarLabel } from '../src/utils/label';
 
 import { MOCK_USER } from './mocks/mockUser';
 
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useRequiredCurrentUserData: jest.fn((): models.User => MOCK_USER),
-    useCurrentUserData: jest.fn((): models.User => MOCK_USER),
+    useRequiredCurrentUserData: vi.fn((): models.User => MOCK_USER),
+    useCurrentUserData: vi.fn((): models.User => MOCK_USER),
     useCurrentUserEmailAliases: () => ({ emailAliases: ['1@skiff.town'], walletAliasesWithName: [], quickAliases: [] })
   };
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({ pathname: '/mail/inbox' })
 }));
 
-jest.mock('../src/hooks/useCurrentLabel', () => ({
+vi.mock('../src/hooks/useCurrentLabel', () => ({
   useCurrentLabel: () => ({ label: SystemLabels.Inbox, userLabelVariant: null })
 }));
 
@@ -92,9 +93,14 @@ describe('Sidebar', () => {
   });
 
   it('marks label as active based on routing', () => {
+    window.history.pushState({}, '', '/inbox');
     render(<MailSidebar />, { wrapper });
-    expect(screen.getByText('Inbox')).toHaveStyle(`
-        background-color: var(--bg-cell-active);
-      `);
+    const style = (name: string) => {
+      const text = screen.getByText(name);
+      const row = text.closest('a')?.firstElementChild;
+      return { background: row ? getComputedStyle(row).background : '', color: getComputedStyle(text).color };
+    };
+    expect(style('Inbox')).toEqual({ background: 'var(--bg-overlay-tertiary)', color: 'var(--text-primary)' });
+    expect(style('Sent')).toEqual({ background: 'rgba(0, 0, 0, 0)', color: 'var(--text-secondary)' });
   });
 });

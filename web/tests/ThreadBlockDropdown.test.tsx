@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
@@ -15,9 +16,9 @@ import { MOCK_EMAIL } from './mocks/mockEmail';
 import { MOCK_THREAD } from './mocks/mockThread';
 import { MOCK_USER } from './mocks/mockUser';
 
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
@@ -25,26 +26,26 @@ jest.mock('skiff-front-utils', () => {
   };
 });
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
 
-jest.mock('../src/hooks/useDrafts', () => ({
+vi.mock('../src/hooks/useDrafts', () => ({
   useDrafts: () => ({
-    composeNewDraft: jest.fn()
+    composeNewDraft: vi.fn()
   })
 }));
 
-jest.mock('../src/context/RouterLabelContext', () => ({
+vi.mock('../src/context/RouterLabelContext', () => ({
   useRouterLabelContext: () => ({
     value: 'inbox'
   })
 }));
 
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
-    moveThreads: jest.fn(),
-    trashThreads: jest.fn()
+    moveThreads: vi.fn(),
+    trashThreads: vi.fn()
   })
 }));
 
@@ -73,7 +74,7 @@ describe('ThreadBlockDropdown', () => {
               emailAliases={[]}
               open
               quickAliases={[]}
-              setOpen={jest.fn()}
+              setOpen={vi.fn()}
               thread={{
                 ...MOCK_THREAD,
                 attributes: {
@@ -105,7 +106,7 @@ describe('ThreadBlockDropdown', () => {
               emailAliases={[]}
               open
               quickAliases={[]}
-              setOpen={jest.fn()}
+              setOpen={vi.fn()}
               thread={{
                 ...MOCK_THREAD,
                 attributes: {

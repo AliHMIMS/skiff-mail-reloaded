@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
@@ -14,20 +15,20 @@ import { skemailSearchReducer } from '../src/redux/reducers/searchReducer';
 
 import { MOCK_THREAD } from './mocks/mockThread';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
 
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
-    moveThreads: jest.fn(),
-    trashThreads: jest.fn()
+    moveThreads: vi.fn(),
+    trashThreads: vi.fn()
   })
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useLocation: () => ({ pathname: '/mail/inbox' })
 }));
 
@@ -77,9 +78,9 @@ describe('MailboxActions', () => {
         <MockedProvider mocks={mockedRequests}>
           <SnackbarProvider>
             <MailboxActions
-              clearLastSelectedIndex={jest.fn()}
+              clearLastSelectedIndex={vi.fn()}
               label={SystemLabels.Inbox}
-              onRefresh={jest.fn()}
+              onRefresh={vi.fn()}
               threads={[MOCK_THREAD]}
             />
           </SnackbarProvider>
@@ -98,9 +99,9 @@ describe('MailboxActions', () => {
         <MockedProvider mocks={mockedRequests}>
           <SnackbarProvider>
             <MailboxActions
-              clearLastSelectedIndex={jest.fn()}
+              clearLastSelectedIndex={vi.fn()}
               label={SystemLabels.Trash}
-              onRefresh={jest.fn()}
+              onRefresh={vi.fn()}
               threads={[MOCK_THREAD]}
             />
           </SnackbarProvider>

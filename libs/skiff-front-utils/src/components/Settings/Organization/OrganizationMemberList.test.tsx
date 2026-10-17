@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable react/display-name */
+import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { MockedProvider } from '@apollo/client/testing';
 import { act, render, screen, waitFor } from '@testing-library/react';
@@ -42,14 +43,14 @@ const collaborators: DocumentCollaboratorInfoFragment[] = [
   }
 ];
 
-const mockQuery = jest.fn();
-const mockClient = jest.fn(() => ({
+const mockQuery = vi.fn();
+const mockClient = vi.fn(() => ({
   query: mockQuery
 })) as unknown as ApolloClient<NormalizedCacheObject>;
 
-const mockOpenSettings = jest.fn();
+const mockOpenSettings = vi.fn();
 
-jest.mock('../../ReactPdf');
+vi.mock('../../ReactPdf');
 
 const GET_ORG_MOCK = {
   request: {

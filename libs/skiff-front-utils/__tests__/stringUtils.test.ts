@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { getWordsSurroundingQuery } from '../src/utils/stringUtils';
 
 const query = 'query string';

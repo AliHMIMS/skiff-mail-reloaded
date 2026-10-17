@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { getUnsubscribeLinks } from '../src';
 
 export const generateEML = (listUnsubscribeHeader?: string, html?: string) => `MIME-Version: 1.0

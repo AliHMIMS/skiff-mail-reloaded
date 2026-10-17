@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { validateDomain, sanitizeDomain } from 'skiff-utils';
 
 describe('customDomainUtils', () => {

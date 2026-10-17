@@ -1,10 +1,11 @@
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 import ComposePanel from '../src/components/Compose';
 import store from '../src/redux/store/reduxStore';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
 

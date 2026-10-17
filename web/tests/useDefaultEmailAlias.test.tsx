@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/await-thenable */
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { act } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
@@ -10,9 +11,9 @@ import store from '../src/redux/store/reduxStore';
 
 import { MOCK_USER } from './mocks/mockUser';
 
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
@@ -22,7 +23,7 @@ jest.mock('skiff-front-utils', () => {
 
 const testAliasValue = 'test@test.com';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
 
@@ -44,7 +45,7 @@ const wrapper: React.FC = ({ children }) => (
               }
             }
           },
-          newData: jest.fn(() => {
+          newData: vi.fn(() => {
             return {
               data: {
                 currentUser: {
@@ -65,7 +66,7 @@ const wrapper: React.FC = ({ children }) => (
               user: {}
             }
           },
-          newData: jest.fn(() => {
+          newData: vi.fn(() => {
             return { data: { setDefaultEmailAlias: true } };
           })
         }

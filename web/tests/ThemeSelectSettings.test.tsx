@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ApolloProvider } from '@apollo/client';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -6,8 +7,8 @@ import { AppThemeProvider, THEME_LOCAL_STORAGE_KEY, ThemeSelectSettings, SelectB
 
 import client from '../src/apollo/client';
 
-jest.mock('../src/utils/userUtils', () => ({
-  storeWorkspaceEvent: jest.fn()
+vi.mock('../src/utils/userUtils', () => ({
+  storeWorkspaceEvent: vi.fn()
 }));
 
 beforeEach(() => {
@@ -18,16 +19,16 @@ beforeEach(() => {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: jest.fn().mockImplementation((query) => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: true,
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     media: query,
     onchange: null,
-    addListener: jest.fn(), // Deprecated
-    removeListener: jest.fn(), // Deprecated
-    addEventListener: jest.fn(),
-    removeEventListener: jest.fn(),
-    dispatchEvent: jest.fn()
+    addListener: vi.fn(), // Deprecated
+    removeListener: vi.fn(), // Deprecated
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+    dispatchEvent: vi.fn()
   }))
 });
 

@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
@@ -21,10 +22,10 @@ const subject = 'test subject';
 const message =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In aliquam sem fringilla ut morbi tincidunt. Tincidunt lobortis feugiat vivamus at augue eget arcu dictum varius. Quis commodo odio aenean sed. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim. Massa ultricies mi quis hendrerit dolor magna eget est lorem.';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: jest.fn()
+vi.mock('../src/hooks/useSearchWorker', () => ({
+  getSearchWorker: vi.fn()
 }));
-jest.mock('../src/context/RouterLabelContext', () => ({
+vi.mock('../src/context/RouterLabelContext', () => ({
   useRouterLabelContext: () => ({
     value: 'inbox'
   })
@@ -34,11 +35,11 @@ const formatTime = (date: Date) => {
   return dayjs(date).isToday() ? `${dayjs(date).format('h:mm A')}` : dayjs(date).format('MM/DD/YY');
 };
 
-jest.mock('../src/components/mailbox/MessageCell/MessageCell.utils', () => ({
-  renderSendersWithQueryMatch: jest.fn().mockImplementation((text: string) => <>{text}</>),
-  useCellDate: jest.fn().mockImplementation((date: Date) => formatTime(date)),
-  renderTextWithQueryMatch: jest.fn().mockImplementation((text: string) => <>{text}</>),
-  renderScheduledSendLink: jest.fn()
+vi.mock('../src/components/mailbox/MessageCell/MessageCell.utils', () => ({
+  renderSendersWithQueryMatch: vi.fn().mockImplementation((text: string) => <>{text}</>),
+  useCellDate: vi.fn().mockImplementation((date: Date) => formatTime(date)),
+  renderTextWithQueryMatch: vi.fn().mockImplementation((text: string) => <>{text}</>),
+  renderScheduledSendLink: vi.fn()
 }));
 
 describe('ThreadMessageCell', () => {

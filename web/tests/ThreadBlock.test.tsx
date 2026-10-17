@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, within } from '@testing-library/react';
@@ -6,7 +7,7 @@ import { Provider } from 'react-redux';
 import { abbreviateWalletAddress } from 'skiff-front-utils';
 import { SystemLabels } from 'skiff-graphql';
 
-import { assertExists } from '../../../libs/skiff-utils/src';
+import { assertExists } from 'skiff-utils';
 import ThreadBlock, { ThreadBlockDataTest } from '../src/components/Thread/ThreadBlock';
 import * as useCurrentLabel from '../src/hooks/useCurrentLabel';
 import { skemailDraftsReducer } from '../src/redux/reducers/draftsReducer';
@@ -16,16 +17,16 @@ import { ETHERSCAN_ADDRESS_LOOKUP_URL, SOLANA_LOOKUP_URL } from '../src/utils/wa
 import { MOCK_EMAIL } from './mocks/mockEmail';
 import { MOCK_THREAD } from './mocks/mockThread';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useToast: () => ({ enqueueToast: jest.fn(), closeToast: jest.fn() }),
+    useToast: () => ({ enqueueToast: vi.fn(), closeToast: vi.fn() }),
     useRequiredCurrentUserData: () => ({
       userID: 'id',
       privateUserData: {
@@ -34,15 +35,15 @@ jest.mock('skiff-front-utils', () => {
     })
   };
 });
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
-    trashThreads: jest.fn(),
-    setActiveThreadID: jest.fn()
+    trashThreads: vi.fn(),
+    setActiveThreadID: vi.fn()
   })
 }));
-jest.mock('../src/hooks/useDrafts', () => ({
+vi.mock('../src/hooks/useDrafts', () => ({
   useDrafts: () => ({
-    composeNewDraft: jest.fn()
+    composeNewDraft: vi.fn()
   })
 }));
 
@@ -73,7 +74,7 @@ describe('ThreadBlock', () => {
   );
 
   beforeEach(() => {
-    window.open = jest.fn();
+    window.open = vi.fn();
   });
 
   afterEach(() => {
@@ -82,9 +83,10 @@ describe('ThreadBlock', () => {
   });
 
   it('renders abbreviated eth address for sender with display name', async () => {
-    jest
-      .spyOn(useCurrentLabel, 'useCurrentLabel')
-      .mockImplementation(() => ({ label: SystemLabels.Drafts, userLabelVariant: null }));
+    vi.spyOn(useCurrentLabel, 'useCurrentLabel').mockImplementation(() => ({
+      label: SystemLabels.Drafts,
+      userLabelVariant: null
+    }));
 
     const abbreviatedWalletAddress = abbreviateWalletAddress(ethAddress, 12, 12);
     const sender = { address: `${ethAddress}@skiff.town`, name: 'Test Eth' };

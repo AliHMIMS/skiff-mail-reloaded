@@ -1,8 +1,9 @@
+import { describe, it, expect, vi } from 'vitest';
 import { TierName } from 'skiff-utils';
 
 import { isPaidUpExclusiveEmailAddress } from '../src';
 
-jest.mock('@simplewebauthn/browser');
+vi.mock('@simplewebauthn/browser');
 
 const defaultQuickAliasUsage = {
   quickAliases: 0,

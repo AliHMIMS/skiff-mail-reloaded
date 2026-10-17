@@ -1,6 +1,7 @@
+import { describe, test, expect, vi } from 'vitest';
 import { parseEmailAddressesFromString } from './emailUtils';
 
-jest.mock('email-regex', () => jest.fn());
+vi.mock('email-regex', () => ({ default: vi.fn() }));
 
 describe('parseEmailAddressesFromString', () => {
   test('should return undefined when the input is an empty string', () => {

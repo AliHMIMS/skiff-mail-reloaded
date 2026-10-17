@@ -1,3 +1,4 @@
+import { describe, it, expect, vi } from 'vitest';
 import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen, waitFor, within } from '@testing-library/react';
@@ -28,15 +29,15 @@ import {
 
 import { MOCK_USER } from './mocks/mockUser';
 
-jest.mock('email-regex', () => jest.fn());
+vi.mock('email-regex', () => ({ default: vi.fn() }));
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('../src/utils/userUtils', () => ({
-  ...jest.requireActual('../src/utils/userUtils'),
+vi.mock('../src/utils/userUtils', async () => ({
+  ...(await vi.importActual('../src/utils/userUtils')),
   getUserProfileFromID: () => ({
     data: {
       user: MOCK_USER
@@ -44,8 +45,8 @@ jest.mock('../src/utils/userUtils', () => ({
   })
 }));
 
-jest.mock('../src/hooks/useUserSignature', () => ({
-  useUserSignature: jest.fn()
+vi.mock('../src/hooks/useUserSignature', () => ({
+  useUserSignature: vi.fn()
 }));
 
 const mockEncryptedMessageData: EncryptedMessageData = {
@@ -82,9 +83,9 @@ const mockEncryptedMessageData: EncryptedMessageData = {
   bccAddressesWithEncryptedKeys: []
 };
 
-jest.mock('skiff-front-graphql', () => {
+vi.mock('skiff-front-graphql', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-graphql');
+  const original = await vi.importActual('skiff-front-graphql');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
@@ -92,13 +93,13 @@ jest.mock('skiff-front-graphql', () => {
   };
 });
 
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useToast: () => ({ enqueueToast: jest.fn(), closeToast: jest.fn() }),
+    useToast: () => ({ enqueueToast: vi.fn(), closeToast: vi.fn() }),
     useCurrentUserEmailAliases: () => ({
       emailAliases: ['alias@skiff.com'],
       walletAliasesWithName: [],
@@ -112,25 +113,25 @@ jest.mock('skiff-front-utils', () => {
     }),
     useGetAllContactsWithOrgMembers: () => ({
       contactsWithOrgMembers: [],
-      refetch: jest.fn()
+      refetch: vi.fn()
     })
   };
 });
 
-jest.mock('../src/context/RouterLabelContext', () => ({
+vi.mock('../src/context/RouterLabelContext', () => ({
   useRouterLabelContext: () => ({
     value: 'inbox'
   })
 }));
 
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
-    trashThreads: jest.fn()
+    trashThreads: vi.fn()
   })
 }));
 
-jest.mock('../src/components/Settings/useSettings', () => ({
-  useSettings: () => jest.fn()
+vi.mock('../src/components/Settings/useSettings', () => ({
+  useSettings: () => vi.fn()
 }));
 
 export const createStore = (populateComposeContent: PopulateComposeContent) =>
@@ -148,9 +149,10 @@ export const createStore = (populateComposeContent: PopulateComposeContent) =>
 
 describe('Compose', () => {
   it('can add and persist Cc addresses', async () => {
-    jest
-      .spyOn(useCurrentLabel, 'useCurrentLabel')
-      .mockImplementation(() => ({ label: SystemLabels.Drafts, userLabelVariant: null }));
+    vi.spyOn(useCurrentLabel, 'useCurrentLabel').mockImplementation(() => ({
+      label: SystemLabels.Drafts,
+      userLabelVariant: null
+    }));
     const testCcEmail = 'test@skiff.com';
     const toName = 'Test';
 
@@ -396,7 +398,7 @@ describe('Compose', () => {
       },
       // Mock function to test that we called this mutation.
       // https://jkettmann.com/testing-apollo-how-to-test-if-a-mutation-was-called-with-mockedprovider
-      newData: jest.fn(() => ({ data: { sendMessage: {} } }))
+      newData: vi.fn(() => ({ data: { sendMessage: {} } }))
     };
 
     const getCurrentUserEmailAliasesMock: MockedResponse = {

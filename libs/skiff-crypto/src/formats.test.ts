@@ -2,6 +2,7 @@
  * @jest-environment node
  */
 
+import { describe, test, expect } from 'vitest';
 import { bytesToPassphrase, passphraseToBytes } from './formats';
 
 describe('wordlist', () => {

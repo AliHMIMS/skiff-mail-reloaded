@@ -1,3 +1,4 @@
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
@@ -12,29 +13,29 @@ import { skemailModalReducer } from '../src/redux/reducers/modalReducer';
 
 import { MOCK_EMAIL } from './mocks/mockEmail';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useToast: () => ({ enqueueToast: jest.fn(), closeToast: jest.fn() })
+    useToast: () => ({ enqueueToast: vi.fn(), closeToast: vi.fn() })
   };
 });
-jest.mock('../src/hooks/useDrafts', () => ({
+vi.mock('../src/hooks/useDrafts', () => ({
   useDrafts: () => ({
-    composeNewDraft: jest.fn()
+    composeNewDraft: vi.fn()
   })
 }));
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('react-router-dom', () => ({
-  ...jest.requireActual('react-router-dom'),
+vi.mock('react-router-dom', async () => ({
+  ...(await vi.importActual('react-router-dom')),
   useParams: () => ({ mailboxLabel: 'inbox' })
 }));
-jest.mock('../src/hooks/useThreadActions', () => ({
+vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({
     activeThreadID: 'threadID'
   })
@@ -69,7 +70,7 @@ describe('ThreadBlockHeader', () => {
   );
 
   beforeEach(() => {
-    window.open = jest.fn();
+    window.open = vi.fn();
   });
 
   afterEach(() => {
@@ -88,9 +89,9 @@ describe('ThreadBlockHeader', () => {
         email={email}
         expanded={false}
         moreButtonRef={React.createRef<HTMLDivElement>()}
-        onClick={jest.fn()}
-        reply={jest.fn()}
-        setShowMoreOptions={jest.fn()}
+        onClick={vi.fn()}
+        reply={vi.fn()}
+        setShowMoreOptions={vi.fn()}
       />,
       { wrapper }
     );
@@ -109,9 +110,9 @@ describe('ThreadBlockHeader', () => {
         email={email}
         expanded={false}
         moreButtonRef={React.createRef<HTMLDivElement>()}
-        onClick={jest.fn()}
-        reply={jest.fn()}
-        setShowMoreOptions={jest.fn()}
+        onClick={vi.fn()}
+        reply={vi.fn()}
+        setShowMoreOptions={vi.fn()}
       />,
       { wrapper }
     );
@@ -129,9 +130,9 @@ describe('ThreadBlockHeader', () => {
         email={email}
         expanded={false}
         moreButtonRef={React.createRef<HTMLDivElement>()}
-        onClick={jest.fn()}
-        reply={jest.fn()}
-        setShowMoreOptions={jest.fn()}
+        onClick={vi.fn()}
+        reply={vi.fn()}
+        setShowMoreOptions={vi.fn()}
       />,
       { wrapper }
     );
@@ -149,9 +150,9 @@ describe('ThreadBlockHeader', () => {
         email={email}
         expanded={false}
         moreButtonRef={React.createRef<HTMLDivElement>()}
-        onClick={jest.fn()}
-        reply={jest.fn()}
-        setShowMoreOptions={jest.fn()}
+        onClick={vi.fn()}
+        reply={vi.fn()}
+        setShowMoreOptions={vi.fn()}
       />,
       { wrapper }
     );

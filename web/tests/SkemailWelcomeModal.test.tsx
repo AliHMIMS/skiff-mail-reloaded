@@ -1,3 +1,4 @@
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { MockedProvider } from '@apollo/client/testing';
 import { configureStore } from '@reduxjs/toolkit';
 import { render, screen } from '@testing-library/react';
@@ -9,16 +10,16 @@ import SkemailWelcomeModal from '../src/components/modals/SkemailWelcomeModal';
 import { initialSkemailDialogState, skemailModalReducer } from '../src/redux/reducers/modalReducer';
 import { ModalType } from '../src/redux/reducers/modalTypes';
 
-jest.mock('../src/hooks/useSearchWorker', () => ({
+vi.mock('../src/hooks/useSearchWorker', () => ({
   getSearchWorker: undefined
 }));
-jest.mock('skiff-front-utils', () => {
+vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  const original = jest.requireActual('skiff-front-utils');
+  const original = await vi.importActual('skiff-front-utils');
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return {
     ...original,
-    useToast: () => ({ enqueueToast: jest.fn(), closeToast: jest.fn() }),
+    useToast: () => ({ enqueueToast: vi.fn(), closeToast: vi.fn() }),
     useRequiredCurrentUserData: () => ({
       userID: 'id',
       publicKey: {
@@ -30,11 +31,11 @@ jest.mock('skiff-front-utils', () => {
   };
 });
 
-const mockEnqueueSnackbar = jest.fn();
+const mockEnqueueSnackbar = vi.fn();
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock('notistack', () => ({
-  ...jest.requireActual('notistack'),
+vi.mock('notistack', async () => ({
+  ...(await vi.importActual('notistack')),
   useSnackbar: () => ({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     enqueueSnackbar: () => mockEnqueueSnackbar()
