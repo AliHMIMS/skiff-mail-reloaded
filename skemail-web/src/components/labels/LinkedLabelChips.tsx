@@ -61,6 +61,7 @@ export const LinkedLabelChips: React.FC<LinkedLabelChipsProps> = ({
           : getURLFromLabel(userLabel);
         return isQuickAlias ? ( // for quick aliases, navigate to system label and set appropriate filter
           <LabelChip
+            key={value}
             onClick={(e: React.MouseEvent) => {
               if (onClick) onClick(e);
               if (!isMobile) {

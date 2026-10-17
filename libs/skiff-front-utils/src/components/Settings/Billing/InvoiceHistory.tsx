@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { useFlags } from 'launchdarkly-react-client-sdk';
 import { Icon, IconText, Icons, MonoTag, Typography, TypographySize, TypographyWeight } from 'nightwatch-ui';
+import { Fragment } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useInvoiceHistory } from 'skiff-front-graphql';
 import styled, { css } from 'styled-components';
@@ -125,7 +126,7 @@ function InvoiceHistory() {
           <tr>
             {headers.map((header, index) => {
               return (
-                <StyledTh $collapse={!isMobile && index === headers.length - 1}>
+                <StyledTh $collapse={!isMobile && index === headers.length - 1} key={header}>
                   <Typography mono uppercase color='disabled' size={TypographySize.CAPTION}>
                     {header}
                   </Typography>
@@ -135,13 +136,13 @@ function InvoiceHistory() {
           </tr>
         </Header>
         {hasInvoice &&
-          invoiceAlerts.map((invoice) => {
+          invoiceAlerts.map((invoice, invoiceIndex) => {
             const { amountDue, created, invoiceTiers, url, status } = invoice || {};
             const statusLabel = getStatusText((status || '') as InvoiceStates);
             const statusColor = getStatusColor((status || '') as InvoiceStates);
 
             return (
-              <tbody>
+              <tbody key={url ?? `${String(created)}-${invoiceIndex}`}>
                 <StyledTr>
                   <StyledTd>
                     <Typography>{dayjs(created).format('MMM DD, YYYY')}</Typography>
@@ -156,10 +157,10 @@ function InvoiceHistory() {
                       {invoiceTiers?.map((tier, index) => {
                         const lastTier = index === invoiceTiers.length - 1;
                         return (
-                          <>
+                          <Fragment key={`${tier}-${index}`}>
                             <Typography>{tier}</Typography>
                             {!lastTier && <Icons color='disabled' icon={Icon.ArrowRight} />}
-                          </>
+                          </Fragment>
                         );
                       })}
                     </TierContainer>

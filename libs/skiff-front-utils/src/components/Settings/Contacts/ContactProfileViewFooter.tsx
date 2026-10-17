@@ -85,6 +85,7 @@ const ContactUserProfileViewFooter: React.FC<ContactUserProfileViewFooterProps> 
       <>
         {optionalFields.map((fieldGroup) => (
           <DropdownItem
+            key={fieldGroup.label}
             disabled={activeOptionalFields.includes(fieldGroup)}
             label={fieldGroup.label}
             onClick={() => {

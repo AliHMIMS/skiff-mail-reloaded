@@ -73,8 +73,8 @@ export default function NameMarquee(props: NameMarqueeProps) {
   };
   return (
     <Container className={className} $margin={margin}>
-      {(pills || defaultPills).map((pillRow) => (
-        <PillContainer>{pillRow.map(renderPill)}</PillContainer>
+      {(pills || defaultPills).map((pillRow, rowIndex) => (
+        <PillContainer key={rowIndex}>{pillRow.map(renderPill)}</PillContainer>
       ))}
     </Container>
   );

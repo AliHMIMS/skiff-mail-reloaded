@@ -167,6 +167,7 @@ const BulkSilenceModalSenderTable = (props: BulkSilenceModalSenderTableProps) =>
               .filter((section) => !section?.hide)
               .map((section) => (
                 <BulkSilenceSenderSection
+                  key={section.sectionLabel}
                   bulkSilenceData={section.bulkSilenceData}
                   checkedItems={checkedItems}
                   emptyText={section?.emptyText}

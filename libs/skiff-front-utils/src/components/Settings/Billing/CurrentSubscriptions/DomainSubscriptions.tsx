@@ -25,6 +25,7 @@ function DomainSubscriptions() {
         );
         return (
           <DomainSubscriptionItem
+            key={customDomain.domainID}
             title={customDomain.domain}
             cancelAtPeriodEnd={associatedSubscriptionInfo?.cancelAtPeriodEnd}
             supposedEndDate={associatedSubscriptionInfo?.supposedEndDate}
