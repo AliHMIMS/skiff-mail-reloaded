@@ -23,9 +23,8 @@ function PasswordStrengthIndicator(props: PasswordStrengthBarProps) {
   const [score, setScore] = React.useState(0);
 
   React.useEffect(() => {
-    // https://jmduke.com/2017/09/16/how-i-cut-my-webpack-bundle-size-in-half
-    // See "Lazy load zxcvbn" section
-    void import(/* webpackChunkName: "zxcvbn" */ 'zxcvbn').then(({ default: zxcvbn }) => {
+    // zxcvbn is large; load it on demand
+    void import('zxcvbn').then(({ default: zxcvbn }) => {
       let score = 0;
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
       const result = zxcvbn(password);

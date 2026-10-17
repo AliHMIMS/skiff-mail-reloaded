@@ -2,10 +2,7 @@
 
 import { DatagramV2 } from 'skiff-crypto';
 
-import {
-  FilterSerializedDataHeader,
-  FilterSerializedDataBody
-} from '../../../../../../libs/skiff-mail-protos/dist/src';
+import { FilterSerializedDataHeader, FilterSerializedDataBody } from 'skiff-mail-protos';
 import { BodyTextDatagram, SubjectTextDatagram } from '../../../crypto/filters';
 
 // For example, this is used to add a gap between the condition type label + condition type dropdown

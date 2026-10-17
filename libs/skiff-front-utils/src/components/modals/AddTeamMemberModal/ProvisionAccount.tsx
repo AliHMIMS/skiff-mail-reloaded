@@ -117,7 +117,7 @@ const ProvisionAccount: FC<ProvisionAccountProps> = ({
   const everyoneTeamRootDoc = data?.organization.everyoneTeam.rootDocument;
 
   const validateInputs = async () => {
-    const { default: zxcvbn } = await import(/* webpackChunkName: "zxcvbn" */ 'zxcvbn');
+    const { default: zxcvbn } = await import('zxcvbn');
 
     let inputsAreValid = true;
     if (zxcvbn(password).score < PASSING_SCORE) {
