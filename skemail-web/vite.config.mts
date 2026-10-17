@@ -86,6 +86,9 @@ export default defineConfig(({ mode }) => ({
     outDir: 'src/dist-next',
     emptyOutDir: true,
     target: 'es2020',
+    // Oxc end to end: Rolldown bundles with Oxc's parser/resolver/transformer; Oxc minifies JS
+    minify: 'oxc',
+    cssMinify: 'lightningcss',
     sourcemap: false,
     chunkSizeWarningLimit: 8000,
     rolldownOptions: {
