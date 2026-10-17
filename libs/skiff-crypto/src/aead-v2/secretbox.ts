@@ -4,14 +4,7 @@ import { ChaCha20Poly1305, NONCE_LENGTH } from '@stablelib/chacha20poly1305';
 
 import { concatUint8Arrays } from '../aead/typedArraysUtils';
 
-import {
-  AADMetaV2,
-  DatagramV2,
-  deserializeAADMeta,
-  EnvelopeV2,
-  serializeAADMeta,
-  TypedBytesV2
-} from './common';
+import { AADMetaV2, DatagramV2, deserializeAADMeta, EnvelopeV2, serializeAADMeta, TypedBytesV2 } from './common';
 
 /**
  * TaggedSecretBox is an implementation of nacl.secretbox, but additionally includes the version and type information

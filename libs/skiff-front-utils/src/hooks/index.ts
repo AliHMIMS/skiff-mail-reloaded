@@ -25,7 +25,12 @@ export { default as useEnableMailPushNotifications } from './useEnableMailPushNo
 export { default as useFeatureTag } from './useFeatureTag';
 export { default as useFeatureTagValue } from './useFeatureTagValue';
 export * from './useFilePreview';
-export { FileSortLocalStorageTypes, type FileSortOrder, SortMode, default as useFileSortOrder } from './useFileSortOrder';
+export {
+  FileSortLocalStorageTypes,
+  type FileSortOrder,
+  SortMode,
+  default as useFileSortOrder
+} from './useFileSortOrder';
 export { isOrgMemberContact, default as useGetAllContactsWithOrgMembers } from './useGetAllContactsWithOrgMembers';
 export { default as useGetContactWithEmailAddress } from './useGetContactWithEmailAddress';
 export { useDisplayPictureDataFromAddress } from './useGetDisplayPictureDataFromAddress';

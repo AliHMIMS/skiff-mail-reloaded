@@ -1,4 +1,3 @@
-
 /** Prevents the `beforeinput` event, so that the `input` doesn't happen. */
 const preventTheEvent = (event: InputEvent): void => {
   console.log('Prevented a buggy beforeinput event.');

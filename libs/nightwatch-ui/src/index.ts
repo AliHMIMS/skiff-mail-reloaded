@@ -14,7 +14,12 @@ export {
 } from './components/CircularProgress';
 export { default as Dialog, DialogType } from './components/Dialog';
 export { default as Divider, type DividerProps, DividerType } from './components/Divider';
-export { default as Dropdown, type DropdownProps, DROPDOWN_CALLER_ID, dropdownOverflowsInY } from './components/Dropdown';
+export {
+  default as Dropdown,
+  type DropdownProps,
+  DROPDOWN_CALLER_ID,
+  dropdownOverflowsInY
+} from './components/Dropdown';
 export { default as DropdownItem, type DropdownItemColor, type DropdownItemComponent } from './components/DropdownItem';
 export { default as DropdownSubmenu } from './components/DropdownSubmenu';
 export { default as Facepile } from './components/Facepile';

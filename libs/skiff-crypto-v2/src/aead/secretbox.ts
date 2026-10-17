@@ -2,14 +2,7 @@ import { randomBytes } from 'crypto';
 
 import { ChaCha20Poly1305, NONCE_LENGTH } from '@stablelib/chacha20poly1305';
 
-import {
-  AADMeta,
-  Datagram,
-  deserializeAADMeta,
-  Envelope,
-  serializeAADMeta,
-  TypedBytes
-} from './common';
+import { AADMeta, Datagram, deserializeAADMeta, Envelope, serializeAADMeta, TypedBytes } from './common';
 import { concatUint8Arrays } from './typedArraysUtils';
 
 /**
