@@ -5,7 +5,6 @@ import { fileURLToPath } from 'node:url';
 
 import react from '@vitejs/plugin-react';
 import { defineConfig, type Plugin } from 'vite';
-import svgr from 'vite-plugin-svgr';
 
 // Workspace libraries are compiled from source (no separate library build step).
 const LIBS = [
@@ -51,6 +50,51 @@ const NODE_SHIMS: Record<string, string> = {
 // Like webpack's ProvidePlugin: modules that use these free variables get an import instead.
 const NODE_GLOBALS = { Buffer: ['buffer', 'Buffer'], process: 'process' } as const;
 
+/** `<svg>` root attributes as React props: class -> className, kebab-case / xmlns:xlink -> camelCase, style -> object. */
+function svgRootProps(attributes: string): Record<string, unknown> {
+  const props: Record<string, unknown> = {};
+  for (const [, name, value] of attributes.matchAll(/([\w:-]+)\s*=\s*"([^"]*)"/g)) {
+    if (name === 'class') props.className = value;
+    else if (name === 'style')
+      props.style = Object.fromEntries(
+        value
+          .split(';')
+          .filter((rule) => rule.includes(':'))
+          .map((rule) => {
+            const [key, ...rest] = rule.split(':');
+            return [key.trim().replace(/-([a-z])/g, (_m, c: string) => c.toUpperCase()), rest.join(':').trim()];
+          })
+      );
+    else if (name.startsWith('data-') || name.startsWith('aria-')) props[name] = value;
+    else props[name.replace(/[:-]([a-z])/g, (_m, c: string) => c.toUpperCase())] = value;
+  }
+  return props;
+}
+
+/**
+ * Imports `*.svg` as a React component (what svgr did, without its Babel pipeline): the root attributes become
+ * props, the inner markup is passed through, and props given by the caller override the defaults.
+ */
+const svgAsComponent = (): Plugin => ({
+  name: 'svg-as-react-component',
+  enforce: 'pre',
+  async load(id) {
+    if (!id.endsWith('.svg')) return null;
+    const svg = await fs.promises.readFile(id, 'utf8');
+    const match = svg.match(/<svg\b([^>]*)>([\s\S]*)<\/svg>/i);
+    if (!match) throw new Error(`Not an SVG document: ${id}`);
+    const [, attributes, inner] = match;
+    return [
+      "import { createElement } from 'react';",
+      `const defaults = ${JSON.stringify(svgRootProps(attributes))};`,
+      `const markup = { __html: ${JSON.stringify(inner.trim())} };`,
+      'export default function SvgComponent(props) {',
+      "  return createElement('svg', { ...defaults, ...props, dangerouslySetInnerHTML: markup });",
+      '}'
+    ].join('\n');
+  }
+});
+
 /** Ships the push service worker as-is at /mail/push/push-sw.js. */
 const pushServiceWorker = (): Plugin => ({
   name: 'push-service-worker',
@@ -65,7 +109,7 @@ const pushServiceWorker = (): Plugin => ({
 
 export default defineConfig(({ mode }) => ({
   base: '/mail/',
-  plugins: [react(), svgr({ include: '**/*.svg', svgrOptions: { exportType: 'default' } }), pushServiceWorker()],
+  plugins: [react(), svgAsComponent(), pushServiceWorker()],
   resolve: {
     alias: [
       ...LIBS.map((lib) => ({

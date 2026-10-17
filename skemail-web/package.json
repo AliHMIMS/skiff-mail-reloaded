@@ -187,7 +187,6 @@
     "sass-embedded": "^1.105.2",
     "typescript": "^5.9.3",
     "vite": "^8.3.4",
-    "vite-plugin-svgr": "^5.2.0",
     "web-streams-polyfill": "^3.2.1"
   }
 }
