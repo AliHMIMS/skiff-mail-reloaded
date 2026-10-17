@@ -175,7 +175,7 @@ function InvoiceHistory() {
                           <IconText
                             color='secondary'
                             onClick={() => {
-                              if (typeof window === undefined) return;
+                              if (typeof window === 'undefined') return;
                               window.open(url, '_blank', 'noopener noreferrer');
                             }}
                             startIcon={Icon.ExternalLink}

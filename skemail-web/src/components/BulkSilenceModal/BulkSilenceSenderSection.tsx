@@ -14,6 +14,9 @@ import {
 } from './BulkSilenceModal.types';
 import BulkSilenceModalRow from './BulkSilenceModalRow';
 
+// TODO: show section headers when multiple sections are supported
+const SHOW_SECTION_HEADERS = false;
+
 const SectionHeader = styled.div<{ $disable: boolean }>`
   width: 100%;
   display: flex;
@@ -218,40 +221,39 @@ const BulkSilenceSenderSection = ({
 
   return (
     <>
-      {!!sectionLabel &&
-        false && ( // TODO: unhide when we support multiple sections
-          <SectionHeader $disable={sectionEmpty} onClick={() => handleToggleSection()}>
-            <SectionHeaderRadioTitle>
-              <CheckboxContainer
+      {SHOW_SECTION_HEADERS && !!sectionLabel && (
+        <SectionHeader $disable={sectionEmpty} onClick={() => handleToggleSection()}>
+          <SectionHeaderRadioTitle>
+            <CheckboxContainer
+              onClick={(e: React.MouseEvent) => {
+                e.stopPropagation();
+                handleToggleSection();
+              }}
+            >
+              <Checkbox
+                checked={allCheckedInSection}
                 onClick={(e: React.MouseEvent) => {
                   e.stopPropagation();
                   handleToggleSection();
                 }}
-              >
-                <Checkbox
-                  checked={allCheckedInSection}
-                  onClick={(e: React.MouseEvent) => {
-                    e.stopPropagation();
-                    handleToggleSection();
-                  }}
-                />
-              </CheckboxContainer>
-              <Typography color='secondary' selectable={false}>
-                {sectionLabel}
-              </Typography>
-            </SectionHeaderRadioTitle>
-            {!sectionEmpty && (
-              <IconText
-                color={Type.SECONDARY}
-                onClick={(e?: React.MouseEvent) => {
-                  e?.stopPropagation();
-                  setExpandSection((prev) => !prev);
-                }}
-                startIcon={expandSection ? Icon.ChevronDown : Icon.ChevronRight}
               />
-            )}
-          </SectionHeader>
-        )}
+            </CheckboxContainer>
+            <Typography color='secondary' selectable={false}>
+              {sectionLabel}
+            </Typography>
+          </SectionHeaderRadioTitle>
+          {!sectionEmpty && (
+            <IconText
+              color={Type.SECONDARY}
+              onClick={(e?: React.MouseEvent) => {
+                e?.stopPropagation();
+                setExpandSection((prev) => !prev);
+              }}
+              startIcon={expandSection ? Icon.ChevronDown : Icon.ChevronRight}
+            />
+          )}
+        </SectionHeader>
+      )}
       {sectionEmpty && (
         <EmptyContainer $noContainer={setCheckedItems === undefined}>
           <Typography color='disabled'>{emptyText ?? 'No senders to silence'}</Typography>

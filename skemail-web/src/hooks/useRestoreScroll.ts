@@ -110,7 +110,7 @@ export const useRestoreScroll = (
           newScrollOffset = currentScrollPos + offsetPerItem * currentEmailIndex;
         } else {
           // when closing the pane, make sure to show previously open email in view
-          newScrollOffset = currentScrollPos + offsetPerItem * lastEmailIndex ?? 0;
+          newScrollOffset = currentScrollPos + offsetPerItem * (lastEmailIndex ?? 0);
         }
       } else {
         newScrollOffset = currentScrollPos + newIncoming * (itemSize || 0);

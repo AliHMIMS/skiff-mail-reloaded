@@ -250,7 +250,7 @@ function CryptoBanner({ currentUserID, isUpdatingPlan, setIsUpdatingPlan, startP
           <LogoBox>
             <BitcoinContainer
               displayCrypto={displayCryptoSymbols}
-              variants={getCryptoSymbolVariants(BTC_ROTATION, 0 * CRYPTO_BANNER_ANIMATION_DELAY_INCREMENT)}
+              variants={getCryptoSymbolVariants(BTC_ROTATION, 0)}
             >
               <Illustration illustration={Illustrations.bitcoinSymbol} scale={1.1} />
             </BitcoinContainer>

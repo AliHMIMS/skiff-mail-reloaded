@@ -33,7 +33,7 @@ export const mailboxFieldPolicy: FieldPolicy<Mailbox> = {
     existing
       ? {
           ...existing,
-          threads: [...existing?.threads].sort(
+          threads: [...existing.threads].sort(
             threadSortByDate(readField, (args?.request as MailboxRequest)?.label || undefined)
           )
         }
@@ -51,8 +51,9 @@ export const mailboxFieldPolicy: FieldPolicy<Mailbox> = {
     const existingThreadIDs = new Set(existing.threads.map((thread) => readField('threadID', thread)));
 
     const isPollingOrRefetching =
-      (args?.request as MailboxRequest).polling || (args?.request as MailboxRequest).refetching;
-    const isScheduledSend = (args?.request as MailboxRequest).label === SystemLabels.ScheduleSend;
+      (args?.request as MailboxRequest | undefined)?.polling ||
+      (args?.request as MailboxRequest | undefined)?.refetching;
+    const isScheduledSend = (args?.request as MailboxRequest | undefined)?.label === SystemLabels.ScheduleSend;
     const didRemoveThreads =
       incoming.threads.length < existing.threads.length &&
       incoming.threads.every((thread) => {
