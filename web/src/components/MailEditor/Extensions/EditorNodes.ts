@@ -1,4 +1,3 @@
-import { Blockquote as BlockquoteEditor } from '@tiptap/extension-blockquote';
 import Document from '@tiptap/extension-document';
 import Heading from '@tiptap/extension-heading';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
@@ -22,9 +21,7 @@ import { EditorExtensionsOptions } from './ExtensionsOptions';
 export { HorizontalRule, BulletList, Document, Heading, ListItem, OrderedList, Paragraph, Text, Blockquote, Image };
 
 export const buildEditorNodes = (options?: EditorExtensionsOptions) => [
-  HorizontalRule,
   Document,
-  BlockquoteEditor,
   Paragraph.configure({
     HTMLAttributes: {
       dir: 'auto',
