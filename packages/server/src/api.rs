@@ -230,6 +230,8 @@ async fn login_srp(c: C) -> Result<Json> {
                 "encryptedUserData": user.encrypted_user_data,
                 "encryptedDocumentData": user.encrypted_document_data,
                 "cacheKey": session.cache_key,
+                // apps without a cookie jar send this back as `Authorization: Bearer`
+                "jwt": session.token,
                 "mfaTypes": [],
             });
             out.as_object_mut().unwrap().extend(extra.as_object().unwrap().clone());

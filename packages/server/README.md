@@ -13,8 +13,10 @@ browser (Skiff client) ──https/wss──> reverse proxy ──> mymail-serve
 - **GraphQL**: loads the client's own schema (`schema.graphql`). The mail operations are implemented in `src/api.rs`. Every other field returns a valid empty value, so unused Skiff features don't break the UI.
 - **Encryption**: the client expects end-to-end-encrypted mail. Incoming mail is encrypted to the user's key in Skiff's wire format (`src/crypto.rs`, tested against vectors from the client's JS libraries). Outgoing mail is decrypted on the server and relayed over SMTP. The server, like Google, sees plaintext.
 - **Login**: SRP. The password never leaves the browser. Accounts are created from the CLI.
+- **Sessions**: the web client gets an HttpOnly cookie. Apps (`packages/mobile`) read the same session token from the login response's `jwt` field and send it as `Authorization: Bearer <token>` on every request, download, image proxy call and WebSocket.
 - **Sync**: Gmail push (Pub/Sub) or IMAP IDLE triggers an incremental sync (new UIDs plus CONDSTORE changes, about 2 s). A full reconcile runs every 3 minutes. Bodies are stored encrypted in SQLite. Attachments and raw sources are fetched from Gmail on demand.
-- **Live updates**: every change is broadcast over a WebSocket (`/graphql/events`) to all open clients.
+- **Live updates**: every change is broadcast over a WebSocket (`/graphql/events`) to all open clients. Cookie connections must come from `PUBLIC_URL`'s origin; bearer connections (apps) carry their own credential and skip that check.
+- **Discovery**: `GET /graphql/info` (no login) returns `{server, version, publicUrl, features}`. The mobile app calls it to check that an address is a mymail-server before signing in.
 - **Actions** map to Gmail:
 
   | App | Gmail |

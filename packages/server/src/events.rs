@@ -22,13 +22,27 @@ const BATCH: Duration = Duration::from_millis(250);
 const PING_EVERY: Duration = Duration::from_secs(25);
 const SESSION_CHECK_EVERY: Duration = Duration::from_secs(60);
 
-/// Upgrade to a WebSocket for a logged-in user. Only the app's own origin may connect, so other sites
-/// can't open a socket with the user's cookie.
-pub async fn upgrade(app: Arc<App>, headers: HeaderMap, token: Option<String>, ws: WebSocketUpgrade) -> Response {
-    let origin = headers.get(header::ORIGIN).and_then(|o| o.to_str().ok()).unwrap_or_default();
-    if origin != app.public_url {
-        return StatusCode::FORBIDDEN.into_response();
-    }
+/// How the socket's session token arrived.
+pub enum Auth {
+    /// The browser's cookie, which any site could make it send.
+    Cookie(Option<String>),
+    /// An explicit `Authorization` header (the mobile app), which other sites can't forge.
+    Bearer(String),
+}
+
+/// Upgrade to a WebSocket for a logged-in user. Cookie logins must come from the app's own origin, so other
+/// sites can't open a socket with the user's cookie; bearer logins carry their own proof.
+pub async fn upgrade(app: Arc<App>, headers: HeaderMap, auth: Auth, ws: WebSocketUpgrade) -> Response {
+    let token = match auth {
+        Auth::Cookie(token) => {
+            let origin = headers.get(header::ORIGIN).and_then(|o| o.to_str().ok()).unwrap_or_default();
+            if origin != app.public_url {
+                return StatusCode::FORBIDDEN.into_response();
+            }
+            token
+        }
+        Auth::Bearer(token) => Some(token),
+    };
     if app.session_user(token.as_deref()).is_err() {
         return StatusCode::UNAUTHORIZED.into_response();
     }

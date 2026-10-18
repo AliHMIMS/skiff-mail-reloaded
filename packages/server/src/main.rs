@@ -100,7 +100,19 @@ impl Config {
     }
 }
 
+/// The session token: the mobile app sends `Authorization: Bearer <token>`, the browser the session cookie.
 fn session_token(headers: &HeaderMap) -> Option<String> {
+    bearer_token(headers).or_else(|| cookie_token(headers))
+}
+
+fn bearer_token(headers: &HeaderMap) -> Option<String> {
+    let value = headers.get(header::AUTHORIZATION)?.to_str().ok()?;
+    let (scheme, token) = value.trim().split_once(' ')?;
+    let token = token.trim();
+    (scheme.eq_ignore_ascii_case("bearer") && !token.is_empty()).then(|| token.to_string())
+}
+
+fn cookie_token(headers: &HeaderMap) -> Option<String> {
     headers
         .get_all(header::COOKIE)
         .iter()
@@ -251,8 +263,22 @@ fn oauth_page(status: StatusCode, message: &str) -> Response {
 }
 
 async fn events_ws(State(http): State<Http>, headers: HeaderMap, ws: axum::extract::ws::WebSocketUpgrade) -> Response {
-    let token = session_token(&headers);
-    events::upgrade(http.app.clone(), headers, token, ws).await
+    let auth = match bearer_token(&headers) {
+        Some(token) => events::Auth::Bearer(token),
+        None => events::Auth::Cookie(cookie_token(&headers)),
+    };
+    events::upgrade(http.app.clone(), headers, auth, ws).await
+}
+
+/// Unauthenticated discovery for apps: confirms a URL points at this server and what it supports.
+async fn info(State(http): State<Http>) -> Response {
+    axum::Json(serde_json::json!({
+        "server": "mymail-server",
+        "version": env!("CARGO_PKG_VERSION"),
+        "publicUrl": http.app.public_url,
+        "features": ["bearer-auth", "events"],
+    }))
+    .into_response()
 }
 
 /// Pub/Sub push endpoint: Gmail reports a mailbox change; run a quick sync right away.
@@ -371,6 +397,7 @@ async fn serve(config: Config) -> Result<()> {
         .route("/graphql/attachment/{id}", get(attachment))
         .route("/graphql/raw/{id}", get(raw_mime))
         .route("/graphql/health", get(|| async { "ok" }))
+        .route("/graphql/info", get(info))
         .route("/image_proxy/", get(image_proxy))
         .route("/graphql/oauth/start", get(oauth_start))
         .route("/graphql/oauth/callback", get(oauth_callback))
@@ -493,6 +520,20 @@ async fn main() -> Result<()> {
 #[cfg(test)]
 mod tests {
     use std::sync::Arc;
+
+    use axum::http::{HeaderMap, HeaderValue, header};
+
+    #[test]
+    fn session_token_prefers_bearer_over_cookie() {
+        let mut headers = HeaderMap::new();
+        headers.insert(header::COOKIE, HeaderValue::from_static("a=1; mymail_session=fromcookie"));
+        assert_eq!(super::session_token(&headers).as_deref(), Some("fromcookie"));
+        headers.insert(header::AUTHORIZATION, HeaderValue::from_static("bearer  fromheader "));
+        assert_eq!(super::session_token(&headers).as_deref(), Some("fromheader"));
+        headers.insert(header::AUTHORIZATION, HeaderValue::from_static("Basic abc"));
+        assert_eq!(super::bearer_token(&headers), None);
+        assert_eq!(super::session_token(&headers).as_deref(), Some("fromcookie"));
+    }
 
     #[tokio::test]
     async fn schema_builds_and_defaults_resolve() {
