@@ -2,6 +2,7 @@ packages:
   - packages/libs/*
   - packages/web
   - packages/server
+  - packages/mobile
 
 # Single copies of the editor stack (two ProseMirror instances crash the composer)
 overrides:

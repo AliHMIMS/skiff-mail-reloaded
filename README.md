@@ -28,7 +28,7 @@ The client is unchanged where possible. The server speaks the client's GraphQL A
 | In-app password change                            | `create-user` CLI                                  |
 | Browser push notifications                        | Needed Skiff's push service                        |
 | Billing and plans                                 | All limits lifted                                  |
-| Mobile and desktop apps                           | Web only                                           |
+| Desktop app                                       | Web and mobile                                     |
 
 ### Added
 
@@ -44,6 +44,7 @@ The client is unchanged where possible. The server speaks the client's GraphQL A
 | Google OAuth                 | XOAUTH2 for IMAP and SMTP; app password optional         |
 | Labels                       | Gmail labels as Skiff labels, both ways                  |
 | Image proxy                  | Remote images in emails load through your server         |
+| Mobile app                   | React Native; signs in to any server by its address      |
 
 ### Optimized
 
@@ -72,6 +73,7 @@ A pnpm workspace, with everything under `packages/`:
 | --------------------------- | ------------------------------------------ |
 | [`web`](packages/web)       | The Skiff Mail client (React, Vite)        |
 | [`server`](packages/server) | The backend (Rust); scripts wrap `cargo`   |
+| [`mobile`](packages/mobile) | The mobile app (React Native, Expo)        |
 | [`libs`](packages/libs)     | Skiff's shared libraries, used from source |
 
 1. Build and run the server: [packages/server/README.md](packages/server/README.md).

@@ -1,0 +1,18 @@
+{
+  // Expo's base config; the workspace libs are type-checked from source, so keep the DOM and Node types they use
+  "extends": "expo/tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "lib": ["es2023", "dom", "dom.iterable"],
+    "types": ["node"],
+    "skipLibCheck": true,
+    "paths": {
+      "@/*": ["./src/*"],
+      // one Apollo for the app and the libs, as metro.config.js resolves it (pnpm gives the libs web's variant)
+      "@apollo/client": ["./node_modules/@apollo/client"],
+      "@apollo/client/*": ["./node_modules/@apollo/client/*"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "../../types"],
+  "exclude": ["node_modules", "dist"]
+}

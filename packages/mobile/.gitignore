@@ -1,0 +1,19 @@
+# Expo
+.expo/
+dist/
+expo-env.d.ts
+.metro-health-check*
+
+# generated native projects (npx expo prebuild)
+/android
+/ios
+.kotlin/
+
+# signing material
+*.jks
+*.keystore
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem

@@ -11,7 +11,7 @@
     "build:web": "pnpm --filter web build",
     "build:server": "pnpm --filter server build",
     "test": "pnpm -r --workspace-concurrency=1 test",
-    "lint": "oxlint packages/web/src packages/web/tests packages/libs && pnpm --filter server lint",
+    "lint": "oxlint packages/web/src packages/web/tests packages/libs packages/mobile/src && pnpm --filter server lint",
     "format": "oxfmt && pnpm --filter server format",
     "format:check": "oxfmt --check && pnpm --filter server format:check",
     "typecheck": "pnpm -r --workspace-concurrency=1 typecheck"

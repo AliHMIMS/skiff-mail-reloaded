@@ -47,6 +47,16 @@
     "react/error-boundaries": "warn",
     "jsx-a11y/prefer-tag-over-role": "warn"
   },
+  "overrides": [
+    {
+      // React Native: StyleSheet.create sits below the components that use it
+      "files": ["packages/mobile/**"],
+      "env": { "browser": false },
+      "rules": {
+        "eslint/no-use-before-define": ["warn", { "functions": false, "variables": false }]
+      }
+    }
+  ],
   "ignorePatterns": [
     "**/node_modules/**",
     "**/dist/**",

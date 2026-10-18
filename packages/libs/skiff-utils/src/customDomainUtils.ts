@@ -34,10 +34,12 @@ export const isReservedCustomDomain = (domain: string) => {
 
 export const getMailDomain = () => {
   if (typeof window === 'undefined') {
-    if (['local', 'test', 'development'].includes(process.env.NODE_ENV || '')) {
+    // a string: deployments set values (staging) that some environments' typings don't list
+    const env: string = process.env.NODE_ENV || '';
+    if (['local', 'test', 'development'].includes(env)) {
       return 'skiff.town';
     }
-    if (process.env.NODE_ENV === 'staging') {
+    if (env === 'staging') {
       return 'skiff.city';
     }
     return 'skiff.com';
