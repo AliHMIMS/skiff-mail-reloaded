@@ -4,7 +4,7 @@ React app built with [Vite](https://vite.dev). Workspace libraries in `../libs` 
 
 ## Dev Setup
 
-Requires Node 22 and pnpm 12.
+Requires Node 22.22+ and pnpm 12.
 
 ```bash
 pnpm install

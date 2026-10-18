@@ -78,7 +78,7 @@ A pnpm workspace:
 2. Build the web client: [web/README.md](web/README.md).
 3. Put both behind HTTPS on one domain. The app is served at `/mail/`, and `/graphql*` and `/image_proxy/*` go to the server.
 
-From the root, with Node 22, pnpm 12 and Rust:
+From the root, with Node 22.22+, pnpm 12 and Rust:
 
 ```bash
 pnpm install

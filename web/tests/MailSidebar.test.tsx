@@ -95,14 +95,21 @@ describe('Sidebar', () => {
   });
 
   it('marks label as active based on routing', () => {
-    window.history.pushState({}, '', '/inbox');
+    // the route comes from the useLocation mock above: /mail/inbox
     render(<MailSidebar />, { wrapper });
-    const style = (name: string) => {
-      const text = screen.getByText(name);
-      const row = text.closest('a')?.firstElementChild;
-      return { background: row ? getComputedStyle(row).background : '', color: getComputedStyle(text).color };
+    // jsdom doesn't resolve var() in computed styles, so read the rules styled-components generated for the row
+    const css = Array.from(document.querySelectorAll('style'))
+      .map((style) => style.textContent ?? '')
+      .join('');
+    const rowCss = (name: string) => {
+      const row = screen.getByText(name).closest('a')?.firstElementChild;
+      return Array.from(row?.classList ?? [])
+        .map((className) => css.match(new RegExp(`\\.${className}\\{([^}]*)\\}`))?.[1] ?? '')
+        .join(';');
     };
-    expect(style('Inbox')).toEqual({ background: 'var(--bg-overlay-tertiary)', color: 'var(--text-primary)' });
-    expect(style('Sent')).toEqual({ background: 'rgba(0, 0, 0, 0)', color: 'var(--text-secondary)' });
+    expect(rowCss('Inbox')).toContain('background:var(--bg-overlay-tertiary)');
+    expect(rowCss('Sent')).toContain('background:transparent');
+    expect(getComputedStyle(screen.getByText('Inbox')).color).toContain('text-primary');
+    expect(getComputedStyle(screen.getByText('Sent')).color).toContain('text-secondary');
   });
 });
