@@ -14,8 +14,8 @@ dist/
 dist-next/
 
 # server: build output, binary, secrets, mail database
-server/target/
-server/bin/
-server/data/
+packages/server/target/
+packages/server/bin/
+packages/server/data/
 .env
 !.env.example

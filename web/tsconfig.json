@@ -1,5 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "include": ["../types", "src", "tests", "*.d.ts", "vite.config.mts"],
-  "exclude": ["dist", "dist-next"]
-}

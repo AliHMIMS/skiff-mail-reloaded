@@ -52,9 +52,9 @@
     "**/dist/**",
     "**/dist-next/**",
     ".tools/**",
-    "server/**",
-    "libs/skiff-front-graphql/generated/**",
-    "libs/skiff-graphql/src/types.ts",
+    "packages/server/**",
+    "packages/libs/skiff-front-graphql/generated/**",
+    "packages/libs/skiff-graphql/src/types.ts",
     "**/generated/protos/**"
   ]
 }

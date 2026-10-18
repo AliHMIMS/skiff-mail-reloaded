@@ -9,14 +9,14 @@
   "semi": true,
   "sortPackageJson": false,
   "ignorePatterns": [
-    "server/**",
-    "libs/skiff-front-graphql/generated/**",
-    "libs/skiff-graphql/src/types.ts",
-    "libs/skiff-graphql/src/completeSchema.graphql",
+    "packages/server/**",
+    "packages/libs/skiff-front-graphql/generated/**",
+    "packages/libs/skiff-graphql/src/types.ts",
+    "packages/libs/skiff-graphql/src/completeSchema.graphql",
     "**/generated/protos/**",
     "pnpm-lock.yaml",
     "supergraph.graphql",
     "protos/**",
-    "libs/skiff-utils/src/emailUtils/familiarNames.json"
+    "packages/libs/skiff-utils/src/emailUtils/familiarNames.json"
   ]
 }

@@ -66,23 +66,23 @@ Measured on a 2 vCPU / 4 GB server.
 
 ## Getting started
 
-A pnpm workspace:
+A pnpm workspace, with everything under `packages/`:
 
-| Folder             |                                            |
-| ------------------ | ------------------------------------------ |
-| [`web`](web)       | The Skiff Mail client (React, Vite)        |
-| [`server`](server) | The backend (Rust); scripts wrap `cargo`   |
-| [`libs`](libs)     | Skiff's shared libraries, used from source |
+| Folder                      |                                            |
+| --------------------------- | ------------------------------------------ |
+| [`web`](packages/web)       | The Skiff Mail client (React, Vite)        |
+| [`server`](packages/server) | The backend (Rust); scripts wrap `cargo`   |
+| [`libs`](packages/libs)     | Skiff's shared libraries, used from source |
 
-1. Build and run the server: [server/README.md](server/README.md).
-2. Build the web client: [web/README.md](web/README.md).
+1. Build and run the server: [packages/server/README.md](packages/server/README.md).
+2. Build the web client: [packages/web/README.md](packages/web/README.md).
 3. Put both behind HTTPS on one domain. The app is served at `/mail/`, and `/graphql*` and `/image_proxy/*` go to the server.
 
 From the root, with Node 22.22+, pnpm 12 and Rust:
 
 ```bash
 pnpm install
-pnpm build          # web/dist and server/bin/mymail-server
+pnpm build          # packages/web/dist and packages/server/bin/mymail-server
 pnpm dev            # web dev server
 pnpm test
 pnpm lint           # oxlint + clippy
