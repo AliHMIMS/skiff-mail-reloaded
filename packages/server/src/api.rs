@@ -582,75 +582,74 @@ async fn modify_labels(c: C, add: bool) -> Result<Json> {
     let gm = c.state.gmail()?;
     let store = &c.state.store;
 
-    for thread_id in &ids {
-        let emails = store.thread_emails(thread_id)?;
-        let live: Vec<&EmailRow> = emails.iter().filter(|e| e.folder == FOLDER_ALL).collect();
-        let dead: Vec<&EmailRow> = emails.iter().filter(|e| e.folder != FOLDER_ALL).collect();
-        let all: Vec<&EmailRow> = emails.iter().collect();
-        let mut moved_to: Option<(&str, bool)> = None; // (folder, inbox)
-        let mut inbox_change: Option<bool> = None;
-        for label in &system {
-            match (label.as_str(), add) {
-                ("TRASH", true) => {
-                    gm.apply(&refs(&live), Action::MoveTo(FOLDER_TRASH)).await?;
-                    gm.apply(
-                        &refs(&dead.iter().copied().filter(|e| e.folder == FOLDER_SPAM).collect::<Vec<_>>()),
-                        Action::MoveTo(FOLDER_TRASH),
-                    )
-                    .await?;
-                    moved_to = Some((FOLDER_TRASH, false));
+    // every selected thread in one pass, so a bulk action is a few IMAP commands and one burst of changes
+    let emails = thread_messages(store, &ids)?;
+    let live: Vec<&EmailRow> = emails.iter().filter(|e| e.folder == FOLDER_ALL).collect();
+    let dead: Vec<&EmailRow> = emails.iter().filter(|e| e.folder != FOLDER_ALL).collect();
+    let all: Vec<&EmailRow> = emails.iter().collect();
+    let mut moved_to: Option<(&str, bool)> = None; // (folder, inbox)
+    let mut inbox_change: Option<bool> = None;
+    for label in &system {
+        match (label.as_str(), add) {
+            ("TRASH", true) => {
+                gm.apply(&refs(&live), Action::MoveTo(FOLDER_TRASH)).await?;
+                gm.apply(
+                    &refs(&dead.iter().copied().filter(|e| e.folder == FOLDER_SPAM).collect::<Vec<_>>()),
+                    Action::MoveTo(FOLDER_TRASH),
+                )
+                .await?;
+                moved_to = Some((FOLDER_TRASH, false));
+            }
+            ("SPAM", true) => {
+                gm.apply(&refs(&all), Action::MoveTo(FOLDER_SPAM)).await?;
+                moved_to = Some((FOLDER_SPAM, false));
+            }
+            ("ARCHIVE", true) | ("INBOX", false) => {
+                gm.apply(&refs(&dead), Action::MoveTo(FOLDER_ALL)).await?;
+                gm.apply(&refs(&live), Action::RemoveLabels(&["\\Inbox".to_string()])).await?;
+                if !dead.is_empty() {
+                    moved_to = Some((FOLDER_ALL, false));
                 }
-                ("SPAM", true) => {
-                    gm.apply(&refs(&all), Action::MoveTo(FOLDER_SPAM)).await?;
-                    moved_to = Some((FOLDER_SPAM, false));
+                inbox_change = Some(false);
+            }
+            ("INBOX", true) | ("TRASH" | "SPAM", false) => {
+                gm.apply(&refs(&dead), Action::MoveTo("INBOX")).await?;
+                gm.apply(&refs(&live), Action::AddLabels(&["\\Inbox".to_string()])).await?;
+                if !dead.is_empty() {
+                    moved_to = Some((FOLDER_ALL, true));
                 }
-                ("ARCHIVE", true) | ("INBOX", false) => {
-                    gm.apply(&refs(&dead), Action::MoveTo(FOLDER_ALL)).await?;
-                    gm.apply(&refs(&live), Action::RemoveLabels(&["\\Inbox".to_string()])).await?;
-                    if !dead.is_empty() {
-                        moved_to = Some((FOLDER_ALL, false));
-                    }
-                    inbox_change = Some(false);
-                }
-                ("INBOX", true) | ("TRASH" | "SPAM", false) => {
-                    gm.apply(&refs(&dead), Action::MoveTo("INBOX")).await?;
-                    gm.apply(&refs(&live), Action::AddLabels(&["\\Inbox".to_string()])).await?;
-                    if !dead.is_empty() {
-                        moved_to = Some((FOLDER_ALL, true));
-                    }
-                    inbox_change = Some(true);
-                }
-                _ => {}
+                inbox_change = Some(true);
+            }
+            _ => {}
+        }
+    }
+    if !gmail_names.is_empty() {
+        let action = if add { Action::AddLabels(&gmail_names) } else { Action::RemoveLabels(&gmail_names) };
+        gm.apply(&refs(&live), action).await?;
+    }
+    // mirror the change locally so the response (and next poll) reflect it before the resync
+    for e in &emails {
+        let mut labels = e.gm_labels.clone();
+        let mut folder = e.folder.clone();
+        if let Some((target, inbox)) = moved_to {
+            folder = target.to_string();
+            if inbox {
+                labels.push("\\Inbox".into());
             }
         }
-        if !gmail_names.is_empty() {
-            let action = if add { Action::AddLabels(&gmail_names) } else { Action::RemoveLabels(&gmail_names) };
-            gm.apply(&refs(&live), action).await?;
+        match inbox_change {
+            Some(true) => labels.push("\\Inbox".into()),
+            Some(false) => labels.retain(|l| l != "\\Inbox"),
+            None => {}
         }
-        // mirror the change locally so the response (and next poll) reflect it before the resync
-        for e in &emails {
-            let mut labels = e.gm_labels.clone();
-            let mut folder = e.folder.clone();
-            if let Some((target, inbox)) = moved_to {
-                folder = target.to_string();
-                if inbox {
-                    labels.push("\\Inbox".into());
-                }
-            }
-            match inbox_change {
-                Some(true) => labels.push("\\Inbox".into()),
-                Some(false) => labels.retain(|l| l != "\\Inbox"),
-                None => {}
-            }
-            if add {
-                labels.extend(gmail_names.iter().cloned());
-            } else {
-                labels.retain(|l| !gmail_names.contains(l));
-            }
-            labels.sort();
-            labels.dedup();
-            store.update_email_state(&e.gm_msgid, &folder, &labels, e.seen)?;
+        if add {
+            labels.extend(gmail_names.iter().cloned());
+        } else {
+            labels.retain(|l| !gmail_names.contains(l));
         }
+        labels.sort();
+        labels.dedup();
+        store.update_email_state(&e.gm_msgid, &folder, &labels, e.seen)?;
     }
     c.state.sync_now.notify_one();
 
