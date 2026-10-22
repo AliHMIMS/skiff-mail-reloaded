@@ -567,13 +567,10 @@ export const Mailbox = () => {
     }
   }, [data, prevData]);
 
-  // omit polling from showing the loading state
+  // omit polling and refetches (realtime sync refreshes in the background; manual refreshes set isRefreshing)
+  // from showing the loading state
   // when switching labels, `data` is briefly not defined, so falsy data implies loading
-  const loading =
-    networkStatus === NetworkStatus.loading ||
-    networkStatus === NetworkStatus.refetch ||
-    networkStatus === NetworkStatus.setVariables ||
-    !data;
+  const loading = networkStatus === NetworkStatus.loading || networkStatus === NetworkStatus.setVariables || !data;
 
   const setLastSelectedIndex = useCallback(
     (index: number | null) => {
