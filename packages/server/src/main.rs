@@ -16,6 +16,7 @@ mod google;
 mod gql;
 mod mail;
 mod proxy;
+mod search;
 mod srp;
 mod store;
 
@@ -381,6 +382,16 @@ async fn serve(config: Config) -> Result<()> {
     let app = Arc::new(config.open_app()?);
     let schema = gql::build(include_str!("../schema.graphql"), api::handlers(), app.clone())?;
     tokio::spawn(sync_loop(app.clone()));
+    // index mail stored before search existed (new mail is indexed as it syncs)
+    let indexer = app.clone();
+    tokio::task::spawn_blocking(move || {
+        let Ok(Some(user)) = indexer.store.first_user() else { return };
+        match search::backfill(&indexer.store, &indexer.recipient(&user)) {
+            Ok(0) => {}
+            Ok(n) => tracing::info!("indexed {n} messages for search"),
+            Err(e) => tracing::error!("search backfill failed: {e:#}"),
+        }
+    });
     // Gmail push (Pub/Sub) is the fastest change signal; IMAP IDLE below stays on as a backup
     if let Some(topic) = config.pubsub_topic.clone() {
         tokio::spawn(watch_loop(app.clone(), topic));

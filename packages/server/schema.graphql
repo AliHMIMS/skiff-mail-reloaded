@@ -2274,8 +2274,46 @@ type InstanceStorage {
   databaseBytes: Float!
 }
 
+"""mymail-server: full-text search over the mailbox"""
+input SearchEmailsRequest {
+  """words to find; when several, messages with all of them, else with any"""
+  query: String
+  """fields to find the words in (subject, content, from, to, attachments); all when empty"""
+  fields: [String!]
+  """words that must appear in the sender"""
+  from: String
+  """words that must appear in the recipients"""
+  to: String
+  """only messages sent at or after this"""
+  after: Date
+  """thread labels the results must have; Trash and Spam are left out unless asked for"""
+  systemLabels: [String!]
+  userLabelIDs: [String!]
+  """RELEVANCE (default), ASC or DESC (by date)"""
+  sortOrder: String
+  """at most 1000 (the default)"""
+  limit: Int
+}
+
+"""mymail-server: a query word and the fields it was found in"""
+type SearchEmailMatch {
+  term: String!
+  fields: [String!]!
+}
+
+"""mymail-server: one matching message"""
+type SearchEmailResult {
+  emailID: String!
+  threadID: String!
+  createdAt: Date!
+  """relevance, higher is better"""
+  score: Float!
+  matches: [SearchEmailMatch!]!
+}
+
 type Query {
   instanceStorage: InstanceStorage
+  searchEmails(request: SearchEmailsRequest!): [SearchEmailResult!]!
   aliasDisplayInfo(emailAlias: String!): AliasDisplayInfo
   aliasValid(request: GetAliasValidRequest!): Boolean!
   allContacts: [Contact!]!

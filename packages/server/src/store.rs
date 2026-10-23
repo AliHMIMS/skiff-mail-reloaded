@@ -7,6 +7,8 @@ use rusqlite::{Connection, OptionalExtension, Row, params};
 use serde::{Deserialize, Serialize};
 use serde_json::Value as Json;
 
+pub use crate::search::SearchDoc;
+
 pub struct Store {
     conn: Mutex<Connection>,
     /// Change notifications for connected clients (see `events.rs`).
@@ -72,6 +74,8 @@ pub struct EmailRow {
     pub encrypted_snippet: String,
     pub attachments: Vec<AttachmentRef>,
     pub subject: String,
+    /// Plaintext to index for search; only set on freshly imported messages (never read back).
+    pub search: Option<SearchDoc>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -123,6 +127,17 @@ CREATE TABLE IF NOT EXISTS drafts (
 );
 CREATE TABLE IF NOT EXISTS mail_filters (gmail_filter_id TEXT PRIMARY KEY, definition TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS threads_meta (thread_id TEXT PRIMARY KEY, clientside_filtered INTEGER NOT NULL DEFAULT 0);
+-- full-text search: a contentless FTS5 index (no second copy of the text), keyed through emails_search because
+-- the rowids of `emails` (TEXT primary key) aren't stable across VACUUM
+CREATE VIRTUAL TABLE IF NOT EXISTS emails_fts USING fts5(
+    subject, body, sender, recipients, attachments,
+    content='', contentless_delete=1, tokenize='porter unicode61 remove_diacritics 2', prefix='2 3'
+);
+CREATE TABLE IF NOT EXISTS emails_search (fts_rowid INTEGER PRIMARY KEY, email_id TEXT UNIQUE NOT NULL);
+CREATE TRIGGER IF NOT EXISTS emails_search_delete AFTER DELETE ON emails BEGIN
+    DELETE FROM emails_fts WHERE rowid = (SELECT fts_rowid FROM emails_search WHERE email_id = old.id);
+    DELETE FROM emails_search WHERE email_id = old.id;
+END;
 "#;
 
 pub fn now_ms() -> i64 {
@@ -159,7 +174,42 @@ fn email_from_row(row: &Row) -> rusqlite::Result<EmailRow> {
         encrypted_snippet: row.get("encrypted_snippet")?,
         attachments: serde_json::from_value(json_col(row, "attachments_json")?).unwrap_or_default(),
         subject: row.get("subject")?,
+        search: None,
     })
+}
+
+#[derive(Clone, Debug)]
+pub struct SearchHit {
+    pub email_id: String,
+    pub thread_id: String,
+    pub folder: String,
+    pub created_at: i64,
+    pub score: f64,
+}
+
+fn search_hit(row: &Row) -> rusqlite::Result<SearchHit> {
+    Ok(SearchHit {
+        email_id: row.get(0)?,
+        thread_id: row.get(1)?,
+        folder: row.get(2)?,
+        created_at: row.get(3)?,
+        score: row.get(4)?,
+    })
+}
+
+fn index_email(db: &Connection, email_id: &str, doc: &SearchDoc) -> Result<()> {
+    db.execute(
+        "DELETE FROM emails_fts WHERE rowid = (SELECT fts_rowid FROM emails_search WHERE email_id = ?1)",
+        [email_id],
+    )?;
+    db.execute("DELETE FROM emails_search WHERE email_id = ?1", [email_id])?;
+    db.execute("INSERT INTO emails_search (email_id) VALUES (?1)", [email_id])?;
+    db.execute(
+        "INSERT INTO emails_fts (rowid, subject, body, sender, recipients, attachments)
+         VALUES (last_insert_rowid(), ?1, ?2, ?3, ?4, ?5)",
+        params![doc.subject, doc.body, doc.sender, doc.recipients, doc.attachments],
+    )?;
+    Ok(())
 }
 
 fn user_from_row(row: &Row) -> rusqlite::Result<User> {
@@ -311,8 +361,12 @@ impl Store {
     }
 
     pub fn insert_email(&self, e: &EmailRow) -> Result<()> {
-        self.db().execute(
-            "INSERT OR REPLACE INTO emails (id, gm_msgid, thread_id, message_id_header, references_header, folder,
+        let mut db = self.db();
+        let tx = db.transaction()?;
+        // what INSERT OR REPLACE would do, but as a real DELETE so the search index trigger runs
+        tx.execute("DELETE FROM emails WHERE id = ?1 OR gm_msgid = ?2", [&e.id, &e.gm_msgid])?;
+        tx.execute(
+            "INSERT INTO emails (id, gm_msgid, thread_id, message_id_header, references_header, folder,
                 gm_labels, seen, created_at, updated_at, from_json, to_json, cc_json, bcc_json, reply_to_json,
                 encrypted_session_key, encrypted_subject, encrypted_text, encrypted_html, encrypted_text_as_html,
                 encrypted_snippet, attachments_json, subject)
@@ -343,8 +397,65 @@ impl Store {
                 e.subject,
             ],
         )?;
+        if let Some(doc) = &e.search {
+            index_email(&tx, &e.id, doc)?;
+        }
+        tx.commit()?;
+        drop(db);
         self.emit(Change::Thread(e.thread_id.clone()));
         Ok(())
+    }
+
+    // -- search ---------------------------------------------------------------
+
+    pub fn index_email(&self, email_id: &str, doc: &SearchDoc) -> Result<()> {
+        index_email(&self.db(), email_id, doc)
+    }
+
+    /// Emails missing from the search index (stored before it existed).
+    pub fn unindexed_emails(&self, limit: usize) -> Result<Vec<EmailRow>> {
+        Ok(self
+            .db()
+            .prepare("SELECT * FROM emails WHERE id NOT IN (SELECT email_id FROM emails_search) LIMIT ?1")?
+            .query_map([limit as i64], email_from_row)?
+            .collect::<rusqlite::Result<_>>()?)
+    }
+
+    /// Emails matching an FTS5 query, created at or after `after` (epoch ms), with their BM25 relevance
+    /// (higher is better).
+    pub fn search(&self, fts_query: &str, after: i64, weights: &[f64; 5]) -> Result<Vec<SearchHit>> {
+        let sql = format!(
+            "SELECT e.id, e.thread_id, e.folder, e.created_at, -bm25(emails_fts, {})
+             FROM emails_fts JOIN emails_search s ON s.fts_rowid = emails_fts.rowid JOIN emails e ON e.id = s.email_id
+             WHERE emails_fts MATCH ?1 AND e.created_at >= ?2",
+            weights.map(|w| w.to_string()).join(", ")
+        );
+        Ok(self
+            .db()
+            .prepare(&sql)?
+            .query_map(params![fts_query, after], search_hit)?
+            .collect::<rusqlite::Result<_>>()?)
+    }
+
+    /// Every email created at or after `after`: what a search with filters but no words lists.
+    pub fn emails_since(&self, after: i64) -> Result<Vec<SearchHit>> {
+        Ok(self
+            .db()
+            .prepare("SELECT id, thread_id, folder, created_at, 0.0 FROM emails WHERE created_at >= ?1")?
+            .query_map([after], search_hit)?
+            .collect::<rusqlite::Result<_>>()?)
+    }
+
+    /// Which of `email_ids` match an FTS5 query.
+    pub fn search_among(&self, fts_query: &str, email_ids: &[&str]) -> Result<std::collections::HashSet<String>> {
+        Ok(self
+            .db()
+            .prepare(
+                "SELECT s.email_id FROM emails_fts JOIN emails_search s ON s.fts_rowid = emails_fts.rowid
+                 WHERE emails_fts MATCH ?1 AND s.email_id IN (SELECT value FROM json_each(?2))",
+            )?
+            .query_map(params![fts_query, serde_json::to_string(email_ids)?], |r| r.get(0))?
+            .collect::<rusqlite::Result<_>>()?)
     }
 
     /// Update the mutable Gmail state of a message; bumps `updated_at` only when something changed.

@@ -17,6 +17,7 @@ use crate::gmail::{self, Action, FOLDER_ALL, FOLDER_SPAM, FOLDER_TRASH, Gmail};
 use crate::google::{Google, Vacation};
 use crate::gql::{Call, Handlers, coded};
 use crate::mail::{self, Recipient};
+use crate::search;
 use crate::srp;
 use crate::store::{EmailRow, Label, Session, Store, User};
 
@@ -458,6 +459,49 @@ async fn mailbox(c: C) -> Result<Json> {
             "cursor": threads.last().map(|t| json!({ "threadID": t.thread_id, "date": key(t) })),
         },
     }))
+}
+
+async fn search_emails(c: C) -> Result<Json> {
+    auth(&c)?;
+    let req = &c.args["request"];
+    let system_labels = strings(req, "systemLabels");
+    let user_label_ids = strings(req, "userLabelIDs");
+    let query = search::Query {
+        text: s(req, "query").to_string(),
+        fields: strings(req, "fields"),
+        from: s(req, "from").to_string(),
+        to: s(req, "to").to_string(),
+        after: parse_date(req.get("after")),
+        include_deleted: system_labels.iter().any(|l| l == "TRASH" || l == "SPAM"),
+    };
+    let sort = match s(req, "sortOrder") {
+        "ASC" => search::Sort::Oldest,
+        "DESC" => search::Sort::Newest,
+        _ => search::Sort::Relevance,
+    };
+    let limit = req.get("limit").and_then(Json::as_u64).map_or(search::MAX_RESULTS, |l| l as usize);
+    let threads = all_threads(&c.state)?;
+    let by_id: HashMap<&str, &ThreadView> = threads.iter().map(|t| (t.thread_id.as_str(), t)).collect();
+    let keep = |thread_id: &str| {
+        system_labels.is_empty() && user_label_ids.is_empty()
+            || by_id
+                .get(thread_id)
+                .is_some_and(|t| system_labels.iter().chain(&user_label_ids).all(|l| thread_has_label(t, l)))
+    };
+    let hits = search::search(&c.state.store, &query, sort, limit, keep)?;
+    Ok(Json::Array(
+        hits.into_iter()
+            .map(|h| {
+                json!({
+                    "emailID": h.hit.email_id,
+                    "threadID": h.hit.thread_id,
+                    "createdAt": h.hit.created_at,
+                    "score": h.hit.score,
+                    "matches": h.matches.into_iter().map(|(term, fields)| json!({ "term": term, "fields": fields })).collect::<Vec<_>>(),
+                })
+            })
+            .collect(),
+    ))
 }
 
 async fn user_thread(c: C) -> Result<Json> {
@@ -1115,6 +1159,7 @@ pub fn handlers() -> Handlers<App> {
     h.on("Query.numMailboxThreads", num_mailbox_threads);
     h.on("Query.attachments", attachments);
     h.on("Query.isCustomDomain", async |_c: C| Ok(json!(false)));
+    h.on("Query.searchEmails", search_emails);
     h.on("Query.searchIndexProgress", async |c: C| {
         let n = all_threads(&c.state)?.len();
         Ok(json!({ "isIndexComplete": true, "numIndexableThreads": n, "numThreadsIndexed": n }))

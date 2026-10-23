@@ -6,7 +6,7 @@ use serde_json::{Value as Json, json};
 use sha2::{Digest, Sha256};
 
 use crate::crypto::{self, AttachmentMetadata, datagram};
-use crate::store::{AttachmentRef, EmailRow};
+use crate::store::{AttachmentRef, EmailRow, SearchDoc};
 
 /// Message-IDs we generate for outgoing mail embed the client's email id so the sent copy synced back from
 /// Gmail keeps that id (the client de-duplicates its optimistic reply by it).
@@ -110,6 +110,7 @@ pub fn import(raw: &[u8], meta: &GmailMeta, to: &Recipient<'_>) -> Result<EmailR
 
     let (key, encrypted_session_key) = new_boxed_session_key(to)?;
     let mut attachments = Vec::new();
+    let mut attachment_names = Vec::new();
     for (i, part) in msg.attachments().enumerate() {
         let content = part.contents();
         let content_type = part
@@ -128,6 +129,7 @@ pub fn import(raw: &[u8], meta: &GmailMeta, to: &Recipient<'_>) -> Result<EmailR
             size: content.len() as i64,
             content_id: part.content_id().map(angle).unwrap_or_default(),
         };
+        attachment_names.push(metadata.filename.clone());
         attachments.push(AttachmentRef {
             attachment_id: format!("{id}:{i}"),
             encrypted_metadata: metadata.encrypt(&key)?,
@@ -140,7 +142,7 @@ pub fn import(raw: &[u8], meta: &GmailMeta, to: &Recipient<'_>) -> Result<EmailR
         references = header_text_list(msg.in_reply_to()).into_iter().map(|r| angle(&r)).collect();
     }
 
-    Ok(EmailRow {
+    let mut row = EmailRow {
         id,
         gm_msgid: meta.msgid.to_string(),
         thread_id: format!("{:x}", meta.thrid),
@@ -164,7 +166,10 @@ pub fn import(raw: &[u8], meta: &GmailMeta, to: &Recipient<'_>) -> Result<EmailR
         encrypted_session_key,
         attachments,
         subject,
-    })
+        search: None,
+    };
+    row.search = Some(SearchDoc::new(&row, &text, attachment_names));
+    Ok(row)
 }
 
 /// Base64 content of the `part_index`-th attachment of a raw message.
