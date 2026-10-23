@@ -109,11 +109,12 @@ export const useMailboxActions = ({
   // quick alias filter; applicable only to "Quick Aliases" mailbox
   const quickAliasFilter = useAppSelector((state) => state.mailbox.quickAliasFilter);
 
+  const skipNumThreadsQuery = label === HiddenLabels.Search;
   const { data: numThreadsUnderLabelData, refetch } = useGetNumMailboxThreadsQuery({
     variables: {
       label
     },
-    skip: label === HiddenLabels.Search
+    skip: skipNumThreadsQuery
   });
 
   const numThreadsUnderLabel = numThreadsUnderLabelData?.numMailboxThreads ?? 0;
@@ -234,10 +235,12 @@ export const useMailboxActions = ({
     }
   }, [isFullScreenThreadOpen, someThreadsAreSelected, clearSelectionState]);
 
-  // refetch bulk thread count on label change or thread changes
+  // refetch bulk thread count on label change or thread changes;
+  // never while skipped: a skipped query's refetch changes on every render, and calling it re-renders,
+  // which looped forever on the search page
   useEffect(() => {
-    void refetch();
-  }, [label, threads.length, refetch]);
+    if (!skipNumThreadsQuery) void refetch();
+  }, [label, threads.length, refetch, skipNumThreadsQuery]);
 
   // refresh mailbox state after a thread action, bulk or not, is completed via the bulk action confirm modal
   const mailboxActionOnSuccess = useCallback(
