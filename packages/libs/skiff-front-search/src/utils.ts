@@ -116,6 +116,8 @@ const removeTrailingPunctuation = (text: string) => {
 export const getSpaceDelimitedTerms = (text: string) => text.split(/\s+/);
 
 const isEmailAfterNormalization = (term: string) => {
+  // isEmail dominates tokenizing cost and can only pass for terms containing '@'
+  if (!term.includes('@')) return false;
   try {
     return isEmail(removeTrailingPunctuation(term)); // if an address ends a sentence, we still want it
   } catch (e) {
@@ -191,11 +193,19 @@ export const excerptNormalizedQueryMatch = (
 
   const matchingTerms = getMatchingTermsFromMatchInfo(matchInfo);
 
-  const firstMatchIndex = spaceDelimitedTerms.findIndex((term) => doesNormalizedTextMatch(term, matchingTerms));
+  // email bodies repeat words a lot, so normalize each distinct word once
+  const nonMatchingTerms = new Set<string>();
+  const firstMatchIndex = spaceDelimitedTerms.findIndex((term) => {
+    if (nonMatchingTerms.has(term)) return false;
+    if (doesNormalizedTextMatch(term, matchingTerms)) return true;
+    nonMatchingTerms.add(term);
+    return false;
+  });
 
   if (firstMatchIndex < 0) {
-    // return the text in its entirety if no match is found
-    return text;
+    // return the start of the text if no match is found; returning a whole email body here made every
+    // search result row highlight-render thousands of words and froze the tab
+    return text.slice(0, CONTENT_SNIPPET_SIZE);
   }
 
   // if practical, we include leading terms to contextualize the match
