@@ -71,9 +71,17 @@ export function stringEncryptAsymmetric(
  * @param {string} encryptedText - Data to decrypt.
  * @returns {string} Decrypted plaintext.
  */
+// The shared key depends only on the key pair, and computing it (an X25519 scalar multiplication) was most of
+// the cost of opening a mailbox's session keys, which all come from the same sender (the mail server).
+const sharedKeyFor = memoize(
+  (myPrivateKey: string, theirPublicKey: string) =>
+    nacl.box.before(toByteArray(theirPublicKey), toByteArray(myPrivateKey)),
+  (myPrivateKey, theirPublicKey) => `${myPrivateKey}:${theirPublicKey}`
+);
+
 export const stringDecryptAsymmetric = memoize(
   (myPrivateKey: string, theirPublicKey: { key: string }, encryptedText: string) => {
-    const sharedKey = nacl.box.before(toByteArray(theirPublicKey.key), toByteArray(myPrivateKey));
+    const sharedKey = sharedKeyFor(myPrivateKey, theirPublicKey.key);
     const decrypted = decryptAsymmetric(sharedKey, encryptedText);
     return decrypted;
   },
