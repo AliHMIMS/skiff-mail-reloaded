@@ -131,7 +131,7 @@ export function removeThreadsFromCache(params: {
 
   // Permanently deleted threads must already be in trash, so we just need to remove trash label.
   // when permanently deleting from trash, remove threads from the search index
-  removeThreadsFromMailboxQuery(cache, label, fragments, label === SystemLabels.Trash);
+  removeThreadsFromMailboxQuery(cache, label, fragments);
 }
 
 export function updateThreadsWithModifiedLabels(params: {

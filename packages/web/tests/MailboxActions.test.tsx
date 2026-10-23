@@ -16,9 +16,6 @@ import { skemailSearchReducer } from '../src/redux/reducers/searchReducer';
 
 import { MOCK_THREAD } from './mocks/mockThread';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 
 vi.mock('../src/hooks/useThreadActions', () => ({
   useThreadActions: () => ({

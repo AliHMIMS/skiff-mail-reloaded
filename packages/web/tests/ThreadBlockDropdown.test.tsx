@@ -27,9 +27,6 @@ vi.mock('skiff-front-utils', async () => {
   };
 });
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 
 vi.mock('../src/hooks/useDrafts', () => ({
   useDrafts: () => ({

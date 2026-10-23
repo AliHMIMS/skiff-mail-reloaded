@@ -33,9 +33,6 @@ import { MOCK_USER } from './mocks/mockUser';
 
 vi.mock('email-regex', () => ({ default: vi.fn() }));
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 vi.mock('../src/utils/userUtils', async () => ({

@@ -14,9 +14,6 @@ import { skemailModalReducer } from '../src/redux/reducers/modalReducer';
 
 import { MOCK_EMAIL } from './mocks/mockEmail';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const original = await vi.importActual('skiff-front-utils');

@@ -2,7 +2,6 @@ import { useQueryCallbacks } from 'skiff-front-utils';
 import { AnimatePresence } from 'framer-motion';
 import uniq from 'lodash/uniq';
 import uniqBy from 'lodash/uniqBy';
-import { Alignment, Typography, TypographySize, TypographyWeight } from 'nightwatch-ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,7 +24,6 @@ import { COMPACT_MAILBOX_BREAKPOINT, FULL_VIEW_BREAKPOINT } from '../../constant
 import { useAppSelector } from '../../hooks/redux/useAppSelector';
 import { useDrafts } from '../../hooks/useDrafts';
 import { useIosKeyboardHeight } from '../../hooks/useIosKeyboardHeight';
-import { useGetSearchIndexProgress } from '../../hooks/useSearchWorker';
 import { useThreadActions } from '../../hooks/useThreadActions';
 import { skemailHotKeysReducer } from '../../redux/reducers/hotkeysReducer';
 import { skemailMailboxReducer } from '../../redux/reducers/mailboxReducer';
@@ -44,8 +42,6 @@ import { LoadingMailbox } from './LoadingMailbox';
 import { useMailboxActions, useMailboxActionsRefs } from './MailboxActions/useMailboxActions';
 import { MailboxHeader } from './MailboxHeader';
 import MailboxSearchResultItem from './MailboxItem/MailboxSearchResultItem';
-import MailboxProgressItem from './MailboxProgress/MailboxProgressItem';
-import MailboxProgressView from './MailboxProgress/MailboxProgressView';
 import MessageDetailsPanel from './MessageDetailsPanel';
 
 const MailboxContainer = styled.div`
@@ -91,22 +87,6 @@ const MessageList = styled.div<{ $threadFormat: ThreadDisplayFormat }>`
 
 const MAX_THREADS_TO_QUERY = 50;
 
-const getSearchIndexProgressText = (center?: boolean, isCompact?: boolean) => (
-  <>
-    <Typography size={isCompact ? TypographySize.SMALL : undefined} weight={TypographyWeight.MEDIUM}>
-      Creating private search index
-    </Typography>
-    <Typography
-      align={center ? Alignment.CENTER : undefined}
-      color='secondary'
-      size={isCompact ? TypographySize.SMALL : undefined}
-      wrap={center}
-    >
-      Results will be complete when your device finishes decrypting all mail.
-    </Typography>
-  </>
-);
-
 export const MailboxSearchResults = () => {
   const {
     skemailSearchResults: searchResultEmails,
@@ -115,8 +95,6 @@ export const MailboxSearchResults = () => {
     lastSubmittedSearchFilters
   } = useSearch();
   const isCompact = useMediaQuery(`(max-width:${FULL_VIEW_BREAKPOINT}px)`);
-  const { progress: searchIndexProgress, progressRetrievalError: searchIndexProgressRetrievalError } =
-    useGetSearchIndexProgress();
   const { mailboxLabelsDropdownOpen, mailboxMoveFolderDropdownOpen } = useAppSelector((state) => state.hotkeys);
   const { labelRef, folderRef } = useMailboxActionsRefs();
   const windowedListRef = useRef<FixedSizeList | null>(null);
@@ -128,12 +106,6 @@ export const MailboxSearchResults = () => {
   const clearLastSelectedIndex = useCallback(() => {
     dispatch(skemailMailboxReducer.actions.setLastSelctedIndex(null));
   }, [dispatch]);
-
-  const showIndexProgress =
-    lastSubmittedMailboxQuery &&
-    !!searchIndexProgress &&
-    !searchIndexProgressRetrievalError &&
-    !searchIndexProgress.isIndexComplete;
 
   const [startingIndexToFetch, setStartingIndexToFetch] = useState(0);
   const [resultsToRender, setResultsToRender] = useState<SkemailResultThreadInfo[]>([]);
@@ -301,16 +273,6 @@ export const MailboxSearchResults = () => {
           <Autosizer>
             {({ height, width }) => (
               <>
-                {showIndexProgress && (
-                  <MailboxProgressItem
-                    description={getSearchIndexProgressText(undefined, width < COMPACT_MAILBOX_BREAKPOINT)}
-                    progress={{
-                      numProcessed: searchIndexProgress.numThreadsIndexed,
-                      numToProcess: searchIndexProgress.numIndexableThreads
-                    }}
-                    width={width}
-                  />
-                )}
                 <InfiniteLoader
                   isItemLoaded={isItemLoaded}
                   itemCount={resultThreadIds.length}
@@ -355,17 +317,11 @@ export const MailboxSearchResults = () => {
     );
   };
 
-  // if searchIndexProgress has yet to resolve and there are no results to render, we don't know whether
-  // the search returned no results because there are genuinely no results or because the index is not yet complete,
-  // so we show loading skeleton until indexing progress is determined
-  // (or until there's a retrieval error, in which case we fall back to the "No Results" illustration)
   const noResults = resultsToRender.length === 0;
-  const shouldWaitForIndexProgress = noResults && !searchIndexProgress && !searchIndexProgressRetrievalError;
   // we show a loading state only during the first search after each component mount;
   // subsequent searches show results from previous search while new search is in progress
   const showSkeleton =
-    !isFirstSearchComplete &&
-    ((resultThreadsLoading && startingIndexToFetch === 0) || shouldWaitForIndexProgress || isSearchInProgress);
+    !isFirstSearchComplete && ((resultThreadsLoading && startingIndexToFetch === 0) || isSearchInProgress);
 
   const renderMailboxBody = () => {
     if (showSkeleton) {
@@ -373,17 +329,7 @@ export const MailboxSearchResults = () => {
     }
 
     if (noResults) {
-      // show index progress if there are no results and the search index is not yet complete
-      return showIndexProgress ? (
-        <MailboxProgressView
-          actionLabel='indexed'
-          description={getSearchIndexProgressText(true)}
-          progress={{
-            numProcessed: searchIndexProgress.numThreadsIndexed,
-            numToProcess: searchIndexProgress.numIndexableThreads
-          }}
-        />
-      ) : (
+      return (
         <EmptyIllustration
           subtitle={lastSubmittedMailboxQuery ? 'No emails match the query' : 'Enter a query to search'}
           title='No results'

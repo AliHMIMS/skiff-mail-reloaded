@@ -5,9 +5,6 @@ import { Provider } from 'react-redux';
 import ComposePanel from '../src/components/Compose';
 import store from '../src/redux/store/reduxStore';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 
 const testContent = 'I am content inside the panel';
 

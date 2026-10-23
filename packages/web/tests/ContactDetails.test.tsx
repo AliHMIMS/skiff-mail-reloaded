@@ -8,9 +8,6 @@ import { MOCK_EMAIL } from './mocks/mockEmail';
 vi.mock('../src/hooks/useDrafts', () => ({
   composeNewDraft: vi.fn()
 }));
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 
 describe('ContactDetails', () => {
   it('renders correct info without hover when expanded', () => {

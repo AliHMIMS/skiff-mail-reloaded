@@ -24,9 +24,6 @@ const subject = 'test subject';
 const message =
   'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. In aliquam sem fringilla ut morbi tincidunt. Tincidunt lobortis feugiat vivamus at augue eget arcu dictum varius. Quis commodo odio aenean sed. Platea dictumst vestibulum rhoncus est pellentesque elit ullamcorper dignissim. Massa ultricies mi quis hendrerit dolor magna eget est lorem.';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: vi.fn()
-}));
 vi.mock('../src/context/RouterLabelContext', () => ({
   useRouterLabelContext: () => ({
     value: 'inbox'

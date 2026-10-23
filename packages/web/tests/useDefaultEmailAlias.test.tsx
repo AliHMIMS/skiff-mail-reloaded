@@ -25,9 +25,6 @@ vi.mock('skiff-front-utils', async () => {
 
 const testAliasValue = 'test@test.com';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 
 const wrapper = ({ children }: { children: ReactNode }) => (
   <Provider store={store}>

@@ -52,7 +52,7 @@ export const getSortableSearchResults = (searchResults: SearchResult[]): MiniSea
     };
   });
 
-export const chronSortResults = (sortableSearchResults: MiniSearchResultBase[], order?: AscDesc) =>
+export const chronSortResults = <T extends MiniSearchResultBase>(sortableSearchResults: T[], order?: AscDesc) =>
   orderBy(sortableSearchResults, ['updatedAt'], [!!order && order === AscDesc.Asc ? 'asc' : 'desc']);
 
 // if the difference between a relevance score and a reference is less than or equal to this proportion of the reference,
@@ -72,13 +72,13 @@ const isScoreCloseToReference = (score: number, referenceScore: number, closePro
  * there is a long tail of results that are much less relevant than the top few.
  * This function clusters scores within groups bounded by a specified distance from a representative score for each group.
  */
-export const groupResultsByRoughlyEquivalentScores = (
-  scoreOrderedResults: MiniSearchResultBase[]
-): MiniSearchResultBase[][] => {
+export const groupResultsByRoughlyEquivalentScores = <T extends MiniSearchResultBase>(
+  scoreOrderedResults: T[]
+): T[][] => {
   if (!scoreOrderedResults.length) {
     return [];
   }
-  const groupedResults = scoreOrderedResults.reduce((acc: MiniSearchResultBase[][], searchResult) => {
+  const groupedResults = scoreOrderedResults.reduce((acc: T[][], searchResult) => {
     const lastSubarray = acc[acc.length - 1];
     if (
       lastSubarray &&
@@ -247,7 +247,7 @@ export const isEditorMiniSearchResult = (
   return isMiniSearchResultBase(result) && 'title' in result && 'contentType' in result;
 };
 
-export const smartSortResults = (results: MiniSearchResultBase[]) => {
+export const smartSortResults = <T extends MiniSearchResultBase>(results: T[]) => {
   // give overall best results first, sorting reverse chronologically within clusters of similarly relevant results
   const resultsGroupedByRelevance = groupResultsByRoughlyEquivalentScores(results);
   // within each cluster of roughly equivalent relevance, sort by updatedAt

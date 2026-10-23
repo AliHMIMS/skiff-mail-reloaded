@@ -15,9 +15,6 @@ import {
 } from '../src/redux/reducers/modalReducer';
 import { ModalType } from '../src/redux/reducers/modalTypes';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const original = await vi.importActual('skiff-front-utils');

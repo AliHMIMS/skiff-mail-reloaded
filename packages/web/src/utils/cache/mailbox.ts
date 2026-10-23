@@ -7,8 +7,6 @@ import {
 } from 'skiff-front-graphql';
 import { MailboxFilters, Mailbox } from 'skiff-graphql';
 
-import { getSearchWorker } from '../../hooks/useSearchWorker';
-
 export function updateReadUnreadFilterThreads(cache: ApolloCache, label: string, mailboxFilter: MailboxFilters): void {
   const mailboxQuery = cache.readQuery<MailboxQuery, MailboxQueryVariables>({
     query: MailboxDocument,
@@ -98,8 +96,7 @@ export function addThreadsToMailboxQuery(
 export function removeThreadsFromMailboxQuery(
   cache: ApolloCache,
   label: string,
-  threadsToRemove: ThreadWithoutContentFragment[],
-  removeThreadsFromSearchIndex?: boolean
+  threadsToRemove: ThreadWithoutContentFragment[]
 ): void {
   const read = threadsToRemove.every((thread) => thread.attributes.read);
   const filters = read ? { read: true } : { read: false };
@@ -139,14 +136,9 @@ export function removeThreadsFromMailboxQuery(
         return null;
       }
       const existingThreads = existing.mailbox.threads ?? [];
-      const newThreads = existingThreads.filter((existingThread) => {
-        const shouldRemove = threadsToRemove.some((thread) => thread.threadID === existingThread.threadID);
-        if (shouldRemove && removeThreadsFromSearchIndex) {
-          const searchWorker = getSearchWorker();
-          existingThread.emails.forEach((email) => void searchWorker?.remove(email.id));
-        }
-        return !shouldRemove;
-      });
+      const newThreads = existingThreads.filter(
+        (existingThread) => !threadsToRemove.some((thread) => thread.threadID === existingThread.threadID)
+      );
 
       return {
         ...existing,

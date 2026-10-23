@@ -51,9 +51,8 @@ vi.mock('../src/utils/draftUtils', async () => ({
   getUserDrafts: vi.fn().mockResolvedValue([]),
   getDraftSaveData: vi.fn().mockResolvedValue({})
 }));
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: vi.fn(),
-  useInitializeSearchWorker: vi.fn()
+vi.mock('../src/hooks/useDeleteLocalSearchIndex', () => ({
+  useDeleteLocalSearchIndex: vi.fn()
 }));
 
 vi.mock('../src/hooks/useGetSearchIndexProgressDate', () => ({ default: vi.fn() }));

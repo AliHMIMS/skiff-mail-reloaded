@@ -13,9 +13,6 @@ import {
 
 import { MOCK_USER } from './mocks/mockUser';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const original = await vi.importActual('skiff-front-utils');

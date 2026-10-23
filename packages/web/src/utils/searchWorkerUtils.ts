@@ -1,5 +1,5 @@
 import { Icon, IconProps } from 'nightwatch-ui';
-import { IndexedSkemail, SearchClient } from 'skiff-front-search';
+import { IndexedSkemail } from 'skiff-front-search';
 import { AddressObject, UserLabel as UserLabelOrFolder, UserLabelVariant } from 'skiff-graphql';
 
 import { ClientAttachment } from '../components/Attachments';
@@ -10,7 +10,6 @@ import {
   TITLE_ONLY_ROW_HEIGHT
 } from '../components/shared/CmdPalette/constants';
 import { MailAppRoutes } from '../constants/route.constants';
-import { getSearchWorker } from '../hooks/useSearchWorker';
 
 import { SYSTEM_LABELS } from './label';
 
@@ -209,15 +208,6 @@ export interface SearchQuery extends SearchItemBase {
   itemType: SearchItemType.Query;
   subject: string;
   filters: SearchFilter[];
-}
-
-/**
- * Utility function: Searches for indexed skemails where either the
- * to or from addresses/names match the query value.
- */
-const toFromFields = ['to', 'from'];
-export async function toFromSearch(query: string) {
-  return (await getSearchWorker()?.search(query, SearchClient.SKEMAIL, { fields: toFromFields })) || [];
 }
 
 /**

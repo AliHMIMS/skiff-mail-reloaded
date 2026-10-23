@@ -34,7 +34,7 @@ import useFetchCurrentUser from '../../hooks/useFetchCurrentUser';
 import { useImportProgress } from '../../hooks/useImportProgress';
 import { useMailLogout } from '../../hooks/useMailLogout';
 import { useRealtimeSync } from '../../hooks/useRealtimeSync';
-import { useInitializeSearchWorker } from '../../hooks/useSearchWorker';
+import { useDeleteLocalSearchIndex } from '../../hooks/useDeleteLocalSearchIndex';
 import useSyncURLSearchParams from '../../hooks/useSyncURLSearchParams';
 import { skemailModalReducer } from '../../redux/reducers/modalReducer';
 import { ModalType } from '../../redux/reducers/modalTypes';
@@ -136,7 +136,7 @@ export const Layout: FC<PropsWithChildren> = ({ children }) => {
   useCachingWorker();
   useRealtimeSync(isLoggedIn);
   // Initialize search worker to start indexing skemails
-  useInitializeSearchWorker();
+  useDeleteLocalSearchIndex();
 
   const location = useLocation();
   // So that we don't have a flash of the wrong content

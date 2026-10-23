@@ -20,9 +20,6 @@ import { ETHERSCAN_ADDRESS_LOOKUP_URL, SOLANA_LOOKUP_URL } from '../src/utils/wa
 import { MOCK_EMAIL } from './mocks/mockEmail';
 import { MOCK_THREAD } from './mocks/mockThread';
 
-vi.mock('../src/hooks/useSearchWorker', () => ({
-  getSearchWorker: undefined
-}));
 vi.mock('skiff-front-utils', async () => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const original = await vi.importActual('skiff-front-utils');
