@@ -15,7 +15,7 @@ import {
   TypographySize,
   TypographyWeight
 } from 'nightwatch-ui';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { ConnectDragSource } from 'react-dnd';
 import { useResizeDetector } from 'react-resize-detector';
 import { excerptNormalizedQueryMatch } from 'skiff-front-search';
@@ -155,6 +155,14 @@ export const MessageCell = ({
   }, [hoveredThreadID]);
 
   const cellDate = useCellDate(date);
+  // excerpting scans the whole body for a match, so don't redo it on hover and other re-renders
+  const messagePreview = useMemo(
+    () =>
+      message
+        ? renderTextWithQueryMatch(matchInfo ? excerptNormalizedQueryMatch(message, matchInfo) : message, matchInfo)
+        : null,
+    [message, matchInfo]
+  );
 
   const getFacepileColor = (isDarkMode: boolean) => {
     if (active) {
@@ -298,10 +306,7 @@ export const MessageCell = ({
           {message && (
             <Typography color={read ? 'disabled' : 'secondary'}>
               <span>&nbsp;–&nbsp;</span>
-              {renderTextWithQueryMatch(
-                matchInfo ? excerptNormalizedQueryMatch(message, matchInfo) : message,
-                matchInfo
-              )}
+              {messagePreview}
             </Typography>
           )}
         </ContentPreview>

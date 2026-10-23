@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import isToday from 'dayjs/plugin/isToday';
 import { Icon, Icons, Size, ThemeMode, Typography, TypographySize, TypographyWeight } from 'nightwatch-ui';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useResizeDetector } from 'react-resize-detector';
 import { excerptNormalizedQueryMatch } from 'skiff-front-search';
 import { Checkbox, WalletAliasWithName, useTheme } from 'skiff-front-utils';
@@ -152,6 +152,14 @@ export const CompactMessageCell = ({
   }, []);
 
   const cellDate = useCellDate(date);
+  // excerpting scans the whole body for a match, so don't redo it on hover and other re-renders
+  const messagePreview = useMemo(
+    () =>
+      message
+        ? renderTextWithQueryMatch(matchInfo ? excerptNormalizedQueryMatch(message, matchInfo) : message, matchInfo)
+        : null,
+    [message, matchInfo]
+  );
 
   // always defined with defaults
 
@@ -256,10 +264,7 @@ export const CompactMessageCell = ({
           <MessageChips>
             {message && (
               <Typography color='secondary' size={TypographySize.CAPTION}>
-                {renderTextWithQueryMatch(
-                  matchInfo ? excerptNormalizedQueryMatch(message, matchInfo) : message,
-                  matchInfo
-                )}
+                {messagePreview}
               </Typography>
             )}
             {renderUserLabelChips()}
