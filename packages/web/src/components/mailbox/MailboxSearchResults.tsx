@@ -85,7 +85,8 @@ const MessageList = styled.div<{ $threadFormat: ThreadDisplayFormat }>`
   ${isMobile ? 'height: 100%; overflow-y: hidden;' : ''}
 `;
 
-const MAX_THREADS_TO_QUERY = 50;
+// threads loaded (and decrypted) per page of results; more load as the list scrolls
+const MAX_THREADS_TO_QUERY = 25;
 
 export const MailboxSearchResults = () => {
   const {
