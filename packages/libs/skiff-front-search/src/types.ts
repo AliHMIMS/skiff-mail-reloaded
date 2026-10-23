@@ -1,18 +1,14 @@
-import { SearchResult } from 'minisearch';
-import { AddressObject, DecryptedAttachment, NwContentType } from 'skiff-graphql';
+import { AddressObject, DecryptedAttachment } from 'skiff-graphql';
 
 export interface IndexedItemBase {
   id: string;
   updatedAt: number;
 }
 
-export interface IndexedDocument extends IndexedItemBase {
-  title: string;
-  content: string;
-  contentType: NwContentType;
-}
+/** Normalized (stemmed) query term -> the fields it matched in. */
+export type MatchInfo = Record<string, string[]>;
 
-export type MiniSearchResultBase = Pick<SearchResult, 'terms' | 'score' | 'match'> & IndexedItemBase;
+export type MiniSearchResultBase = { terms: string[]; score: number; match: MatchInfo } & IndexedItemBase;
 
 export interface IndexedSkemail extends IndexedItemBase {
   threadID: string;
@@ -33,17 +29,10 @@ export interface IndexedSkemail extends IndexedItemBase {
 }
 
 export type SkemailMiniSearchResult = MiniSearchResultBase & Pick<IndexedSkemail, 'threadID'>;
-export type EditorMiniSearchResult = MiniSearchResultBase & Pick<IndexedDocument, 'title' | 'contentType'>;
-export type MiniSearchResult = SkemailMiniSearchResult | EditorMiniSearchResult;
-
-export enum SearchClient {
-  SKEMAIL = 'skemail',
-  EDITOR = 'editor'
-}
 
 export interface DateRangeFilter {
   daysAgo: number; // for computing preset ranges on the fly; custom ranges will be added soon
 }
 
+/** Where earlier versions kept the in-browser search index (deleted on load). */
 export const skemailSearchIndexIDBKey = (userID: string) => `skiff:skemailSearchIndex:${userID}`;
-export const editorSearchIndexIDBKey = (userID: string) => `skiff:editorSearchIndex:${userID}`;
