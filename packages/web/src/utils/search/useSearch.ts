@@ -1,5 +1,5 @@
 import { useFlags } from 'launchdarkly-react-client-sdk';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router';
 import { useDebouncedAsyncCallback } from 'skiff-front-utils';
@@ -61,56 +61,57 @@ export const useSearch = () => {
   const { search: labelSearch } = useLabelSearch();
   const { search: userSearch } = useUserSearch();
 
-  const [search] = useDebouncedAsyncCallback(
-    async (
-      searchStr: string,
-      filters?: MailboxSearchFilter[],
-      showResultsInCmdPalette?: boolean,
-      sortOrder?: SearchSortOrder
-    ) => {
-      if (!isSearchInProgress) setIsSearchInProgress(true);
-      // minisearch results are currently only delivered via full-view search route
-      // so regardless of whether search came from command palette or mailbox search bar,
-      // we sync the mailbox search bar state
-      setMailboxQuery(searchStr);
-      setSearchFilters(filters || []);
-      setSearchSortOrder(sortOrder || SearchSortOrder.Relevance);
-      const newSearchResults: SearchResult[] = [];
-      // Search results
-      // depending on the category, could be a list of emails, labels, folders, users.
-      let categorySearchResults: SearchResult[] = [];
-      const searchResultHeader: SearchResult = {
-        type: SearchItemType.HEADER,
-        label: 'Search results'
-      };
-      if (category === SearchCategory.SKEMAIL) {
-        const skemailResults = await skemailSearch(searchStr, filters, autoSuggest, sortOrder);
-        if (skemailResults?.length) {
-          categorySearchResults = [...skemailResults];
-          if (showResultsInCmdPalette) {
-            categorySearchResults.unshift(searchResultHeader);
-          }
-        }
-      } else if (category === SearchCategory.LABEL) {
-        const labelResults: LabelSearchResult[] | undefined = labelSearch(searchStr);
-        if (labelResults?.length) {
-          categorySearchResults = [searchResultHeader, ...labelResults];
-        }
-      } else if (category === SearchCategory.USER) {
-        const userResults: UserSearchResult[] | undefined = userSearch(searchStr);
-        if (userResults?.length) {
-          categorySearchResults = [searchResultHeader, ...userResults];
+  const runSearch = async (
+    searchStr: string,
+    filters?: MailboxSearchFilter[],
+    showResultsInCmdPalette?: boolean,
+    sortOrder?: SearchSortOrder
+  ) => {
+    if (!isSearchInProgress) setIsSearchInProgress(true);
+    // minisearch results are currently only delivered via full-view search route
+    // so regardless of whether search came from command palette or mailbox search bar,
+    // we sync the mailbox search bar state
+    setMailboxQuery(searchStr);
+    setSearchFilters(filters || []);
+    setSearchSortOrder(sortOrder || SearchSortOrder.Relevance);
+    const newSearchResults: SearchResult[] = [];
+    // Search results
+    // depending on the category, could be a list of emails, labels, folders, users.
+    let categorySearchResults: SearchResult[] = [];
+    const searchResultHeader: SearchResult = {
+      type: SearchItemType.HEADER,
+      label: 'Search results'
+    };
+    if (category === SearchCategory.SKEMAIL) {
+      const skemailResults = await skemailSearch(searchStr, filters, autoSuggest, sortOrder);
+      if (skemailResults?.length) {
+        categorySearchResults = [...skemailResults];
+        if (showResultsInCmdPalette) {
+          categorySearchResults.unshift(searchResultHeader);
         }
       }
-      newSearchResults.push(...categorySearchResults);
-      setSearchResults(newSearchResults);
-      setLastSubmittedMailboxQuery(searchStr);
-      setLastSubmittedSearchFilters(filters);
-      setIsSearchInProgress(false);
-      return newSearchResults;
-    },
-    SEARCH_UPDATE_INTERVAL
-  );
+    } else if (category === SearchCategory.LABEL) {
+      const labelResults: LabelSearchResult[] | undefined = labelSearch(searchStr);
+      if (labelResults?.length) {
+        categorySearchResults = [searchResultHeader, ...labelResults];
+      }
+    } else if (category === SearchCategory.USER) {
+      const userResults: UserSearchResult[] | undefined = userSearch(searchStr);
+      if (userResults?.length) {
+        categorySearchResults = [searchResultHeader, ...userResults];
+      }
+    }
+    newSearchResults.push(...categorySearchResults);
+    setSearchResults(newSearchResults);
+    setLastSubmittedMailboxQuery(searchStr);
+    setLastSubmittedSearchFilters(filters);
+    setIsSearchInProgress(false);
+    return newSearchResults;
+  };
+  // typing (command palette) is debounced; a submitted search (Enter, a filter, a sender) runs right away
+  const [search] = useDebouncedAsyncCallback(runSearch, SEARCH_UPDATE_INTERVAL);
+  const runSearchRef = useRef(runSearch);
+  runSearchRef.current = runSearch;
 
   const searchInSearchRoute = useCallback(
     (query: string, filters?: MailboxSearchFilter[], searchSortOrder?: SearchSortOrder) => {
@@ -124,11 +125,10 @@ export const useSearch = () => {
           dispatch(skemailSearchReducer.actions.setActiveThread({ threadID: activeThreadID, emailID: activeEmailID }));
         }
       }
-      void search(query, filters, undefined, searchSortOrder);
+      void runSearchRef.current(query, filters, undefined, searchSortOrder);
     },
     [
       navigateToSearch,
-      search,
       dispatch,
       setIsSearchInProgress,
       isSearchRoute,
