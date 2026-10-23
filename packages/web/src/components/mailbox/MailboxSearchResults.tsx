@@ -243,14 +243,6 @@ export const MailboxSearchResults = () => {
     }
   }, [isFirstSearchComplete, resultThreadsLoading, lastSubmittedMailboxQuery, lastSubmittedSearchFilters?.length]);
 
-  const itemHeight = useCallback(
-    (width: number) => {
-      setListWidth(width);
-      // Assuming the getItemHeight function is already appropriately implemented
-      return getItemHeight(isMobile, width < COMPACT_MAILBOX_BREAKPOINT);
-    },
-    [isMobile]
-  );
   const activeThread = resultsToRender.find((result) => result.thread.threadID === activeThreadID)?.thread;
   const isActiveThreadDraft = activeThread?.attributes.systemLabels.includes(SystemLabels.Drafts);
   // Is the side panel open
@@ -269,8 +261,10 @@ export const MailboxSearchResults = () => {
 
     return (
       <MessageList $threadFormat={isCompact ? ThreadDisplayFormat.Full : threadFormat} ref={messageListRef}>
+        {/* the width is stored from onResize: setting it while rendering the list re-rendered this page
+            over and over (React's maximum update depth) and froze the tab */}
         {!!resultsToRender.length && (
-          <Autosizer>
+          <Autosizer onResize={({ width }: { width?: number }) => setListWidth(width ?? 0)}>
             {({ height, width }) => (
               <>
                 <InfiniteLoader
@@ -299,7 +293,7 @@ export const MailboxSearchResults = () => {
                         scrollOffset.current = e.scrollOffset;
                       }}
                       itemKey={(index, data) => data.searchResults[index]?.emailID ?? ''}
-                      itemSize={itemHeight(width)}
+                      itemSize={getItemHeight(isMobile, width < COMPACT_MAILBOX_BREAKPOINT)}
                       onItemsRendered={onItemsRendered}
                       overscanCount={10}
                       style={{ overflowX: 'hidden', paddingBottom: iosKeyboardHeight }}
