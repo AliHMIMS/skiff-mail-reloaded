@@ -155,13 +155,16 @@ const readDecryptedAttachmentMetadata: FieldReadFunction<Email['decryptedAttachm
         assertExists(attachmentMetadata, 'Must provide attachmentMetadata');
         const decryptedAttachments = attachmentMetadata.map((attachment) => {
           try {
+            // __typename lets Apollo's LocalState resolve the selected child fields; without it the whole
+            // query fails for any email with attachments
             return {
+              __typename: 'DecryptedAttachment' as const,
               attachmentID: attachment.attachmentID,
-              decryptedMetadata: decryptDatagramV2(
-                AttachmentMetadataDatagram,
-                sessionKey,
-                attachment.encryptedData.encryptedData
-              ).body
+              decryptedMetadata: {
+                __typename: 'AttachmentMetadata' as const,
+                ...decryptDatagramV2(AttachmentMetadataDatagram, sessionKey, attachment.encryptedData.encryptedData)
+                  .body
+              }
             };
           } catch (e) {
             console.error(
@@ -169,6 +172,7 @@ const readDecryptedAttachmentMetadata: FieldReadFunction<Email['decryptedAttachm
               { id, e }
             );
             return {
+              __typename: 'DecryptedAttachment' as const,
               attachmentID: attachment.attachmentID,
               decryptedMetadata: null
             };
